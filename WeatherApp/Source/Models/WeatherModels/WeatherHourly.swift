@@ -8,7 +8,7 @@
 import Foundation
 
 struct WeatherHourly: Decodable {
-    var dt: Int
-    var temp: Double
-    var weather: [Weather]
+    let dt: Int
+    let temp: Double
+    let weather: [Weather]
 }

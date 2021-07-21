@@ -8,7 +8,7 @@
 import Foundation
 
 struct WeatherResponse: Decodable {
-    var current: WeatherCurrent
-    var hourly: [WeatherHourly]
-    var daily: [WeatherDaily]
+    let current: WeatherCurrent
+    let hourly: [WeatherHourly]
+    let daily: [WeatherDaily]
 }

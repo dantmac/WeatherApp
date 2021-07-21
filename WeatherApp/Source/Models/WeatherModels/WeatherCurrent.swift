@@ -8,17 +8,17 @@
 import Foundation
 
 struct WeatherCurrent: Decodable {
-    var dt: Int
-    var sunrise: Int
-    var sunset: Int
-    var temp: Double
-    var feelsLike: Double
-    var pressure: Int
-    var humidity: Int
-    var uvi: Double
-    var clouds: Int
-    var visibility: Int
-    var windSpeed: Double
-    var windDeg: Int
-    var weather: [Weather]
+    let dt: Int
+    let sunrise: Int
+    let sunset: Int
+    let temp: Double
+    let feelsLike: Double
+    let pressure: Int
+    let humidity: Int
+    let uvi: Double
+    let clouds: Int
+    let visibility: Int
+    let windSpeed: Double
+    let windDeg: Int
+    let weather: [Weather]
 }

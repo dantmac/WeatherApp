@@ -8,6 +8,6 @@
 import Foundation
 
 struct Temperature: Decodable {
-    var max: Double
-    var min: Double
+    let max: Double
+    let min: Double
 }

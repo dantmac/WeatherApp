@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct WeatherDaily: Decodable {
-    var dt: Int
-    var temp: [Temperature]
-    var weather: [Weather]
+struct WeatherDaily: Decodable  {
+    let dt: Int
+    let temp: Temperature
+    let weather: [Weather]
 }
