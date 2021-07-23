@@ -20,6 +20,7 @@ class HourlyCollectionView: UICollectionView {
         register(HourlyCollectionViewCell.nib(), forCellWithReuseIdentifier: reuseID)
         delegate = self
         dataSource = self
+        showsHorizontalScrollIndicator = false
     }
 
 }
