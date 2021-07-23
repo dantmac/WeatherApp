@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol Networking {
-    func request(params: [String: String], completion: @escaping (Data?, Error?) -> Void)
+protocol NetworkServiceProtocol {
+    func sendRequest(params: [String: String], completion: @escaping (Data?, Error?) -> Void)
 }
 
-final class NetworkService: Networking {
+final class NetworkService: NetworkServiceProtocol {
     
-    func request(params: [String: String], completion: @escaping (Data?, Error?) -> Void) {
+    func sendRequest(params: [String: String], completion: @escaping (Data?, Error?) -> Void) {
         
         var allParams = params
         allParams["appid"] = API.key

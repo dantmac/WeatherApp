@@ -1,5 +1,5 @@
 //
-//  NetworkDataFetcher.swift
+//  WeatherDataFetcher.swift
 //  WeatherApp
 //
 //  Created by admin on 21.07.2021.
@@ -11,18 +11,18 @@ protocol DataFetcher {
     func getWeather(response: @escaping (WeatherResponse?) -> Void)
 }
 
-struct NetworkDataFetcher: DataFetcher {
+struct WeatherDataFetcher: DataFetcher {
     
-    let networking: Networking
+    let networkService: NetworkServiceProtocol
     
-    init(networking: Networking) {
-        self.networking = networking
+    init(networkService: NetworkServiceProtocol) {
+        self.networkService = networkService
     }
     
     func getWeather(response: @escaping (WeatherResponse?) -> Void) {
         
         let params = ["lat": "33.44", "lon": "-94.04"]
-        networking.request(params: params) { data, error in
+        networkService.sendRequest(params: params) { data, error in
             if let error = error {
                 print("Error receiver requesting data: \(error.localizedDescription)")
                 response(nil)

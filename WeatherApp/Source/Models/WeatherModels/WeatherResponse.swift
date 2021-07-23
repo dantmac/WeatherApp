@@ -8,6 +8,7 @@
 import Foundation
 
 struct WeatherResponse: Decodable {
+    let timezone: String
     let current: WeatherCurrent
     let hourly: [WeatherHourly]
     let daily: [WeatherDaily]
