@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = #colorLiteral(red: 0.3529411765, green: 0.7921568627, blue: 0.9647058824, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.5675834311, green: 0.8398373816, blue: 0.9686274529, alpha: 1)
         weatherDetailViewModel.getWeather()
     }
     
