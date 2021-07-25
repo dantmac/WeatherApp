@@ -9,6 +9,10 @@ import UIKit
 
 class HourlyCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var dtHourLabel: UILabel!
+    @IBOutlet weak var tempLabel: UILabel!
+    @IBOutlet weak var weatherIcon: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

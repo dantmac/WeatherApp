@@ -55,7 +55,7 @@
                             <constraint firstItem="hfn-0g-HyF" firstAttribute="height" secondItem="3ZP-sz-Nhp" secondAttribute="height" id="AJc-xu-jK3"/>
                         </constraints>
                     </stackView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="10n" translatesAutoresizingMaskIntoConstraints="NO" id="oNT-3y-GW1">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="02d" translatesAutoresizingMaskIntoConstraints="NO" id="oNT-3y-GW1">
                         <rect key="frame" x="182.5" y="7.5" width="50" height="50"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="50" id="99q-1k-JuJ"/>
@@ -79,10 +79,16 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="dtLabel" destination="GjO-he-2DF" id="2MZ-MI-Vej"/>
+                <outlet property="tempMaxLabel" destination="hfn-0g-HyF" id="1Cx-7B-GLE"/>
+                <outlet property="tempMinLabel" destination="3ZP-sz-Nhp" id="UnD-IN-9At"/>
+                <outlet property="weatherIcon" destination="oNT-3y-GW1" id="DnZ-jC-9vg"/>
+            </connections>
             <point key="canvasLocation" x="-21.014492753623191" y="33.147321428571431"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="10n" width="50" height="50"/>
+        <image name="02d" width="50" height="50"/>
     </resources>
 </document>

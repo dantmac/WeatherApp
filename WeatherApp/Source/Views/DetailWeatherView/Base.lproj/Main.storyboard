@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Detail View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="DetailViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="1526"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -38,8 +38,17 @@
                                         <color key="shadowColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <size key="shadowOffset" width="1" height="1"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="24º" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xY5-jG-Wbe">
-                                        <rect key="frame" x="136.5" y="148.5" width="141.5" height="115.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="24" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xY5-jG-Wbe">
+                                        <rect key="frame" x="152.5" y="148.5" width="109" height="115.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="95"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                        <color key="shadowColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <size key="shadowOffset" width="2" height="2"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="º" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OnL-kI-8RB">
+                                        <rect key="frame" x="263.5" y="148.5" width="34.5" height="115.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="95"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -73,15 +82,18 @@
                                 <constraints>
                                     <constraint firstItem="xY5-jG-Wbe" firstAttribute="top" secondItem="Rc3-Uj-OF2" secondAttribute="bottom" id="A6E-sB-HAm"/>
                                     <constraint firstItem="DL3-5V-RSw" firstAttribute="centerX" secondItem="KoL-Ww-WlE" secondAttribute="centerX" id="J7h-1y-i1y"/>
+                                    <constraint firstItem="OnL-kI-8RB" firstAttribute="leading" secondItem="xY5-jG-Wbe" secondAttribute="trailing" constant="2" id="N9b-Ni-aal"/>
                                     <constraint firstItem="DL3-5V-RSw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KoL-Ww-WlE" secondAttribute="leading" constant="50" id="NUt-a7-z4r"/>
                                     <constraint firstItem="DL3-5V-RSw" firstAttribute="top" secondItem="KoL-Ww-WlE" secondAttribute="top" constant="90" id="PLV-tf-Cmo"/>
                                     <constraint firstItem="Rc3-Uj-OF2" firstAttribute="top" secondItem="DL3-5V-RSw" secondAttribute="bottom" id="ROj-nT-gKA"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OnL-kI-8RB" secondAttribute="trailing" constant="50" id="TRG-AG-O9u"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="DL3-5V-RSw" secondAttribute="trailing" constant="50" id="Znj-S1-xMl"/>
                                     <constraint firstItem="Rc3-Uj-OF2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KoL-Ww-WlE" secondAttribute="leading" constant="50" id="cLE-aF-Mtj"/>
                                     <constraint firstAttribute="bottom" secondItem="XcA-Cc-Grg" secondAttribute="bottom" constant="90" id="fhm-uq-uS6"/>
                                     <constraint firstItem="Rc3-Uj-OF2" firstAttribute="centerX" secondItem="KoL-Ww-WlE" secondAttribute="centerX" id="ftt-nX-tXE"/>
                                     <constraint firstItem="XcA-Cc-Grg" firstAttribute="top" secondItem="xY5-jG-Wbe" secondAttribute="bottom" id="hJ1-o8-ZIG"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Rc3-Uj-OF2" secondAttribute="trailing" constant="50" id="ivL-Od-y9D"/>
+                                    <constraint firstItem="XcA-Cc-Grg" firstAttribute="top" secondItem="OnL-kI-8RB" secondAttribute="bottom" id="nXD-Qw-4yd"/>
                                     <constraint firstItem="xY5-jG-Wbe" firstAttribute="centerX" secondItem="KoL-Ww-WlE" secondAttribute="centerX" id="tkQ-6F-9Om"/>
                                     <constraint firstItem="XcA-Cc-Grg" firstAttribute="centerX" secondItem="KoL-Ww-WlE" secondAttribute="centerX" id="tos-6i-Yrc"/>
                                 </constraints>
@@ -138,7 +150,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vee-r0-R3f" userLabel="Sunrise View">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ВОСХОД СОЛНЦА" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UzV-y0-NWt">
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ВОСХОД СОЛНЦА" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UzV-y0-NWt" userLabel="sunrise">
                                                         <rect key="frame" x="15" y="5" width="384" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -182,7 +194,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RKJ-M3-fyQ" userLabel="Sunset View">
                                                 <rect key="frame" x="0.0" y="65" width="414" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ЗАХОД СОЛНЦА" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDM-bA-keM">
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ЗАХОД СОЛНЦА" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDM-bA-keM" userLabel="sunset">
                                                         <rect key="frame" x="15" y="5" width="384" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -226,7 +238,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zeW-EK-fbh" userLabel="Humidity View">
                                                 <rect key="frame" x="0.0" y="130" width="414" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ВЛАЖНОСТЬ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="06X-Nd-743">
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ВЛАЖНОСТЬ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="06X-Nd-743" userLabel="humidity">
                                                         <rect key="frame" x="15" y="5" width="384" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -270,7 +282,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J9L-nu-w7J" userLabel="Cloudness View">
                                                 <rect key="frame" x="0.0" y="195" width="414" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ОБЛАЧНОСТЬ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="On1-z5-SMw">
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ОБЛАЧНОСТЬ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="On1-z5-SMw" userLabel="cloudness">
                                                         <rect key="frame" x="15" y="5" width="384" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -314,7 +326,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i8v-MT-Aj1" userLabel="Wind View">
                                                 <rect key="frame" x="0.0" y="260" width="414" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ВЕТЕР" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gUw-dS-k0c">
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ВЕТЕР" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gUw-dS-k0c" userLabel="wind">
                                                         <rect key="frame" x="15" y="5" width="384" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -370,7 +382,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hs6-Mu-tmC" userLabel="Feels Like View">
                                                 <rect key="frame" x="0.0" y="325" width="414" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ОЩУЩАЕТСЯ КАК" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd9-N3-Izc">
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ОЩУЩАЕТСЯ КАК" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd9-N3-Izc" userLabel="feels like">
                                                         <rect key="frame" x="15" y="5" width="384" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -414,7 +426,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CfS-jL-Pxb" userLabel="Pressure View">
                                                 <rect key="frame" x="0.0" y="390" width="414" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ДАВЛЕНИЕ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydX-zB-fGc">
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ДАВЛЕНИЕ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydX-zB-fGc" userLabel="pressure">
                                                         <rect key="frame" x="15" y="5" width="384" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -458,7 +470,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DWN-hp-huP" userLabel="Visibility View">
                                                 <rect key="frame" x="0.0" y="455" width="414" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ВИДИМОСТЬ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L2p-7l-xWz">
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ВИДИМОСТЬ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L2p-7l-xWz" userLabel="visibility">
                                                         <rect key="frame" x="15" y="5" width="384" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -502,7 +514,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f8c-hy-00d" userLabel="UVI Index View">
                                                 <rect key="frame" x="0.0" y="520" width="414" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="УФ-ИНДЕКС" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CuF-e8-z7e">
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="УФ-ИНДЕКС" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CuF-e8-z7e" userLabel="UVI-Index">
                                                         <rect key="frame" x="15" y="5" width="384" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
@@ -645,10 +657,27 @@
                         </constraints>
                     </view>
                     <size key="freeformSize" width="414" height="1526"/>
+                    <connections>
+                        <outlet property="cloudnessLabel" destination="voN-oe-I6X" id="snp-QE-MS7"/>
+                        <outlet property="descriptionLabel" destination="Rc3-Uj-OF2" id="GuS-8X-Pin"/>
+                        <outlet property="feelsLikeLabel" destination="ZTF-5Q-b3R" id="yW2-P0-thH"/>
+                        <outlet property="humidityLabel" destination="J8u-9F-G6M" id="z8o-Qf-99M"/>
+                        <outlet property="locationLabel" destination="DL3-5V-RSw" id="OPW-hh-Y2s"/>
+                        <outlet property="pressureLabel" destination="rg0-YT-7Wc" id="Beg-Tz-Mmo"/>
+                        <outlet property="sunriseLabel" destination="VMm-EE-c1m" id="OQp-DU-4Lh"/>
+                        <outlet property="sunsetLabel" destination="t9E-us-aJd" id="0fp-gn-FMW"/>
+                        <outlet property="tempLabel" destination="xY5-jG-Wbe" id="bqi-8f-RG9"/>
+                        <outlet property="tempMaxLabel" destination="edf-gE-nJS" id="AH6-n1-IAZ"/>
+                        <outlet property="tempMinLabel" destination="lx3-pT-Ges" id="06v-Il-7SE"/>
+                        <outlet property="uviLabel" destination="NYs-5f-ee1" id="6Dj-du-BjH"/>
+                        <outlet property="visibilityLabel" destination="l9P-IM-plf" id="gTG-6I-hmC"/>
+                        <outlet property="windDegLabel" destination="ATq-Gk-N9G" id="7Kf-yo-4uQ"/>
+                        <outlet property="windSpeedLabel" destination="A8D-Ul-Wqr" id="c8B-Pd-OcK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="91.304347826086968" y="59.933035714285708"/>
+            <point key="canvasLocation" x="91.304347826086968" y="59.598214285714285"/>
         </scene>
     </scenes>
     <resources>

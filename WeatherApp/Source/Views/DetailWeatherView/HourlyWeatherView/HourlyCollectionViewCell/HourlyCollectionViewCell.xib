@@ -38,7 +38,7 @@
                                 <color key="shadowColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <size key="shadowOffset" width="1" height="0.0"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="10n" translatesAutoresizingMaskIntoConstraints="NO" id="ahV-tn-bZy">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="02d" translatesAutoresizingMaskIntoConstraints="NO" id="ahV-tn-bZy">
                                 <rect key="frame" x="5" y="35" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -51,10 +51,15 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <size key="customSize" width="70" height="120"/>
+            <connections>
+                <outlet property="dtHourLabel" destination="MiY-vo-DlD" id="BM0-0c-sgS"/>
+                <outlet property="tempLabel" destination="Dad-FG-obq" id="gHP-zC-KnH"/>
+                <outlet property="weatherIcon" destination="ahV-tn-bZy" id="RmH-Xl-3IU"/>
+            </connections>
             <point key="canvasLocation" x="-1.4492753623188408" y="-23.4375"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="10n" width="50" height="50"/>
+        <image name="02d" width="50" height="50"/>
     </resources>
 </document>

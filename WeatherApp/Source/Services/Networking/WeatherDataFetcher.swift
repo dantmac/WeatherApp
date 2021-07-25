@@ -21,7 +21,7 @@ struct WeatherDataFetcher: DataFetcher {
     
     func getWeather(response: @escaping (WeatherResponse?) -> Void) {
         
-        let params = ["lat": "33.44", "lon": "-94.04"]
+        let params = ["lat": "41.91", "lon": "-87.75"]
         networkService.sendRequest(params: params) { data, error in
             if let error = error {
                 print("Error receiver requesting data: \(error.localizedDescription)")
