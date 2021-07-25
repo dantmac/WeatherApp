@@ -31,17 +31,16 @@ class DetailWeatherViewViewModel {
                                temp: current.tempCelsiusString,
                                tempMax: "Max: " + String(format: "%.f", (daily?.temp.max ?? 0) - 273) + "°",
                                tempMin: "Min: " + String(format: "%.f", (daily?.temp.min ?? 0) - 273) + "°",
-                               sunrise: Date(timeIntervalSince1970: Double(current.sunrise)).formateToTime(),
-                               sunset: Date(timeIntervalSince1970: Double(current.sunset)).formateToTime(),
-                               humidity: String(current.humidity) + " %",
-                               cloudness: String(current.clouds) + " %",
-                               windSpeed: String(format: "%.1f", current.windSpeed) + " m/s",
-                               windDeg: String(current.windDeg),
-                               feelsLike: String(format: "%.f", current.feelsLike) + "°",
-                               pressure: String(current.pressure),
-                               visibility: String(current.visibility),
-                               uvi: String(current.uvi))
-        
+                               sunrise: current.sunriseDate.formateToTime(timezoneOffset: response.timezoneOffset),
+                               sunset: current.sunsetDate.formateToTime(timezoneOffset: response.timezoneOffset),
+                               humidity: current.humidityString,
+                               cloudness: current.cloudsString,
+                               windSpeed: current.windSpeedString,
+                               windDeg: current.windDegString,
+                               feelsLike: current.feelsLikeCelsiusString,
+                               pressure: current.pressureString,
+                               visibility: current.visibilityString,
+                               uvi: current.uviString)
     }
     
 }
