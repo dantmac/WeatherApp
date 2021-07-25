@@ -47,10 +47,10 @@ struct WeatherCurrent: Decodable {
     var windDegString: String {
         switch windDeg {
             case 0...11, 350...360: return "N"
-            case 12...34: return "NNE"
-            case 35...56: return "NE"
-            case 57...79: return "ENE"
-            case 80...101: return "E"
+            case 12...34:   return "NNE"
+            case 35...56:   return "NE"
+            case 57...79:   return "ENE"
+            case 80...101:  return "E"
             case 102...124: return "ESE"
             case 125...146: return "SE"
             case 147...169: return "SSE"

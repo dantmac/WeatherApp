@@ -14,6 +14,10 @@ extension String {
     }
 }
 
+extension StringProtocol {
+    var firstCapitalized: String { prefix(1).capitalized + dropFirst() }
+}
+
 extension Date {
     func formateToTime(timezoneOffset: Int) -> String {
         let formatter = DateFormatter()
@@ -22,10 +26,9 @@ extension Date {
         return formatter.string(from: self)
     }
     
-    func formateToHours(timezoneOffset: Int) -> String {
+    func formateToHours() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH"
-        formatter.timeZone = NSTimeZone(forSecondsFromGMT: timezoneOffset) as TimeZone
         return formatter.string(from: self)
     }
     

@@ -11,4 +11,8 @@ struct WeatherDaily: Decodable  {
     let dt: Int
     let temp: Temperature
     let weather: [Weather]
+    
+    // MARK: - Formatted properties
+    
+    var dtDate: Date { return Date(timeIntervalSince1970: Double(dt)) }
 }

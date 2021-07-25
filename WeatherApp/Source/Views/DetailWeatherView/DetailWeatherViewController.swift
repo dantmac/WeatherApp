@@ -1,5 +1,5 @@
 //
-//  DetailViewController.swift
+//  DetailWeatherViewController.swift
 //  WeatherApp
 //
 //  Created by admin on 19.07.2021.
@@ -7,14 +7,11 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailWeatherViewController: UIViewController {
     
-    // MARK: - Properties
+    // TODO: comment each group of objects
     
     private var detailWeatherViewViewModel = DetailWeatherViewViewModel()
-    
-    
-    // MARK: - Outlets
     
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -38,10 +35,10 @@ class DetailViewController: UIViewController {
         
         view.backgroundColor = #colorLiteral(red: 0.2551917757, green: 0.7989619708, blue: 0.9686274529, alpha: 1)
         
-        setDataToOutlets()
+        setData()
     }
     
-    private func setDataToOutlets() {
+    private func setData() {
         detailWeatherViewViewModel.setWeather { [weak self] detailViewModel in
             self?.setDetailData(detailViewModel: detailViewModel)
         }

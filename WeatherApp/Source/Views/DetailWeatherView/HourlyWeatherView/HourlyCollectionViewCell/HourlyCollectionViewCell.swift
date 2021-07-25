@@ -23,4 +23,9 @@ class HourlyCollectionViewCell: UICollectionViewCell {
                      bundle: nil)
     }
 
+    func setCell(hourlyCellViewModel: HourlyCellViewModelProtocol) {
+        dtHourLabel.text = hourlyCellViewModel.dtHourly
+        tempLabel.text = hourlyCellViewModel.temp
+        weatherIcon.image = UIImage(named: hourlyCellViewModel.weatherIcon)
+    }
 }

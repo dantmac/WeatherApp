@@ -23,14 +23,14 @@ class DetailWeatherViewViewModel {
         let current = response.current
         let daily = response.daily.first
        
-        let descriptions = response.current.weather.map { weather in weather.description }
+        let descriptions = response.current.weather.map { weather in weather.descriptionStr }
         let description = descriptions[0]
         
-        return DetailViewModel(location: response.timezone.deletingPrefix(),
+        return DetailViewModel(location: response.location,
                                description: description,
                                temp: current.tempCelsiusString,
-                               tempMax: "Max: " + String(format: "%.f", (daily?.temp.max ?? 0) - 273) + "°",
-                               tempMin: "Min: " + String(format: "%.f", (daily?.temp.min ?? 0) - 273) + "°",
+                               tempMax: "Max: " + (daily?.temp.maxCelsiusString ?? ""),
+                               tempMin: "Min: " + (daily?.temp.minCelsiusString ?? ""),
                                sunrise: current.sunriseDate.formateToTime(timezoneOffset: response.timezoneOffset),
                                sunset: current.sunsetDate.formateToTime(timezoneOffset: response.timezoneOffset),
                                humidity: current.humidityString,

@@ -10,4 +10,10 @@ import Foundation
 struct Temperature: Decodable {
     let max: Double
     let min: Double
+    
+    // MARK: - Formatted properties
+    
+    var maxCelsiusString: String { return String(format: "%.f", max - 273) + "º" }
+    
+    var minCelsiusString: String { return String(format: "%.f", min - 273) + "º" }
 }

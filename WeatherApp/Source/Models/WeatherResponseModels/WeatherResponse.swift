@@ -13,4 +13,8 @@ struct WeatherResponse: Decodable {
     let current: WeatherCurrent
     let hourly: [WeatherHourly]
     let daily: [WeatherDaily]
+    
+    // MARK: - Formatted properties
+    
+    var location: String { return timezone.deletingPrefix() }
 }

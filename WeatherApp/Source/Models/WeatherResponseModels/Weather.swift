@@ -12,4 +12,8 @@ struct Weather: Decodable {
     let main: String
     let description: String
     let icon: String
+    
+    // MARK: - Formatted properties
+    
+    var descriptionStr: String { return description.firstCapitalized }
 }
