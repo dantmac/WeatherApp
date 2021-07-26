@@ -16,7 +16,7 @@ protocol DetailViewModelProtocol {
     var sunrise: String { get }
     var sunset: String { get }
     var humidity: String { get }
-    var cloudness: String { get }
+    var cloudiness: String { get }
     var windSpeed: String { get }
     var windDeg: String { get }
     var feelsLike: String { get }
@@ -34,7 +34,7 @@ struct DetailViewModel: DetailViewModelProtocol {
     var sunrise: String
     var sunset: String
     var humidity: String
-    var cloudness: String
+    var cloudiness: String
     var windSpeed: String
     var windDeg: String
     var feelsLike: String

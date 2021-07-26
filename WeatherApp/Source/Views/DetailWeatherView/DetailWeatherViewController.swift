@@ -16,12 +16,13 @@ class DetailWeatherViewController: UIViewController {
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
+    @IBOutlet weak var degreeLabel: UILabel!
     @IBOutlet weak var tempMaxLabel: UILabel!
     @IBOutlet weak var tempMinLabel: UILabel!
     @IBOutlet weak var sunriseLabel: UILabel!
     @IBOutlet weak var sunsetLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
-    @IBOutlet weak var cloudnessLabel: UILabel!
+    @IBOutlet weak var cloudinessLabel: UILabel!
     @IBOutlet weak var windSpeedLabel: UILabel!
     @IBOutlet weak var windDegLabel: UILabel!
     @IBOutlet weak var feelsLikeLabel: UILabel!
@@ -53,13 +54,14 @@ class DetailWeatherViewController: UIViewController {
         sunriseLabel.text = detailViewModel.sunrise
         sunsetLabel.text = detailViewModel.sunset
         humidityLabel.text = detailViewModel.humidity
-        cloudnessLabel.text = detailViewModel.cloudness
+        cloudinessLabel.text = detailViewModel.cloudiness
         windSpeedLabel.text = detailViewModel.windSpeed
         windDegLabel.text = detailViewModel.windDeg
         feelsLikeLabel.text = detailViewModel.feelsLike
         pressureLabel.text = detailViewModel.pressure
         visibilityLabel.text = detailViewModel.visibility
         uviLabel.text = detailViewModel.uvi
+        degreeLabel.text = "º"
     }
 }
 

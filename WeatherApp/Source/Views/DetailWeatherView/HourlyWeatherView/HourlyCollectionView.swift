@@ -14,7 +14,6 @@ class HourlyCollectionView: UICollectionView {
     private var hourlyViewViewModel = HourlyCellViewViewModel()
     
     private var hourlyCellViewModel = HourlyCellViewModel(cells: [])
-    
   
     private let reuseID = "HourlyViewCell"
     
@@ -23,7 +22,6 @@ class HourlyCollectionView: UICollectionView {
         
         setupCollectionView()
         setCells()
-//        print(hourlyCellViewModel)
     }
 
     private func setupCollectionView() {
@@ -54,6 +52,4 @@ extension HourlyCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
         cell.setCell(hourlyCellViewModel: cellViewModel)
         return cell
     }
-    
-    
 }

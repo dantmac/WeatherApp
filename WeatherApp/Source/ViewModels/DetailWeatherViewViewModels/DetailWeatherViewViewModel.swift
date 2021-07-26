@@ -34,7 +34,7 @@ class DetailWeatherViewViewModel {
                                sunrise: current.sunriseDate.formateToTime(timezoneOffset: response.timezoneOffset),
                                sunset: current.sunsetDate.formateToTime(timezoneOffset: response.timezoneOffset),
                                humidity: current.humidityString,
-                               cloudness: current.cloudsString,
+                               cloudiness: current.cloudsString,
                                windSpeed: current.windSpeedString,
                                windDeg: current.windDegString,
                                feelsLike: current.feelsLikeCelsiusString,
