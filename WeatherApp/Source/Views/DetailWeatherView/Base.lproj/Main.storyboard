@@ -124,7 +124,7 @@
                                             <constraint firstAttribute="height" constant="1" id="7Y1-fP-wSi"/>
                                         </constraints>
                                     </view>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qql-7t-B1e" customClass="HourlyCollectionView" customModule="WeatherApp" customModuleProvider="target">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qql-7t-B1e">
                                         <rect key="frame" x="0.0" y="1" width="414" height="120"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -145,7 +145,7 @@
                                             <constraint firstAttribute="height" constant="1" id="cHj-KP-6Nc"/>
                                         </constraints>
                                     </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="y4m-wM-FVf" customClass="DailyTableView" customModule="WeatherApp" customModuleProvider="target">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="y4m-wM-FVf">
                                         <rect key="frame" x="0.0" y="122" width="414" height="320"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
@@ -675,9 +675,11 @@
                     <size key="freeformSize" width="414" height="1526"/>
                     <connections>
                         <outlet property="cloudinessLabel" destination="voN-oe-I6X" id="uPc-Ob-Dn2"/>
+                        <outlet property="dailyTableView" destination="y4m-wM-FVf" id="F0t-fn-VYe"/>
                         <outlet property="degreeLabel" destination="OnL-kI-8RB" id="6wV-OQ-AFp"/>
                         <outlet property="descriptionLabel" destination="Rc3-Uj-OF2" id="GuS-8X-Pin"/>
                         <outlet property="feelsLikeLabel" destination="ZTF-5Q-b3R" id="yW2-P0-thH"/>
+                        <outlet property="hourlyCollectionView" destination="Qql-7t-B1e" id="MbJ-Nb-Kmj"/>
                         <outlet property="humidityLabel" destination="J8u-9F-G6M" id="z8o-Qf-99M"/>
                         <outlet property="locationLabel" destination="DL3-5V-RSw" id="OPW-hh-Y2s"/>
                         <outlet property="pressureLabel" destination="rg0-YT-7Wc" id="Beg-Tz-Mmo"/>
