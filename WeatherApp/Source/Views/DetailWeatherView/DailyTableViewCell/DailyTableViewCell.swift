@@ -31,10 +31,10 @@ class DailyTableViewCell: UITableViewCell {
                      bundle: nil)
     }
     
-    func setCell(cellViewModel: DailyCellViewModelProtocol) {
-        dtLabel.text = cellViewModel.dtDaily
-        weatherIcon.image = UIImage(named: cellViewModel.weatherIcon)
-        tempMaxLabel.text = cellViewModel.tempMax
-        tempMinLabel.text = cellViewModel.tempMin
+    func setCell(dailyCellViewModel: DailyCellViewModelProtocol) {
+        dtLabel.text = dailyCellViewModel.dtDaily
+        weatherIcon.image = UIImage(named: dailyCellViewModel.weatherIcon)
+        tempMaxLabel.text = dailyCellViewModel.tempMax
+        tempMinLabel.text = dailyCellViewModel.tempMin
     }
 }

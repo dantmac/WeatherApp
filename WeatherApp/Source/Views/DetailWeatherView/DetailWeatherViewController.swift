@@ -7,19 +7,25 @@
 
 import UIKit
 
-class DetailWeatherViewController: UIViewController {
+protocol DetailViewDisplayLogic: AnyObject {
+    func displayWeather(detailViewModel: DetailViewModelProtocol,
+                         hourlyCellViewModel: HourlyCellViewModel,
+                         dailyCellViewModel: DailyCellViewModel)
+}
+
+class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
-    // TODO: comment each group of objects
+    // MARK: - Properties
     
-    private var detailWeatherViewViewModel = DetailWeatherViewViewModel()
-    private var hourlyViewViewModel = HourlyCellViewViewModel()
-    private var dailyViewViewModel = DailyCellViewViewModel()
+    var viewModel: DetailWeatherPresentationLogic?
     
     private let hourlyCellID = "HourlyViewCell"
     private let dailyCellID = "DailyViewCell"
     
     private var hourlyCellViewModel = HourlyCellViewModel(cells: [])
     private var dailyCellViewModel = DailyCellViewModel(cells: [])
+    
+    // MARK: - IBOutlets
     
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -41,22 +47,31 @@ class DetailWeatherViewController: UIViewController {
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var dailyTableView: UITableView!
     
+    // MARK: - View lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = #colorLiteral(red: 0.2551917757, green: 0.7989619708, blue: 0.9686274529, alpha: 1)
-        
-        setDetailData()
-        
+        setup()
         setupViews()
+        
+        viewModel?.viewDidFinishLoad()
+    }
+    
+    // MARK: - Setups
+    
+    func setup() {
+        let viewController = self
+        let viewModel = DetailWeatherViewViewModel()
+        viewController.viewModel = viewModel
+        viewModel.viewController = viewController
+        
+        view.backgroundColor = #colorLiteral(red: 0.2551917757, green: 0.7989619708, blue: 0.9686274529, alpha: 1)
     }
     
     private func setupViews() {
         setupCollectionView()
         setupTableView()
-        
-        setHourlyCells()
-        setDailyCells()
     }
     
     private func setupCollectionView() {
@@ -67,8 +82,7 @@ class DetailWeatherViewController: UIViewController {
     }
     
     private func setupTableView() {
-        dailyTableView.register(DailyTableViewCell.nib(),
-                           forCellReuseIdentifier: dailyCellID)
+        dailyTableView.register(DailyTableViewCell.nib(), forCellReuseIdentifier: dailyCellID)
         dailyTableView.delegate = self
         dailyTableView.dataSource = self
         dailyTableView.separatorStyle = .none
@@ -76,27 +90,18 @@ class DetailWeatherViewController: UIViewController {
         dailyTableView.showsVerticalScrollIndicator = false
     }
     
-    private func setDetailData() {
-        detailWeatherViewViewModel.setWeather { [weak self] detailViewModel in
-            self?.setDetailData(detailViewModel: detailViewModel)
-        }
+    func displayWeather(detailViewModel: DetailViewModelProtocol,
+                         hourlyCellViewModel: HourlyCellViewModel,
+                         dailyCellViewModel: DailyCellViewModel) {
+        self.setDetailData(detailViewModel: detailViewModel)
+        self.hourlyCellViewModel = hourlyCellViewModel
+        self.dailyCellViewModel = dailyCellViewModel
+      
+        dailyTableView.reloadData()
+        hourlyCollectionView.reloadData()
     }
     
-    private func setDailyCells() {
-        dailyViewViewModel.setWeather { [weak self] dailyCellViewModel in
-            self?.dailyCellViewModel = dailyCellViewModel
-            self?.dailyTableView.reloadData()
-        }
-    }
-    
-    private func setHourlyCells() {
-        hourlyViewViewModel.setWeather { [weak self] hourlyCellViewModel in
-            self?.hourlyCellViewModel = hourlyCellViewModel
-            self?.hourlyCollectionView.reloadData()
-        }
-    }
-    
-   private func setDetailData(detailViewModel: DetailViewModelProtocol) {
+    private func setDetailData(detailViewModel: DetailViewModelProtocol) {
         locationLabel.text = detailViewModel.location
         descriptionLabel.text = detailViewModel.description
         tempLabel.text = detailViewModel.temp
@@ -116,7 +121,7 @@ class DetailWeatherViewController: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 
 extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -132,7 +137,7 @@ extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionVie
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate, UITableViewDataSource
 
 extension DetailWeatherViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -143,7 +148,7 @@ extension DetailWeatherViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: dailyCellID, for: indexPath) as! DailyTableViewCell
         let cellViewModel = dailyCellViewModel.cells[indexPath.row]
-        cell.setCell(cellViewModel: cellViewModel)
+        cell.setCell(dailyCellViewModel: cellViewModel)
         return cell
     }
     
