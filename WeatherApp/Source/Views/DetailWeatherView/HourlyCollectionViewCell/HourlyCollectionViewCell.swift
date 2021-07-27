@@ -22,7 +22,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
         return UINib(nibName: "HourlyCollectionViewCell",
                      bundle: nil)
     }
-
+    
     func setCell(hourlyCellViewModel: HourlyCellViewModelProtocol) {
         dtHourLabel.text = hourlyCellViewModel.dtHourly
         tempLabel.text = hourlyCellViewModel.temp

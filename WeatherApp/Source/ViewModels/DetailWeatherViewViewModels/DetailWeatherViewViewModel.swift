@@ -16,12 +16,17 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     weak var viewController: DetailViewDisplayLogic?
     private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
     
+    //TODO: Add viewsModel
+    
     func viewDidFinishLoad() {
         displayWeather()
     }
     
     private func displayWeather() {
         presentWeather { [weak self] detailViewModel, hourlyCellViewModel, dailyCellViewModel in
+            
+            // TODO: set properties into self
+            
             self?.viewController?.displayWeather(detailViewModel: detailViewModel,
                                                  hourlyCellViewModel: hourlyCellViewModel,
                                                  dailyCellViewModel: dailyCellViewModel)
@@ -30,18 +35,20 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     
     private func presentWeather(completion: @escaping (DetailViewModelProtocol, HourlyCellViewModel, DailyCellViewModel) -> Void) {
         fetcher.getWeather { [weak self] response in
-            guard let responseDetail = response,
-                  let detailViewModel = self?.setDetailViewModel(from: responseDetail) else { return }
+            guard let self = self,
+                  let responseDetail = response else { return }
+            
+            let detailViewModel = self.setDetailViewModel(from: responseDetail)
             
             let responseHourly = responseDetail.hourly
-            let hourlyCells = responseHourly.map { responseHourly in self!.setHourlyViewModel(from: responseHourly) }
+            let hourlyCells = responseHourly.map { responseHourly in self.setHourlyViewModel(from: responseHourly) }
             let fixedHourlyCells = Array(hourlyCells.prefix(25))
             let hourlyCellViewModel = HourlyCellViewModel(cells: fixedHourlyCells)
             
             let responseDaily = responseDetail.daily
-            let dailyCells = responseDaily.map { responseDaily in self!.setDailyViewModel(from: responseDaily) }
+            let dailyCells = responseDaily.map { responseDaily in self.setDailyViewModel(from: responseDaily) }
             let dailyCellViewModel = DailyCellViewModel(cells: dailyCells)
-
+            
             completion(detailViewModel, hourlyCellViewModel, dailyCellViewModel)
         }
     }
@@ -70,7 +77,6 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     }
     
     private func setHourlyViewModel(from response: WeatherHourly) -> HourlyCellViewModelProtocol {
-        print(#function)
         let weather = response.weather
         let icon = weather.map { weather in weather.icon }
         
@@ -80,7 +86,6 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     }
     
     private func setDailyViewModel(from response: WeatherDaily) -> DailyCellViewModelProtocol {
-        print(#function)
         let weather = response.weather
         let icon = weather.map { weather in weather.icon }
         
@@ -89,4 +94,10 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                                             tempMax: response.temp.maxCelsiusString,
                                             tempMin: response.temp.minCelsiusString)
     }
+    
+//    func hourlyCellViewModel(for indexPath: IndexPath) -> HourlyCellViewModelProtocol {
+//        let cellViewModel = hourlyCellViewModel.cells[indexPath.row]
+//        
+//        return cellViewModel
+//    }
 }

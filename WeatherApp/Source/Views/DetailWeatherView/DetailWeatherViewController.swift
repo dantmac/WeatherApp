@@ -96,9 +96,11 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         self.setDetailData(detailViewModel: detailViewModel)
         self.hourlyCellViewModel = hourlyCellViewModel
         self.dailyCellViewModel = dailyCellViewModel
-      
-        dailyTableView.reloadData()
-        hourlyCollectionView.reloadData()
+        
+        DispatchQueue.main.async {
+            self.dailyTableView.reloadData()
+            self.hourlyCollectionView.reloadData()
+        }
     }
     
     private func setDetailData(detailViewModel: DetailViewModelProtocol) {
@@ -119,6 +121,10 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         uviLabel.text = detailViewModel.uvi
         degreeLabel.text = "º"
     }
+    
+//    private func setHourlyData(_ index: Int) -> HourlyCellViewModelProtocol {
+//        return
+//    }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -127,11 +133,13 @@ extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return hourlyCellViewModel.cells.count
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: hourlyCellID, for: indexPath) as! HourlyCollectionViewCell
         let cellViewModel = hourlyCellViewModel.cells[indexPath.row]
+//        let cellViewModel = viewModel.hourlyCellViewModel(for: indexPath)
         cell.setCell(hourlyCellViewModel: cellViewModel)
         return cell
     }
