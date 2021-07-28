@@ -8,9 +8,7 @@
 import UIKit
 
 protocol DetailViewDisplayLogic: AnyObject {
-    func displayWeather(detailViewModel: DetailViewModelProtocol,
-                         hourlyCellViewModel: HourlyCellViewModel,
-                         dailyCellViewModel: DailyCellViewModel)
+    func displayDetailWeather(detailViewModel: DetailViewModelProtocol)
 }
 
 class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
@@ -21,9 +19,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     private let hourlyCellID = "HourlyViewCell"
     private let dailyCellID = "DailyViewCell"
-    
-    private var hourlyCellViewModel = HourlyCellViewModel(cells: [])
-    private var dailyCellViewModel = DailyCellViewModel(cells: [])
     
     // MARK: - IBOutlets
     
@@ -55,7 +50,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         setup()
         setupViews()
         
-        viewModel?.viewDidFinishLoad()
+        viewModel?.presentWeather()
     }
     
     // MARK: - Setups
@@ -90,20 +85,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         dailyTableView.showsVerticalScrollIndicator = false
     }
     
-    func displayWeather(detailViewModel: DetailViewModelProtocol,
-                         hourlyCellViewModel: HourlyCellViewModel,
-                         dailyCellViewModel: DailyCellViewModel) {
-        self.setDetailData(detailViewModel: detailViewModel)
-        self.hourlyCellViewModel = hourlyCellViewModel
-        self.dailyCellViewModel = dailyCellViewModel
-        
-        DispatchQueue.main.async {
-            self.dailyTableView.reloadData()
-            self.hourlyCollectionView.reloadData()
-        }
-    }
-    
-    private func setDetailData(detailViewModel: DetailViewModelProtocol) {
+    func displayDetailWeather(detailViewModel: DetailViewModelProtocol) {
         locationLabel.text = detailViewModel.location
         descriptionLabel.text = detailViewModel.description
         tempLabel.text = detailViewModel.temp
@@ -120,11 +102,12 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         visibilityLabel.text = detailViewModel.visibility
         uviLabel.text = detailViewModel.uvi
         degreeLabel.text = "º"
+        
+        DispatchQueue.main.async {
+            self.dailyTableView.reloadData()
+            self.hourlyCollectionView.reloadData()
+        }
     }
-    
-//    private func setHourlyData(_ index: Int) -> HourlyCellViewModelProtocol {
-//        return
-//    }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -132,14 +115,15 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
 extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return hourlyCellViewModel.cells.count
-        
+        guard let count = viewModel?.hourlyCellViewModel.cells.count else { return 25 }
+        return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: hourlyCellID, for: indexPath) as! HourlyCollectionViewCell
-        let cellViewModel = hourlyCellViewModel.cells[indexPath.row]
-//        let cellViewModel = viewModel.hourlyCellViewModel(for: indexPath)
+
+        guard let cellViewModel = viewModel?.setHourlyViewModel(for: indexPath) else { return cell }
+        
         cell.setCell(hourlyCellViewModel: cellViewModel)
         return cell
     }
@@ -150,12 +134,15 @@ extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionVie
 extension DetailWeatherViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dailyCellViewModel.cells.count
+        guard let count = viewModel?.dailyCellViewModel.cells.count else { return 8 }
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: dailyCellID, for: indexPath) as! DailyTableViewCell
-        let cellViewModel = dailyCellViewModel.cells[indexPath.row]
+     
+        guard let cellViewModel = viewModel?.setDailyViewModel(for: indexPath) else { return cell }
+        
         cell.setCell(dailyCellViewModel: cellViewModel)
         return cell
     }

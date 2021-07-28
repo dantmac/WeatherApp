@@ -20,7 +20,6 @@ struct WeatherDataFetcher: DataFetcher {
     }
     
     func getWeather(response: @escaping (WeatherResponse?) -> Void) {
-        print(#function)
         let params = ["lat": "52.01", "lon": "32.75"]
         networkService.sendRequest(params: params) { data, error in
             if let error = error {

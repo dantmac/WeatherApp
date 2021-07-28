@@ -8,28 +8,34 @@
 import Foundation
 
 protocol DetailWeatherPresentationLogic {
-    func viewDidFinishLoad()
+    
+    func presentWeather()
+    func setHourlyViewModel(for indexPath: IndexPath) -> HourlyCellViewModelProtocol
+    func setDailyViewModel(for indexPath: IndexPath) -> DailyCellViewModelProtocol
+    
+    var hourlyCellViewModel: HourlyCellViewModel { get }
+    var dailyCellViewModel: DailyCellViewModel { get }
 }
 
 class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     
+    // TODO: consider refactoring Table&Collection's datareload
+    
     weak var viewController: DetailViewDisplayLogic?
     private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
     
-    //TODO: Add viewsModel
+    var hourlyCellViewModel = HourlyCellViewModel(cells: [])
+    var dailyCellViewModel = DailyCellViewModel(cells: [])
     
-    func viewDidFinishLoad() {
+    func presentWeather() {
         displayWeather()
     }
     
     private func displayWeather() {
         presentWeather { [weak self] detailViewModel, hourlyCellViewModel, dailyCellViewModel in
-            
-            // TODO: set properties into self
-            
-            self?.viewController?.displayWeather(detailViewModel: detailViewModel,
-                                                 hourlyCellViewModel: hourlyCellViewModel,
-                                                 dailyCellViewModel: dailyCellViewModel)
+            self?.hourlyCellViewModel = hourlyCellViewModel
+            self?.dailyCellViewModel = dailyCellViewModel
+            self?.viewController?.displayDetailWeather(detailViewModel: detailViewModel)
         }
     }
     
@@ -95,9 +101,13 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                                             tempMin: response.temp.minCelsiusString)
     }
     
-//    func hourlyCellViewModel(for indexPath: IndexPath) -> HourlyCellViewModelProtocol {
-//        let cellViewModel = hourlyCellViewModel.cells[indexPath.row]
-//        
-//        return cellViewModel
-//    }
+    func setHourlyViewModel(for indexPath: IndexPath) -> HourlyCellViewModelProtocol {
+        let cellViewModel = hourlyCellViewModel.cells[indexPath.row]
+        return cellViewModel
+    }
+    
+    func setDailyViewModel(for indexPath: IndexPath) -> DailyCellViewModelProtocol {
+        let cellViewModel = dailyCellViewModel.cells[indexPath.row]
+        return cellViewModel
+    }
 }
