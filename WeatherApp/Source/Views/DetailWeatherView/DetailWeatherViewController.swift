@@ -115,8 +115,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
 extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let count = viewModel?.hourlyCellViewModel.cells.count else { return 25 }
-        return count
+        guard let numberOfItems = viewModel?.countHourlyCells() else { return 25 }
+        return numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -134,8 +134,8 @@ extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionVie
 extension DetailWeatherViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let count = viewModel?.dailyCellViewModel.cells.count else { return 8 }
-        return count
+        guard let numberOfRows = viewModel?.countDailyCells() else { return 8 }
+        return numberOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

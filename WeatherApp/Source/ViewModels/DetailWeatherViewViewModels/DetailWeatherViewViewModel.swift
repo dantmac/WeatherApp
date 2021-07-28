@@ -12,9 +12,8 @@ protocol DetailWeatherPresentationLogic {
     func presentWeather()
     func setHourlyViewModel(for indexPath: IndexPath) -> HourlyCellViewModelProtocol
     func setDailyViewModel(for indexPath: IndexPath) -> DailyCellViewModelProtocol
-    
-    var hourlyCellViewModel: HourlyCellViewModel { get }
-    var dailyCellViewModel: DailyCellViewModel { get }
+    func countHourlyCells() -> Int
+    func countDailyCells() -> Int
 }
 
 class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
@@ -24,8 +23,8 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     weak var viewController: DetailViewDisplayLogic?
     private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
     
-    var hourlyCellViewModel = HourlyCellViewModel(cells: [])
-    var dailyCellViewModel = DailyCellViewModel(cells: [])
+    private var hourlyCellViewModel = HourlyCellViewModel(cells: [])
+    private var dailyCellViewModel = DailyCellViewModel(cells: [])
     
     func presentWeather() {
         displayWeather()
@@ -48,7 +47,9 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
             
             let responseHourly = responseDetail.hourly
             let hourlyCells = responseHourly.map { responseHourly in self.setHourlyViewModel(from: responseHourly) }
-            let fixedHourlyCells = Array(hourlyCells.prefix(25))
+            let preparedHourlyCells = self.configurateHourlyView(hourlyCellViewModel: hourlyCells,
+                                                                 response: responseDetail)
+            let fixedHourlyCells = Array(preparedHourlyCells.prefix(27))
             let hourlyCellViewModel = HourlyCellViewModel(cells: fixedHourlyCells)
             
             let responseDaily = responseDetail.daily
@@ -109,5 +110,62 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     func setDailyViewModel(for indexPath: IndexPath) -> DailyCellViewModelProtocol {
         let cellViewModel = dailyCellViewModel.cells[indexPath.row]
         return cellViewModel
+    }
+    
+    func countHourlyCells() -> Int {
+        return hourlyCellViewModel.cells.count
+    }
+    
+    func countDailyCells() -> Int {
+        return dailyCellViewModel.cells.count
+    }
+    
+    private func configurateHourlyView(hourlyCellViewModel: [HourlyCellViewModelProtocol], response: WeatherResponse) -> [HourlyCellViewModelProtocol] {
+        
+        let sunrise = Int(response.current.sunriseDate.formateToHours())
+        let sunset = Int(response.current.sunsetDate.formateToHours())
+        
+        var preparedModel = [HourlyCellViewModelProtocol]()
+        var cell = HourlyCellViewModel.HourlyCell(dtHourly: "", temp: "", weatherIcon: "")
+        
+        for j in hourlyCellViewModel {
+            cell.dtHourly = j.dtHourly
+            cell.temp = j.temp
+            cell.weatherIcon = j.weatherIcon
+            preparedModel.append(cell)
+        }
+        
+        for (i, j) in preparedModel.enumerated() {
+            let time = Int(j.dtHourly)
+            
+            if (sunrise ?? 0) >= ((time ?? 0) - 1) && (sunrise ?? 0) < (time ?? 0) {
+                cell.dtHourly = response.current.sunriseDate.formateToTime(timezoneOffset: response.timezoneOffset)
+                cell.weatherIcon = "sunrise"
+                cell.temp = "Sunrise"
+                preparedModel.insert(cell, at: i)
+            }
+        }
+        
+        for (i, j) in preparedModel.enumerated() {
+            let time = Int(j.dtHourly)
+            
+            if (sunset ?? 0) >= ((time ?? 0) - 1) && (sunset ?? 0) < (time ?? 0) {
+                cell.dtHourly = response.current.sunsetDate.formateToTime(timezoneOffset: response.timezoneOffset)
+                cell.weatherIcon = "sunset"
+                cell.temp = "Sunset"
+                preparedModel.insert(cell, at: i)
+            }
+        }
+        
+        for (i, j) in preparedModel.enumerated() {
+            if i == 0 {
+                cell.dtHourly = "Now"
+                cell.temp = j.temp
+                cell.weatherIcon = j.weatherIcon
+                preparedModel.insert(cell, at: 0)
+            }
+        }
+        
+        return preparedModel
     }
 }
