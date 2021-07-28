@@ -49,7 +49,7 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
             let hourlyCells = responseHourly.map { responseHourly in self.setHourlyViewModel(from: responseHourly) }
             let preparedHourlyCells = self.configurateHourlyView(hourlyCellViewModel: hourlyCells,
                                                                  response: responseDetail)
-            let fixedHourlyCells = Array(preparedHourlyCells.prefix(27))
+            let fixedHourlyCells = Array(preparedHourlyCells.prefix(26))
             let hourlyCellViewModel = HourlyCellViewModel(cells: fixedHourlyCells)
             
             let responseDaily = responseDetail.daily
@@ -128,11 +128,18 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         var preparedModel = [HourlyCellViewModelProtocol]()
         var cell = HourlyCellViewModel.HourlyCell(dtHourly: "", temp: "", weatherIcon: "")
         
-        for j in hourlyCellViewModel {
-            cell.dtHourly = j.dtHourly
-            cell.temp = j.temp
-            cell.weatherIcon = j.weatherIcon
-            preparedModel.append(cell)
+        for (i, j) in hourlyCellViewModel.enumerated() {
+            if i == 0 {
+                cell.dtHourly = "Now"
+                cell.temp = j.temp
+                cell.weatherIcon = j.weatherIcon
+                preparedModel.insert(cell, at: 0)
+            } else {
+                cell.dtHourly = j.dtHourly
+                cell.temp = j.temp
+                cell.weatherIcon = j.weatherIcon
+                preparedModel.append(cell)
+            }
         }
         
         for (i, j) in preparedModel.enumerated() {
@@ -154,15 +161,6 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                 cell.weatherIcon = "sunset"
                 cell.temp = "Sunset"
                 preparedModel.insert(cell, at: i)
-            }
-        }
-        
-        for (i, j) in preparedModel.enumerated() {
-            if i == 0 {
-                cell.dtHourly = "Now"
-                cell.temp = j.temp
-                cell.weatherIcon = j.weatherIcon
-                preparedModel.insert(cell, at: 0)
             }
         }
         

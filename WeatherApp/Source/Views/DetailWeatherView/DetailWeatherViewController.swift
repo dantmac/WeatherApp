@@ -115,7 +115,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
 extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let numberOfItems = viewModel?.countHourlyCells() else { return 25 }
+        guard let numberOfItems = viewModel?.countHourlyCells() else { return 26 }
         return numberOfItems
     }
     

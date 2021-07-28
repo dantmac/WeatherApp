@@ -32,9 +32,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
             dtHourLabel.font = UIFont.boldSystemFont(ofSize: 17)
         }
         
-        if tempLabel.text == "Sunrise" {
-            bounds.size = CGSize(width: 100, height: 120)
-        } else if tempLabel.text == "Sunset" {
+        if tempLabel.text == "Sunrise" || tempLabel.text == "Sunset" {
             bounds.size = CGSize(width: 100, height: 120)
         }
     }
