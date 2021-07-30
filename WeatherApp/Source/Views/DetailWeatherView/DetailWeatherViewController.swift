@@ -55,13 +55,19 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     // MARK: - Setups
     
+    static func instantiate() -> DetailWeatherViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        let controller = storyboard.instantiateViewController(identifier: "DetailWeatherViewController") as! DetailWeatherViewController
+        return controller
+    }
+    
     func setup() {
-        let viewController = self
-        let viewModel = DetailWeatherViewViewModel()
-        viewController.viewModel = viewModel
-        viewModel.viewController = viewController
+//        let viewController = self
+//        let viewModel = DetailWeatherViewViewModel()
+//        viewController.viewModel = viewModel
+//        viewModel.viewController = viewController
         
-        view.backgroundColor = #colorLiteral(red: 0.2551917757, green: 0.7989619708, blue: 0.9686274529, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.2549019608, green: 0.8, blue: 0.968627451, alpha: 1)
     }
     
     private func setupViews() {
@@ -108,6 +114,12 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
             self.hourlyCollectionView.reloadData()
         }
     }
+    
+    
+    @IBAction func goToSearchVC(_ sender: UIBarButtonItem) {
+        viewModel?.presentSearchVC()
+    }
+    
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource

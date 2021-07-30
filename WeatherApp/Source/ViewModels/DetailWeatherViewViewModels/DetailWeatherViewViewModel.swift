@@ -14,6 +14,7 @@ protocol DetailWeatherPresentationLogic {
     func setDailyViewModel(for indexPath: IndexPath) -> DailyCellViewModelProtocol
     func countHourlyCells() -> Int
     func countDailyCells() -> Int
+    func presentSearchVC()
 }
 
 class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
@@ -22,12 +23,17 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     
     weak var viewController: DetailViewDisplayLogic?
     private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
+    var coordinator: DetailWeatherCoordinator?
     
     private var hourlyCellViewModel = HourlyCellViewModel(cells: [])
     private var dailyCellViewModel = DailyCellViewModel(cells: [])
     
     func presentWeather() {
         displayWeather()
+    }
+    
+    func presentSearchVC() {
+        coordinator?.startSearchVC()
     }
     
     private func displayWeather() {

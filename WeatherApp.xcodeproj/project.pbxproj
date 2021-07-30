@@ -29,6 +29,11 @@
 		84AF985026AB383900CB03C9 /* HourlyCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AF984E26AB383900CB03C9 /* HourlyCollectionViewCell.xib */; };
 		84AF985926AB63DE00CB03C9 /* DailyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AF985726AB63DE00CB03C9 /* DailyTableViewCell.swift */; };
 		84AF985A26AB63DE00CB03C9 /* DailyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AF985826AB63DE00CB03C9 /* DailyTableViewCell.xib */; };
+		84BCD8E226B4472F00460939 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BCD8E126B4472F00460939 /* AppCoordinator.swift */; };
+		84BCD8E426B450DF00460939 /* DetailWeatherCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BCD8E326B450DF00460939 /* DetailWeatherCoordinator.swift */; };
+		84BCD8E826B487CE00460939 /* SearchViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BCD8E726B487CE00460939 /* SearchViewCoordinator.swift */; };
+		84BCD8EB26B497FB00460939 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BCD8E926B497FB00460939 /* SearchViewController.swift */; };
+		84BCD8F026B49E6300460939 /* SearchViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84BCD8EF26B49E6300460939 /* SearchViewController.storyboard */; };
 		84F37E7626A82B5A003850CE /* WeatherDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F37E7526A82B5A003850CE /* WeatherDataFetcher.swift */; };
 		84F37E7B26A82FD5003850CE /* DetailWeatherViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F37E7A26A82FD5003850CE /* DetailWeatherViewViewModel.swift */; };
 		84F9E4E526AEE18C00972D55 /* DailyCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E4E426AEE18C00972D55 /* DailyCellViewModel.swift */; };
@@ -59,6 +64,11 @@
 		84AF984E26AB383900CB03C9 /* HourlyCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HourlyCollectionViewCell.xib; sourceTree = "<group>"; };
 		84AF985726AB63DE00CB03C9 /* DailyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewCell.swift; sourceTree = "<group>"; };
 		84AF985826AB63DE00CB03C9 /* DailyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DailyTableViewCell.xib; sourceTree = "<group>"; };
+		84BCD8E126B4472F00460939 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		84BCD8E326B450DF00460939 /* DetailWeatherCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherCoordinator.swift; sourceTree = "<group>"; };
+		84BCD8E726B487CE00460939 /* SearchViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewCoordinator.swift; sourceTree = "<group>"; };
+		84BCD8E926B497FB00460939 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		84BCD8EF26B49E6300460939 /* SearchViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchViewController.storyboard; sourceTree = "<group>"; };
 		84F37E7526A82B5A003850CE /* WeatherDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataFetcher.swift; sourceTree = "<group>"; };
 		84F37E7A26A82FD5003850CE /* DetailWeatherViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherViewViewModel.swift; sourceTree = "<group>"; };
 		84F9E4E426AEE18C00972D55 /* DailyCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCellViewModel.swift; sourceTree = "<group>"; };
@@ -106,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				84FCC21026AB334500C19249 /* DetailWeatherView */,
+				84BCD8E626B46AFA00460939 /* SearchView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -185,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				847DE7E926A7000A00C32BF8 /* App */,
+				84BCD8E026B446F200460939 /* AppCoordinator */,
 				84F37E7726A82ED6003850CE /* Services */,
 				84286AB226A6D48500B5DF86 /* Models */,
 				84286AB426A6D49F00B5DF86 /* ViewModels */,
@@ -223,6 +235,25 @@
 				84AF985826AB63DE00CB03C9 /* DailyTableViewCell.xib */,
 			);
 			path = DailyTableViewCell;
+			sourceTree = "<group>";
+		};
+		84BCD8E026B446F200460939 /* AppCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				84BCD8E126B4472F00460939 /* AppCoordinator.swift */,
+				84BCD8E326B450DF00460939 /* DetailWeatherCoordinator.swift */,
+				84BCD8E726B487CE00460939 /* SearchViewCoordinator.swift */,
+			);
+			path = AppCoordinator;
+			sourceTree = "<group>";
+		};
+		84BCD8E626B46AFA00460939 /* SearchView */ = {
+			isa = PBXGroup;
+			children = (
+				84BCD8E926B497FB00460939 /* SearchViewController.swift */,
+				84BCD8EF26B49E6300460939 /* SearchViewController.storyboard */,
+			);
+			path = SearchView;
 			sourceTree = "<group>";
 		};
 		84F37E7726A82ED6003850CE /* Services */ = {
@@ -304,6 +335,7 @@
 				847A969226A5AC34009F55BF /* .gitignore in Resources */,
 				847A968A26A5A916009F55BF /* LaunchScreen.storyboard in Resources */,
 				847A968726A5A916009F55BF /* Assets.xcassets in Resources */,
+				84BCD8F026B49E6300460939 /* SearchViewController.storyboard in Resources */,
 				847A968526A5A915009F55BF /* Main.storyboard in Resources */,
 				84AF985026AB383900CB03C9 /* HourlyCollectionViewCell.xib in Resources */,
 				84AF985A26AB63DE00CB03C9 /* DailyTableViewCell.xib in Resources */,
@@ -327,11 +359,15 @@
 				847A968226A5A915009F55BF /* DetailWeatherViewController.swift in Sources */,
 				847A967E26A5A915009F55BF /* AppDelegate.swift in Sources */,
 				84AF984F26AB383900CB03C9 /* HourlyCollectionViewCell.swift in Sources */,
+				84BCD8E426B450DF00460939 /* DetailWeatherCoordinator.swift in Sources */,
 				84286AB626A6D61800B5DF86 /* API.swift in Sources */,
 				842A558226ACAB1600630215 /* DetailViewModel.swift in Sources */,
+				84BCD8EB26B497FB00460939 /* SearchViewController.swift in Sources */,
+				84BCD8E226B4472F00460939 /* AppCoordinator.swift in Sources */,
 				847A968026A5A915009F55BF /* SceneDelegate.swift in Sources */,
 				84F9E4E526AEE18C00972D55 /* DailyCellViewModel.swift in Sources */,
 				847DE7F926A70BAB00C32BF8 /* WeatherHourly.swift in Sources */,
+				84BCD8E826B487CE00460939 /* SearchViewCoordinator.swift in Sources */,
 				847DE7F526A7094600C32BF8 /* Temperature.swift in Sources */,
 				847DE7EF26A708F000C32BF8 /* Weather.swift in Sources */,
 				84F37E7B26A82FD5003850CE /* DetailWeatherViewViewModel.swift in Sources */,
