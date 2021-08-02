@@ -14,7 +14,7 @@ protocol DetailWeatherPresentationLogic {
     func setDailyViewModel(for indexPath: IndexPath) -> DailyCellViewModelProtocol
     func countHourlyCells() -> Int
     func countDailyCells() -> Int
-    func presentSearchVC()
+    func presentCityListVC()
 }
 
 class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
@@ -22,8 +22,8 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     // TODO: consider refactoring Table&Collection's datareload
     
     weak var viewController: DetailViewDisplayLogic?
-    private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
     var coordinator: DetailWeatherCoordinator?
+    private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
     
     private var hourlyCellViewModel = HourlyCellViewModel(cells: [])
     private var dailyCellViewModel = DailyCellViewModel(cells: [])
@@ -32,8 +32,8 @@ class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         displayWeather()
     }
     
-    func presentSearchVC() {
-        coordinator?.startSearchVC()
+    func presentCityListVC() {
+        coordinator?.startCityListVC()
     }
     
     private func displayWeather() {

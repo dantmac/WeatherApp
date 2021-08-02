@@ -18,7 +18,7 @@ final class SearchViewCoordinator: Coordinator {
     
     func start() {
         let searchViewController = SearchViewController.instantiate()
-        
         navigationController.present(searchViewController, animated: true, completion: nil)
+//        navigationController.show(searchViewController, sender: nil)
     }
 }

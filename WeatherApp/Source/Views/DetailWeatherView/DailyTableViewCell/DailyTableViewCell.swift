@@ -8,7 +8,7 @@
 import UIKit
 
 class DailyTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var dtLabel: UILabel!
     @IBOutlet weak var weatherIcon: UIImageView!
     @IBOutlet weak var tempMaxLabel: UILabel!
@@ -27,8 +27,7 @@ class DailyTableViewCell: UITableViewCell {
     
     
     static func nib() -> UINib {
-        return UINib(nibName: "DailyTableViewCell",
-                     bundle: nil)
+        return UINib(nibName: "DailyTableViewCell", bundle: nil)
     }
     
     func setCell(dailyCellViewModel: DailyCellViewModelProtocol) {

@@ -116,10 +116,9 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     }
     
     
-    @IBAction func goToSearchVC(_ sender: UIBarButtonItem) {
-        viewModel?.presentSearchVC()
+    @IBAction func goToCityList(_ sender: UIBarButtonItem) {
+        viewModel?.presentCityListVC()
     }
-    
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource

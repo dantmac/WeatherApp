@@ -23,13 +23,13 @@ final class DetailWeatherCoordinator: Coordinator {
         detailWeatherViewModel.viewController = detailWeatherViewController
         detailWeatherViewController.viewModel = detailWeatherViewModel
         
-        navigationController.setViewControllers([detailWeatherViewController], animated: false )
+        navigationController.pushViewController(detailWeatherViewController, animated: false )
     }
     
-    func startSearchVC() {
-        let searchViewCoordinator = SearchViewCoordinator(navigationController: navigationController)
-        childCoordinators.append(searchViewCoordinator)
-        searchViewCoordinator.start()
+    func startCityListVC() {
+        let cityListCoordinator = CityListCoordinator(navigationController: navigationController)
+        childCoordinators.append(cityListCoordinator)
+        cityListCoordinator.start()
     }
     
     
