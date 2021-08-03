@@ -7,9 +7,16 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UISearchBarDelegate {
+protocol SearchViewDisplayLogic: AnyObject {
+
+}
+
+class SearchViewController: UIViewController, SearchViewDisplayLogic {
+    
+    var viewModel: SearchViewPresentationLogic?
     
     private let reuseID = "SearchViewCell"
+    private let searchController = UISearchController(searchResultsController: nil)
     
     private let cities = ["London",
                           "Oslo",
@@ -31,18 +38,43 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
-    let searchController = UISearchController(searchResultsController: nil)
+    
+    
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupTableView()
+        setupSearchBar()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel?.viewDidDisappear() 
+    }
+    
+    
+    
+    
+    
+    
+    static func instantiate() -> SearchViewController {
+        let storyboard = UIStoryboard(name: "SearchViewController", bundle: nil)
+        let controller = storyboard.instantiateViewController(identifier: "SearchViewController") as! SearchViewController
+        return controller
+    }
+    
+    private func setupSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search"
-        view.addSubview(searchController.searchBar)
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Enter city"
+        searchController.searchBar.searchBarStyle = .default
+        searchController.searchBar.setShowsCancelButton(true, animated: false)
         definesPresentationContext = true
-
-        setupTableView()
     }
     
     private func setupTableView() {
@@ -52,12 +84,11 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
+        tableView.tableHeaderView = searchController.searchBar
     }
-
-    static func instantiate() -> SearchViewController {
-        let storyboard = UIStoryboard(name: "SearchViewController", bundle: nil)
-        let controller = storyboard.instantiateViewController(identifier: "SearchViewController") as! SearchViewController
-        return controller
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel?.didCancelSearching()
     }
 }
 
@@ -101,4 +132,8 @@ extension SearchViewController: UISearchResultsUpdating {
         }
         tableView.reloadData()
     }
+}
+
+extension SearchViewController: UISearchBarDelegate {
+    
 }

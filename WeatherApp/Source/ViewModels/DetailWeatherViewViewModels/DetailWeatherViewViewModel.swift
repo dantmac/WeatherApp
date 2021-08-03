@@ -17,7 +17,7 @@ protocol DetailWeatherPresentationLogic {
     func presentCityListVC()
 }
 
-class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
+final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     
     // TODO: consider refactoring Table&Collection's datareload
     

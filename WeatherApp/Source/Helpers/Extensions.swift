@@ -5,6 +5,7 @@
 //  Created by admin on 25.07.2021.
 //
 
+import UIKit
 import Foundation
 
 extension String {
@@ -37,5 +38,5 @@ extension Date {
         formatter.dateFormat = "EEEE"
         return formatter.string(from: self)
     }
-    
 }
+

@@ -9,13 +9,19 @@ import Foundation
 
 protocol CityListPresentationLogic {
     func presentSearchVC()
+    func viewDidDisappear()
 }
 
-class CityListViewModel: CityListPresentationLogic {
+final class CityListViewModel: CityListPresentationLogic {
     
+    weak var viewController: CityListDisplayLogic?
     var coordinator: CityListCoordinator?
     
     func presentSearchVC() {
         coordinator?.startSearchVC()
+    }
+    
+    func viewDidDisappear() {
+        coordinator?.didFinish()
     }
 }

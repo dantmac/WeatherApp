@@ -12,6 +12,8 @@ final class CityListCoordinator: Coordinator {
     private(set) var childCoordinators: [Coordinator] = []
     private let navigationController: UINavigationController
     
+    var parentCoordinator: DetailWeatherCoordinator?
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
@@ -20,6 +22,7 @@ final class CityListCoordinator: Coordinator {
         let cityListViewController = CityListViewController.instantiate()
         let cityListViewModel = CityListViewModel()
         cityListViewModel.coordinator = self
+        cityListViewModel.viewController = cityListViewController
         cityListViewController.viewModel = cityListViewModel
         
         navigationController.pushViewController(cityListViewController, animated: true)
@@ -27,7 +30,20 @@ final class CityListCoordinator: Coordinator {
     
     func startSearchVC() {
         let searchViewCoordinator = SearchViewCoordinator(navigationController: navigationController)
+        searchViewCoordinator.parentCoordinator = self
         childCoordinators.append(searchViewCoordinator)
         searchViewCoordinator.start()
+    }
+    
+    func childDidFinish(_ childCoordinator: Coordinator) {
+        if let index = childCoordinators.firstIndex(where: { coordinator in
+            return childCoordinator === coordinator
+        }) {
+            childCoordinators.remove(at: index)
+        }
+    }
+
+    func didFinish() {
+        parentCoordinator?.childDidFinish(self)
     }
 }

@@ -48,8 +48,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         super.viewDidLoad()
         
         setup()
-        setupViews()
-        
         viewModel?.presentWeather()
     }
     
@@ -62,12 +60,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     }
     
     func setup() {
-//        let viewController = self
-//        let viewModel = DetailWeatherViewViewModel()
-//        viewController.viewModel = viewModel
-//        viewModel.viewController = viewController
-        
         view.backgroundColor = #colorLiteral(red: 0.2549019608, green: 0.8, blue: 0.968627451, alpha: 1)
+        setupViews()
     }
     
     private func setupViews() {

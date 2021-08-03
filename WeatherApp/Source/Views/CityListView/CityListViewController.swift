@@ -7,7 +7,11 @@
 
 import UIKit
 
-class CityListViewController: UIViewController {
+protocol CityListDisplayLogic: AnyObject {
+
+}
+
+class CityListViewController: UIViewController, CityListDisplayLogic {
     
     // MARK: - Properties
     
@@ -25,12 +29,22 @@ class CityListViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .black
-        
         setupTableView()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel?.viewDidDisappear()
+    }
+
     // MARK: - Setups
   
+    static func instantiate() -> CityListViewController {
+        let storyboard = UIStoryboard(name: "CityList", bundle: nil)
+        let controller = storyboard.instantiateViewController(identifier: "CityList") as! CityListViewController
+        return controller
+    }
+    
     private func setupTableView() {
         tableView.register(CityListCell.nib(), forCellReuseIdentifier: reuseID)
         tableView.delegate = self
@@ -38,12 +52,6 @@ class CityListViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
-    }
-    
-    static func instantiate() -> CityListViewController {
-        let storyboard = UIStoryboard(name: "CityList", bundle: nil)
-        let controller = storyboard.instantiateViewController(identifier: "CityList") as! CityListViewController
-        return controller
     }
     
     @IBAction func goToSearchVC(_ sender: UIBarButtonItem) {
