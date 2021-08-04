@@ -6,13 +6,17 @@
 //
 
 import UIKit
+import GooglePlaces
 
-final class CityListCoordinator: Coordinator {
+final class CityListCoordinator: NSObject, Coordinator {
     
     private(set) var childCoordinators: [Coordinator] = []
     private let navigationController: UINavigationController
+    private let autocompleteVC = GMSAutocompleteViewController()
     
     var parentCoordinator: DetailWeatherCoordinator?
+    
+    
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -24,26 +28,41 @@ final class CityListCoordinator: Coordinator {
         cityListViewModel.coordinator = self
         cityListViewModel.viewController = cityListViewController
         cityListViewController.viewModel = cityListViewModel
+        autocompleteVC.delegate = self
         
         navigationController.pushViewController(cityListViewController, animated: true)
     }
     
     func startSearchVC() {
-        let searchViewCoordinator = SearchViewCoordinator(navigationController: navigationController)
-        searchViewCoordinator.parentCoordinator = self
-        childCoordinators.append(searchViewCoordinator)
-        searchViewCoordinator.start()
+        let filter = GMSAutocompleteFilter()
+        let fields: GMSPlaceField = [.name, .coordinate]
+        filter.type = .city
+        autocompleteVC.autocompleteFilter = filter
+        autocompleteVC.placeFields = fields
+        
+        navigationController.present(autocompleteVC, animated: true, completion: nil)
     }
     
-    func childDidFinish(_ childCoordinator: Coordinator) {
-        if let index = childCoordinators.firstIndex(where: { coordinator in
-            return childCoordinator === coordinator
-        }) {
-            childCoordinators.remove(at: index)
-        }
-    }
-
     func didFinish() {
         parentCoordinator?.childDidFinish(self)
+    }
+}
+
+// MARK: - GMSAutocompleteViewControllerDelegate
+
+extension CityListCoordinator: GMSAutocompleteViewControllerDelegate {
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        print("Place name: \(place.name ?? "none")")
+        print("Place long: \(place.coordinate.longitude.description), lat: \(place.coordinate.latitude.description)")
+        
+//        navigationController.dismiss(animated: true, completion: nil)
+    }
+
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        print("Error: ", error.localizedDescription)
+    }
+
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        navigationController.dismiss(animated: true, completion: nil)
     }
 }

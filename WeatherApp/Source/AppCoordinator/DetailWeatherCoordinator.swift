@@ -23,7 +23,7 @@ final class DetailWeatherCoordinator: Coordinator {
         detailWeatherViewModel.viewController = detailWeatherViewController
         detailWeatherViewController.viewModel = detailWeatherViewModel
         
-        navigationController.pushViewController(detailWeatherViewController, animated: false )
+        navigationController.pushViewController(detailWeatherViewController, animated: false)
     }
     
     func startCityListVC() {

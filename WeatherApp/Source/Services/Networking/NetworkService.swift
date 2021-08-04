@@ -16,7 +16,7 @@ final class NetworkService: NetworkServiceProtocol {
     func sendRequest(params: [String: String], completion: @escaping (Data?, Error?) -> Void) {
         
         var allParams = params
-        allParams["appid"] = API.key
+        allParams["appid"] = OpenWeatherAPI.key
         let url = self.url(params: allParams)
         let request = URLRequest(url: url)
         
@@ -36,9 +36,9 @@ final class NetworkService: NetworkServiceProtocol {
     private func url(params: [String: String]) -> URL {
         var components = URLComponents()
         
-        components.scheme = API.scheme
-        components.host = API.host
-        components.path = API.weatherData
+        components.scheme = OpenWeatherAPI.scheme
+        components.host = OpenWeatherAPI.host
+        components.path = OpenWeatherAPI.weatherData
         components.queryItems = params.map { URLQueryItem(name: $0, value: $1) }
         
         return components.url!
