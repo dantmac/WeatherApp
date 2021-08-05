@@ -20,6 +20,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     private let hourlyCellID = "HourlyViewCell"
     private let dailyCellID = "DailyViewCell"
     
+    var isModally = false
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var locationLabel: UILabel!
@@ -49,8 +51,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         
         setup()
         viewModel?.presentWeather()
-        
-        print(isModalInPresentation)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -118,11 +118,11 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     
     @IBAction func goToCityList(_ sender: UIBarButtonItem) {
-       if isModalInPresentation {
-        viewModel?.dismissVC()
-       } else {
-        viewModel?.backToCityListVC()
-       }
+        if isModally {
+            viewModel?.dismissVC(self)
+        } else {
+            viewModel?.backToCityListVC()
+        }
     }
 }
 

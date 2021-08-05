@@ -60,9 +60,7 @@ final class CityListCoordinator: NSObject, Coordinator {
 extension CityListCoordinator: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         let detailWeatherCoordinator = DetailWeatherCoordinator(navigationController: navigationController)
-        detailWeatherCoordinator.parentCoordinator = self
-        navigationController.dismiss(animated: false, completion: nil)
-        detailWeatherCoordinator.startModally()
+        detailWeatherCoordinator.startModally(from: autocompleteVC)
     }
 
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
@@ -70,6 +68,6 @@ extension CityListCoordinator: GMSAutocompleteViewControllerDelegate {
     }
 
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-        navigationController.dismiss(animated: true, completion: nil)
+        autocompleteVC.dismiss(animated: true, completion: nil)
     }
 }

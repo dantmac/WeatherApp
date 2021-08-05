@@ -5,8 +5,10 @@
 //  Created by admin on 21.07.2021.
 //
 
+import UIKit
 import Foundation
 
+// TODO: - consider adding Interface Segregation
 protocol DetailWeatherPresentationLogic {
     
     func presentWeather()
@@ -16,7 +18,7 @@ protocol DetailWeatherPresentationLogic {
     func countDailyCells() -> Int
     
     func backToCityListVC()
-    func dismissVC()
+    func dismissVC(_ viewController: UIViewController)
     func viewDidDisappear()
 }
 
@@ -37,8 +39,8 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         coordinator?.backToCityListVC()
     }
     
-    func dismissVC() {
-        coordinator?.dismiss()
+    func dismissVC(_ viewController: UIViewController) {
+        coordinator?.dismiss(viewController)
     }
     
     func viewDidDisappear() {

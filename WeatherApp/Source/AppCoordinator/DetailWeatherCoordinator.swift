@@ -11,7 +11,8 @@ final class DetailWeatherCoordinator: Coordinator {
     
     private(set) var childCoordinators: [Coordinator] = []
     private let navigationController: UINavigationController
-    
+    private let detailWeatherViewController = DetailWeatherViewController.instantiate()
+    let detailWeatherViewModel = DetailWeatherViewViewModel()
     var parentCoordinator: CityListCoordinator?
     
     init(navigationController: UINavigationController) {
@@ -19,37 +20,31 @@ final class DetailWeatherCoordinator: Coordinator {
     }
     
     func start() {
-        let detailWeatherViewController = DetailWeatherViewController.instantiate()
-        let detailWeatherViewModel = DetailWeatherViewViewModel()
-        detailWeatherViewModel.coordinator = self
-        detailWeatherViewModel.viewController = detailWeatherViewController
-        detailWeatherViewController.viewModel = detailWeatherViewModel
-        
+        setup()
         navigationController.pushViewController(detailWeatherViewController, animated: true)
     }
     
-    func startModally() {
-        let detailWeatherViewController = DetailWeatherViewController.instantiate()
-        let detailWeatherViewModel = DetailWeatherViewViewModel()
-        detailWeatherViewModel.coordinator = self
-        detailWeatherViewModel.viewController = detailWeatherViewController
-        detailWeatherViewController.viewModel = detailWeatherViewModel
-        
-        detailWeatherViewController.isModalInPresentation = true
-        
-        navigationController.present(detailWeatherViewController, animated: true, completion: nil)
+    func startModally(from viewController: UIViewController) {
+        setup()
+        detailWeatherViewController.isModally = true
+        viewController.present(detailWeatherViewController, animated: true, completion: nil)
     }
     
     func backToCityListVC() {
         navigationController.popToRootViewController(animated: true)
     }
     
-    func dismiss() {
-        navigationController.dismiss(animated: false, completion: nil)
-        parentCoordinator?.startSearchVC()
+    func dismiss(_ viewController: UIViewController) {
+        viewController.dismiss(animated: true, completion: nil)
     }
     
     func didFinish() {
         parentCoordinator?.childDidFinish(self)
+    }
+    
+    private func setup() {
+        detailWeatherViewModel.coordinator = self
+        detailWeatherViewModel.viewController = detailWeatherViewController
+        detailWeatherViewController.viewModel = detailWeatherViewModel
     }
 }

@@ -10,8 +10,6 @@ import UIKit
 
 protocol CityListPresentationLogic {
     func presentSearchVC()
-
-    
     func presentDetailWeather()
 }
 
