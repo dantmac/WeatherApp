@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import UIKit
 
 protocol CityListPresentationLogic {
     func presentSearchVC()
-    func viewDidDisappear()
+
+    
+    func presentDetailWeather()
 }
 
 final class CityListViewModel: CityListPresentationLogic {
@@ -21,7 +24,7 @@ final class CityListViewModel: CityListPresentationLogic {
         coordinator?.startSearchVC()
     }
     
-    func viewDidDisappear() {
-        coordinator?.didFinish()
+    func presentDetailWeather() {
+        coordinator?.startDetailVC()
     }
 }

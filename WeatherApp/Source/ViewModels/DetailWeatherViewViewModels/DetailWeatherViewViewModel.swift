@@ -14,12 +14,13 @@ protocol DetailWeatherPresentationLogic {
     func setDailyViewModel(for indexPath: IndexPath) -> DailyCellViewModelProtocol
     func countHourlyCells() -> Int
     func countDailyCells() -> Int
-    func presentCityListVC()
+    
+    func backToCityListVC()
+    func dismissVC()
+    func viewDidDisappear()
 }
 
 final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
-    
-    // TODO: consider refactoring Table&Collection's datareload
     
     weak var viewController: DetailViewDisplayLogic?
     var coordinator: DetailWeatherCoordinator?
@@ -32,8 +33,16 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         displayWeather()
     }
     
-    func presentCityListVC() {
-        coordinator?.startCityListVC()
+    func backToCityListVC() {
+        coordinator?.backToCityListVC()
+    }
+    
+    func dismissVC() {
+        coordinator?.dismiss()
+    }
+    
+    func viewDidDisappear() {
+        coordinator?.didFinish()
     }
     
     private func displayWeather() {

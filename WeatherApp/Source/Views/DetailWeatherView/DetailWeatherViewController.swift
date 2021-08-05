@@ -49,6 +49,13 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         
         setup()
         viewModel?.presentWeather()
+        
+        print(isModalInPresentation)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel?.viewDidDisappear()
     }
     
     // MARK: - Setups
@@ -111,7 +118,11 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     
     @IBAction func goToCityList(_ sender: UIBarButtonItem) {
-        viewModel?.presentCityListVC()
+       if isModalInPresentation {
+        viewModel?.dismissVC()
+       } else {
+        viewModel?.backToCityListVC()
+       }
     }
 }
 
@@ -126,7 +137,7 @@ extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: hourlyCellID, for: indexPath) as! HourlyCollectionViewCell
-
+        
         guard let cellViewModel = viewModel?.setHourlyViewModel(for: indexPath) else { return cell }
         
         cell.setCell(hourlyCellViewModel: cellViewModel)
@@ -145,7 +156,7 @@ extension DetailWeatherViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: dailyCellID, for: indexPath) as! DailyTableViewCell
-     
+        
         guard let cellViewModel = viewModel?.setDailyViewModel(for: indexPath) else { return cell }
         
         cell.setCell(dailyCellViewModel: cellViewModel)

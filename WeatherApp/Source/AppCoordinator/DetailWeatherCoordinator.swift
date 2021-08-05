@@ -12,6 +12,8 @@ final class DetailWeatherCoordinator: Coordinator {
     private(set) var childCoordinators: [Coordinator] = []
     private let navigationController: UINavigationController
     
+    var parentCoordinator: CityListCoordinator?
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
@@ -23,21 +25,31 @@ final class DetailWeatherCoordinator: Coordinator {
         detailWeatherViewModel.viewController = detailWeatherViewController
         detailWeatherViewController.viewModel = detailWeatherViewModel
         
-        navigationController.pushViewController(detailWeatherViewController, animated: false)
+        navigationController.pushViewController(detailWeatherViewController, animated: true)
     }
     
-    func startCityListVC() {
-        let cityListCoordinator = CityListCoordinator(navigationController: navigationController)
-        cityListCoordinator.parentCoordinator = self
-        childCoordinators.append(cityListCoordinator)
-        cityListCoordinator.start()
+    func startModally() {
+        let detailWeatherViewController = DetailWeatherViewController.instantiate()
+        let detailWeatherViewModel = DetailWeatherViewViewModel()
+        detailWeatherViewModel.coordinator = self
+        detailWeatherViewModel.viewController = detailWeatherViewController
+        detailWeatherViewController.viewModel = detailWeatherViewModel
+        
+        detailWeatherViewController.isModalInPresentation = true
+        
+        navigationController.present(detailWeatherViewController, animated: true, completion: nil)
     }
     
-    func childDidFinish(_ childCoordinator: Coordinator) {
-        if let index = childCoordinators.firstIndex(where: { coordinator in
-            return childCoordinator === coordinator
-        }) {
-            childCoordinators.remove(at: index)
-        }
+    func backToCityListVC() {
+        navigationController.popToRootViewController(animated: true)
+    }
+    
+    func dismiss() {
+        navigationController.dismiss(animated: false, completion: nil)
+        parentCoordinator?.startSearchVC()
+    }
+    
+    func didFinish() {
+        parentCoordinator?.childDidFinish(self)
     }
 }

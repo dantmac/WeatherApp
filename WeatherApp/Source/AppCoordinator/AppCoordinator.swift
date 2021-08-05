@@ -23,11 +23,9 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         let navigationController = UINavigationController()
-        
-        let detailWeatherCoordinator = DetailWeatherCoordinator(navigationController: navigationController)
-        
-        childCoordinators.append(detailWeatherCoordinator)
-        detailWeatherCoordinator.start()
+        let cityListCoordinator = CityListCoordinator(navigationController: navigationController)
+        childCoordinators.append(cityListCoordinator)
+        cityListCoordinator.start()
         
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

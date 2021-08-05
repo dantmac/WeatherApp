@@ -138,8 +138,8 @@
 		84286AB326A6D49100B5DF86 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				84FCC21026AB334500C19249 /* DetailWeatherView */,
 				84E8961126B8110E0055363D /* CityListView */,
+				84FCC21026AB334500C19249 /* DetailWeatherView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -147,8 +147,8 @@
 		84286AB426A6D49F00B5DF86 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				842A558326ACB4E300630215 /* DetailWeatherViewViewModels */,
 				84E8962A26B82EFD0055363D /* CityListViewModel */,
+				842A558326ACB4E300630215 /* DetailWeatherViewViewModels */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -267,8 +267,8 @@
 			isa = PBXGroup;
 			children = (
 				84BCD8E126B4472F00460939 /* AppCoordinator.swift */,
-				84BCD8E326B450DF00460939 /* DetailWeatherCoordinator.swift */,
 				84E8961C26B813060055363D /* CityListCoordinator.swift */,
+				84BCD8E326B450DF00460939 /* DetailWeatherCoordinator.swift */,
 			);
 			path = AppCoordinator;
 			sourceTree = "<group>";

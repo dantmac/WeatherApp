@@ -36,10 +36,7 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
         setup()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        viewModel?.viewDidDisappear()
-    }
+
 
     // MARK: - Setups
   
@@ -87,5 +84,9 @@ extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel?.presentDetailWeather()
     }
 }

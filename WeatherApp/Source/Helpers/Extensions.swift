@@ -7,6 +7,7 @@
 
 import UIKit
 import Foundation
+import GooglePlaces
 
 extension String {
     func deletingPrefix() -> String {
@@ -39,4 +40,3 @@ extension Date {
         return formatter.string(from: self)
     }
 }
-
