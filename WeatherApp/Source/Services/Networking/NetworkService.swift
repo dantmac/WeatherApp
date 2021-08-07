@@ -16,7 +16,7 @@ final class NetworkService: NetworkServiceProtocol {
     func sendRequest(params: [String: String], completion: @escaping (Data?, Error?) -> Void) {
         
         var allParams = params
-        allParams["appid"] = OpenWeatherAPI.key
+        allParams[OpenWeatherAPI.appID] = OpenWeatherAPI.key
         let url = self.url(params: allParams)
         let request = URLRequest(url: url)
         

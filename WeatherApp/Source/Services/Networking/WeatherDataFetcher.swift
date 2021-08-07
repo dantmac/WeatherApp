@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DataFetcher {
-    func getWeather(response: @escaping (WeatherResponse?) -> Void)
+    func getWeather(long: String, lat: String, response: @escaping (WeatherResponse?) -> Void)
 }
 
 struct WeatherDataFetcher: DataFetcher {
@@ -19,8 +19,8 @@ struct WeatherDataFetcher: DataFetcher {
         self.networkService = networkService
     }
     
-    func getWeather(response: @escaping (WeatherResponse?) -> Void) {
-        let params = ["lat": "51.6664", "lon": "39.17"]
+    func getWeather(long: String, lat: String, response: @escaping (WeatherResponse?) -> Void) {
+        let params = ["lat": lat, "lon": long]
         networkService.sendRequest(params: params) { data, error in
             if let error = error {
                 print("Error receiver requesting data: \(error.localizedDescription)")

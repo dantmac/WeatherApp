@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import GooglePlaces
 
 final class DetailWeatherCoordinator: Coordinator {
     
     private(set) var childCoordinators: [Coordinator] = []
     private let navigationController: UINavigationController
     private let detailWeatherViewController = DetailWeatherViewController.instantiate()
-    let detailWeatherViewModel = DetailWeatherViewViewModel()
+    private let detailWeatherViewModel = DetailWeatherViewViewModel()
     var parentCoordinator: CityListCoordinator?
     
     init(navigationController: UINavigationController) {
@@ -40,6 +41,16 @@ final class DetailWeatherCoordinator: Coordinator {
     
     func didFinish() {
         parentCoordinator?.childDidFinish(self)
+    }
+    
+    func pushGeolocation(name: String, long: String, lat: String) {
+        setup()
+        detailWeatherViewModel.setGeolocation(name: name, long: long, lat: lat)
+    }
+    
+    func addCity(name: String, long: String, lat: String) {
+        navigationController.dismiss(animated: true, completion: nil)
+        parentCoordinator?.addCity(name: name, long: long, lat: lat)
     }
     
     private func setup() {

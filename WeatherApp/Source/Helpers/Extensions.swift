@@ -28,9 +28,10 @@ extension Date {
         return formatter.string(from: self)
     }
     
-    func formateToHours() -> String {
+    func formateToHours(timezoneOffset: Int) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH"
+        formatter.timeZone = NSTimeZone(forSecondsFromGMT: timezoneOffset) as TimeZone
         return formatter.string(from: self)
     }
     

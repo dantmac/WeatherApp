@@ -8,7 +8,8 @@
 import UIKit
 
 protocol DetailViewDisplayLogic: AnyObject {
-    func displayDetailWeather(detailViewModel: DetailViewModelProtocol)
+    func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol)
+    func reloadData()
 }
 
 class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
@@ -43,6 +44,9 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var dailyTableView: UITableView!
+    
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var addButton: UIButton!
     
     // MARK: - View lifecycle
     
@@ -92,7 +96,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         dailyTableView.showsVerticalScrollIndicator = false
     }
     
-    func displayDetailWeather(detailViewModel: DetailViewModelProtocol) {
+    func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol) {
         locationLabel.text = detailViewModel.location
         descriptionLabel.text = detailViewModel.description
         tempLabel.text = detailViewModel.temp
@@ -109,20 +113,31 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         visibilityLabel.text = detailViewModel.visibility
         uviLabel.text = detailViewModel.uvi
         degreeLabel.text = "º"
-        
+
+    }
+    
+    func reloadData() {
         DispatchQueue.main.async {
             self.dailyTableView.reloadData()
             self.hourlyCollectionView.reloadData()
         }
     }
     
+    @IBAction func cancelPressed(_ sender: UIButton) {
+        viewModel?.dismissVC(self)
+    }
+    
+    @IBAction func addPressed(_ sender: UIButton) {
+        viewModel?.addCity()
+    }
+    
     
     @IBAction func goToCityList(_ sender: UIBarButtonItem) {
-        if isModally {
-            viewModel?.dismissVC(self)
-        } else {
             viewModel?.backToCityListVC()
-        }
+    }
+    
+    deinit {
+        print("deinit")
     }
 }
 
@@ -140,7 +155,7 @@ extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionVie
         
         guard let cellViewModel = viewModel?.setHourlyViewModel(for: indexPath) else { return cell }
         
-        cell.setCell(hourlyCellViewModel: cellViewModel)
+        cell.setCell(cellViewModel)
         return cell
     }
 }
@@ -159,7 +174,7 @@ extension DetailWeatherViewController: UITableViewDelegate, UITableViewDataSourc
         
         guard let cellViewModel = viewModel?.setDailyViewModel(for: indexPath) else { return cell }
         
-        cell.setCell(dailyCellViewModel: cellViewModel)
+        cell.setCell(cellViewModel)
         return cell
     }
     

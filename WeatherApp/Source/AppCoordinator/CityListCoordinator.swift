@@ -12,15 +12,15 @@ final class CityListCoordinator: NSObject, Coordinator {
     
     private(set) var childCoordinators: [Coordinator] = []
     private let navigationController: UINavigationController
+    private let cityListViewController = CityListViewController.instantiate()
+    private let cityListViewModel = CityListViewModel()
     private let autocompleteVC = GMSAutocompleteViewController()
-        
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     func start() {
-        let cityListViewController = CityListViewController.instantiate()
-        let cityListViewModel = CityListViewModel()
         cityListViewModel.coordinator = self
         cityListViewModel.viewController = cityListViewController
         cityListViewController.viewModel = cityListViewModel
@@ -29,10 +29,14 @@ final class CityListCoordinator: NSObject, Coordinator {
         navigationController.pushViewController(cityListViewController, animated: true)
     }
     
-    func startDetailVC() {
+    func startDetailVC(_ cityCellModel: CityCellModelProtocol) {
         let detailWeatherCoordinator = DetailWeatherCoordinator(navigationController: navigationController)
         detailWeatherCoordinator.parentCoordinator = self
         childCoordinators.append(detailWeatherCoordinator)
+        
+        detailWeatherCoordinator.pushGeolocation(name: cityCellModel.name,
+                                                 long: cityCellModel.long,
+                                                 lat: cityCellModel.lat)
         detailWeatherCoordinator.start()
     }
     
@@ -42,7 +46,7 @@ final class CityListCoordinator: NSObject, Coordinator {
         filter.type = .city
         autocompleteVC.autocompleteFilter = filter
         autocompleteVC.placeFields = fields
-        
+    
         navigationController.present(autocompleteVC, animated: true, completion: nil)
     }
     
@@ -53,6 +57,10 @@ final class CityListCoordinator: NSObject, Coordinator {
             childCoordinators.remove(at: index)
         }
     }
+    
+    func addCity(name: String, long: String, lat: String) {
+        cityListViewModel.addCity(name: name, long: long, lat: lat)
+    }
 }
 
 // MARK: - GMSAutocompleteViewControllerDelegate
@@ -60,13 +68,17 @@ final class CityListCoordinator: NSObject, Coordinator {
 extension CityListCoordinator: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         let detailWeatherCoordinator = DetailWeatherCoordinator(navigationController: navigationController)
+        detailWeatherCoordinator.parentCoordinator = self
+        detailWeatherCoordinator.pushGeolocation(name: place.name ?? "",
+                                             long: String(place.coordinate.longitude),
+                                             lat: String(place.coordinate.latitude))
         detailWeatherCoordinator.startModally(from: autocompleteVC)
     }
-
+    
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
         print("Error: ", error.localizedDescription)
     }
-
+    
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
         autocompleteVC.dismiss(animated: true, completion: nil)
     }

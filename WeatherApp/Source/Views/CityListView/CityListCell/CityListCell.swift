@@ -9,6 +9,10 @@ import UIKit
 
 class CityListCell: UITableViewCell {
 
+    @IBOutlet weak var tempLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -20,6 +24,12 @@ class CityListCell: UITableViewCell {
     
     static func nib() -> UINib {
         return UINib(nibName: "CityListCell", bundle: nil)
+    }
+    
+    func setCell(_ cityCellModel: CityCellModelProtocol) {
+        tempLabel.text = cityCellModel.temp
+        nameLabel.text = cityCellModel.name
+        descriptionLabel.text = cityCellModel.description
     }
     
 }

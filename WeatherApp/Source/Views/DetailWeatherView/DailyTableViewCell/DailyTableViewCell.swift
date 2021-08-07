@@ -30,7 +30,7 @@ class DailyTableViewCell: UITableViewCell {
         return UINib(nibName: "DailyTableViewCell", bundle: nil)
     }
     
-    func setCell(dailyCellViewModel: DailyCellViewModelProtocol) {
+    func setCell(_ dailyCellViewModel: DailyCellViewModelProtocol) {
         dtLabel.text = dailyCellViewModel.dtDaily
         weatherIcon.image = UIImage(named: dailyCellViewModel.weatherIcon)
         tempMaxLabel.text = dailyCellViewModel.tempMax

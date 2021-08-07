@@ -12,6 +12,6 @@ struct OpenWeatherAPI {
     static let host = "api.openweathermap.org"
     static let version = "2.5"
     static let weatherData = "/data/\(version)/onecall"
-    
+    static let appID = "appid"
     static let key = "a7366e68f4cce14d4f47293736bee0d0"
 }
