@@ -11,7 +11,7 @@ protocol NetworkServiceProtocol {
     func sendRequest(params: [String: String], completion: @escaping (Data?, Error?) -> Void)
 }
 
-final class NetworkService: NetworkServiceProtocol {
+struct NetworkService: NetworkServiceProtocol {
     
     func sendRequest(params: [String: String], completion: @escaping (Data?, Error?) -> Void) {
         

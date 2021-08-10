@@ -12,6 +12,8 @@
 		8416AB5526BD4F4B002AB1DB /* CityCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8416AB5426BD4F4B002AB1DB /* CityCellViewModel.swift */; };
 		84286AB626A6D61800B5DF86 /* OpenWeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84286AB526A6D61800B5DF86 /* OpenWeatherAPI.swift */; };
 		842A558226ACAB1600630215 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A558126ACAB1600630215 /* DetailViewModel.swift */; };
+		846E540226C272F80055051E /* WeatherApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 846E540026C272F80055051E /* WeatherApp.xcdatamodeld */; };
+		846E540526C2752F0055051E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846E540426C2752F0055051E /* CoreDataManager.swift */; };
 		8472EB6326B9BB7F00D3107F /* GooglePlacesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472EB6226B9BB7F00D3107F /* GooglePlacesAPI.swift */; };
 		847A967E26A5A915009F55BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A967D26A5A915009F55BF /* AppDelegate.swift */; };
 		847A968026A5A915009F55BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A967F26A5A915009F55BF /* SceneDelegate.swift */; };
@@ -52,6 +54,8 @@
 		8416AB5426BD4F4B002AB1DB /* CityCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCellViewModel.swift; sourceTree = "<group>"; };
 		84286AB526A6D61800B5DF86 /* OpenWeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherAPI.swift; sourceTree = "<group>"; };
 		842A558126ACAB1600630215 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		846E540126C272F80055051E /* WeatherApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WeatherApp.xcdatamodel; sourceTree = "<group>"; };
+		846E540426C2752F0055051E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		8472EB6226B9BB7F00D3107F /* GooglePlacesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesAPI.swift; sourceTree = "<group>"; };
 		847A967A26A5A915009F55BF /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		847A967D26A5A915009F55BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -182,6 +186,14 @@
 			path = DetailWeatherViewViewModels;
 			sourceTree = "<group>";
 		};
+		846E540326C2750E0055051E /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				846E540426C2752F0055051E /* CoreDataManager.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		847A967126A5A915009F55BF = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +237,7 @@
 				847A968826A5A916009F55BF /* LaunchScreen.storyboard */,
 				847A969126A5AC34009F55BF /* .gitignore */,
 				847A968B26A5A916009F55BF /* Info.plist */,
+				846E540026C272F80055051E /* WeatherApp.xcdatamodeld */,
 			);
 			path = Resourses;
 			sourceTree = "<group>";
@@ -314,6 +327,7 @@
 		84F37E7726A82ED6003850CE /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				846E540326C2750E0055051E /* CoreData */,
 				84286AB126A6D44E00B5DF86 /* Networking */,
 			);
 			path = Services;
@@ -481,6 +495,8 @@
 				84F9E4E526AEE18C00972D55 /* DailyCellViewModel.swift in Sources */,
 				847DE7F926A70BAB00C32BF8 /* WeatherHourly.swift in Sources */,
 				847DE7F526A7094600C32BF8 /* Temperature.swift in Sources */,
+				846E540226C272F80055051E /* WeatherApp.xcdatamodeld in Sources */,
+				846E540526C2752F0055051E /* CoreDataManager.swift in Sources */,
 				847DE7EF26A708F000C32BF8 /* Weather.swift in Sources */,
 				84F37E7B26A82FD5003850CE /* DetailWeatherViewViewModel.swift in Sources */,
 				840DEAD326ADB34900A9E730 /* HourlyCellViewModel.swift in Sources */,
@@ -687,6 +703,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		846E540026C272F80055051E /* WeatherApp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				846E540126C272F80055051E /* WeatherApp.xcdatamodel */,
+			);
+			currentVersion = 846E540126C272F80055051E /* WeatherApp.xcdatamodel */;
+			path = WeatherApp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 847A967226A5A915009F55BF /* Project object */;
 }

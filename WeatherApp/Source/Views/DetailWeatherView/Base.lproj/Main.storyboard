@@ -71,11 +71,10 @@
                                         <size key="shadowOffset" width="1" height="1"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xY5-jG-Wbe">
-                                        <rect key="frame" x="152.5" y="148.5" width="109" height="115.5"/>
+                                        <rect key="frame" x="207" y="148.5" width="0.0" height="115.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="115.5" id="Y1o-LK-ZE0"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="109" id="oIA-jF-MAb"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="95"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -84,7 +83,7 @@
                                         <size key="shadowOffset" width="1" height="2"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OnL-kI-8RB">
-                                        <rect key="frame" x="263.5" y="148.5" width="0.0" height="115.5"/>
+                                        <rect key="frame" x="209" y="148.5" width="0.0" height="115.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="115.5" id="Nl1-yT-LkT"/>

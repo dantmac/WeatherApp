@@ -44,7 +44,6 @@ final class DetailWeatherCoordinator: Coordinator {
     }
     
     func pushGeolocation(name: String, long: String, lat: String) {
-        setup()
         detailWeatherViewModel.setGeolocation(name: name, long: long, lat: lat)
     }
     

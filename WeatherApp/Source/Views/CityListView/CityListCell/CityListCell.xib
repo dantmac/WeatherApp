@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="29º" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKh-yl-eo7" userLabel="Temp Label">
-                        <rect key="frame" x="294" y="0.0" width="110" height="79"/>
+                        <rect key="frame" x="294" y="0.0" width="110" height="80"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="110" id="Yja-NK-e7E"/>
@@ -57,25 +57,24 @@
                         <rect key="frame" x="0.0" y="79" width="414" height="1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="1" id="138-kX-3Uf"/>
+                            <constraint firstAttribute="height" constant="1" id="4lc-js-9U3"/>
                         </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" systemColor="systemTealColor"/>
                 <constraints>
                     <constraint firstItem="Hqk-8v-ZYA" firstAttribute="top" secondItem="8MS-63-e66" secondAttribute="bottom" constant="4" id="074-f3-Kd5"/>
-                    <constraint firstItem="NKW-Do-tzo" firstAttribute="top" secondItem="uKh-yl-eo7" secondAttribute="bottom" id="GZ9-EO-eaF"/>
-                    <constraint firstAttribute="bottom" secondItem="NKW-Do-tzo" secondAttribute="bottom" id="GoH-64-MV3"/>
+                    <constraint firstAttribute="trailing" secondItem="NKW-Do-tzo" secondAttribute="trailing" id="AEp-Id-96V"/>
                     <constraint firstItem="uKh-yl-eo7" firstAttribute="leading" secondItem="Hqk-8v-ZYA" secondAttribute="trailing" constant="5" id="O7S-xy-Sbj"/>
                     <constraint firstAttribute="trailing" secondItem="uKh-yl-eo7" secondAttribute="trailing" constant="10" id="OLu-vB-Wmc"/>
                     <constraint firstItem="Hqk-8v-ZYA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="T1v-a8-nVg"/>
                     <constraint firstItem="8MS-63-e66" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Uep-3A-ZPD"/>
                     <constraint firstItem="uKh-yl-eo7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="aEY-0U-ZB8"/>
-                    <constraint firstItem="NKW-Do-tzo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="fWp-v1-a7C"/>
                     <constraint firstItem="uKh-yl-eo7" firstAttribute="leading" secondItem="8MS-63-e66" secondAttribute="trailing" constant="5" id="k0v-Um-LFe"/>
                     <constraint firstItem="8MS-63-e66" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="mxc-eu-8ZQ"/>
-                    <constraint firstAttribute="trailing" secondItem="NKW-Do-tzo" secondAttribute="trailing" id="nqc-oa-FSG"/>
-                    <constraint firstItem="NKW-Do-tzo" firstAttribute="top" secondItem="Hqk-8v-ZYA" secondAttribute="bottom" constant="9" id="s6j-VO-Pg9"/>
+                    <constraint firstItem="NKW-Do-tzo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="nEl-8V-2rP"/>
+                    <constraint firstAttribute="bottom" secondItem="NKW-Do-tzo" secondAttribute="bottom" id="nWn-0j-eaK"/>
+                    <constraint firstAttribute="bottom" secondItem="uKh-yl-eo7" secondAttribute="bottom" id="uYf-Np-nCN"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

@@ -78,6 +78,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     private func setupViews() {
         setupCollectionView()
         setupTableView()
+        setupButtons()
     }
     
     private func setupCollectionView() {
@@ -94,6 +95,16 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         dailyTableView.separatorStyle = .none
         dailyTableView.backgroundColor = .clear
         dailyTableView.showsVerticalScrollIndicator = false
+    }
+    
+    private func setupButtons() {
+        if isModally {
+            cancelButton.isHidden = false
+            addButton.isHidden = false
+        } else {
+            cancelButton.isHidden = true
+            addButton.isHidden = true
+        }
     }
     
     func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol) {
@@ -113,7 +124,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         visibilityLabel.text = detailViewModel.visibility
         uviLabel.text = detailViewModel.uvi
         degreeLabel.text = "º"
-
     }
     
     func reloadData() {
@@ -131,13 +141,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         viewModel?.addCity()
     }
     
-    
     @IBAction func goToCityList(_ sender: UIBarButtonItem) {
             viewModel?.backToCityListVC()
-    }
-    
-    deinit {
-        print("deinit")
     }
 }
 

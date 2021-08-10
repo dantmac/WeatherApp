@@ -62,7 +62,7 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
         tableView.register(CityListCell.nib(), forCellReuseIdentifier: reuseID)
         tableView.delegate = self
         tableView.dataSource = self
-        //        tableView.separatorStyle = .singleLine
+                tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
     }

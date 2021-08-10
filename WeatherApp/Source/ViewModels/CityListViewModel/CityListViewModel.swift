@@ -13,7 +13,7 @@ protocol CityListPresentationLogic {
     func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol
     func countCells() -> Int
     func removeCell(for indexPath: IndexPath)
-    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
+//    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
     
     func presentSearchVC()
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol)
@@ -24,6 +24,7 @@ final class CityListViewModel: CityListPresentationLogic {
     weak var viewController: CityListDisplayLogic?
     var coordinator: CityListCoordinator?
     private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
+    private let coreDataManager = CoreDataManager()
     
     private var cityCellModel = CityCellModel(cells: [])
     private var cityName: String?
@@ -39,8 +40,45 @@ final class CityListViewModel: CityListPresentationLogic {
     }
     
     func presentCells() {
-        //        setWeather()
+        getCityList()
     }
+    
+    func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol {
+        let cellViewModel = cityCellModel.cells[indexPath.row]
+        return cellViewModel
+    }
+    
+    func countCells() -> Int {
+        return cityCellModel.cells.count
+    }
+    
+    func addCity(name: String, long: String, lat: String) {
+        self.cityName = name
+        self.long = long
+        self.lat = lat
+        
+        fetcher.getWeather(long: long, lat: lat) { [weak self] response in
+            guard let self = self,
+                  let response = response else { return }
+            
+            let cellModel = self.getCityCellModel(from: response)
+            
+            self.cityCellModel.cells.append(cellModel)
+            self.viewController?.reloadData()
+        }
+    }
+    
+    func removeCell(for indexPath: IndexPath) {
+        coreDataManager.removeCity(for: indexPath)
+        cityCellModel.cells.remove(at: indexPath.row)
+        
+    }
+    
+//    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//        let movedCell = cityCellModel.cells.remove(at: sourceIndexPath.row)
+//        cityCellModel.cells.insert(movedCell, at: destinationIndexPath.row)
+//        viewController?.reloadData()
+//    }
     
     private func setWeather() {
         
@@ -81,38 +119,21 @@ final class CityListViewModel: CityListPresentationLogic {
                                       long: long ?? "00")
     }
     
-    func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol {
-        let cellViewModel = cityCellModel.cells[indexPath.row]
-        return cellViewModel
-    }
-    
-    func countCells() -> Int {
-        return cityCellModel.cells.count
-    }
-    
-    func addCity(name: String, long: String, lat: String) {
-        self.cityName = name
-        self.long = long
-        self.lat = lat
-        
-        fetcher.getWeather(long: long, lat: lat) { [weak self] response in
-            guard let self = self,
-                  let response = response else { return }
-            
-            let cellModel = self.getCityCellModel(from: response)
-            
-            self.cityCellModel.cells.append(cellModel)
-            self.viewController?.reloadData()
-        }
-    }
-    
-    func removeCell(for indexPath: IndexPath) {
-        cityCellModel.cells.remove(at: indexPath.row)
-    }
-    
-    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let movedCell = cityCellModel.cells.remove(at: sourceIndexPath.row)
-        cityCellModel.cells.insert(movedCell, at: destinationIndexPath.row)
+    private func getCityList() {
+        let entity = coreDataManager.fetchCityList()
+        let cities = entity.map { [unowned self] city in self.fetchCityList(from: city) }
+        let cityCellModel = CityCellModel(cells: cities)
+        self.cityCellModel = cityCellModel
         viewController?.reloadData()
+    }
+    
+    private func fetchCityList(from entity: CityCell) -> CityCellModelProtocol {
+        let temp = entity.temp ?? ""
+        
+        return CityCellModel.CityCell(name: entity.name ?? "",
+                                      description: entity.descript ?? "",
+                                      temp: temp + "º",
+                                      lat: entity.lat ?? "",
+                                      long: entity.long ?? "")
     }
 }
