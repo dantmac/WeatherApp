@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 
 protocol CityListPresentationLogic {
-    func presentCells()
+    func presentCityList()
     func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol
     func countCells() -> Int
     func removeCell(for indexPath: IndexPath)
-//    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
+    //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
     
     func presentSearchVC()
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol)
@@ -39,8 +39,10 @@ final class CityListViewModel: CityListPresentationLogic {
         coordinator?.startDetailVC(cityCellModel)
     }
     
-    func presentCells() {
+    func presentCityList() {
         getCityList()
+        setCity()
+        // TODO: - updating logic
     }
     
     func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol {
@@ -74,37 +76,55 @@ final class CityListViewModel: CityListPresentationLogic {
         
     }
     
-//    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//        let movedCell = cityCellModel.cells.remove(at: sourceIndexPath.row)
-//        cityCellModel.cells.insert(movedCell, at: destinationIndexPath.row)
-//        viewController?.reloadData()
-//    }
+    //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    //        let movedCell = cityCellModel.cells.remove(at: sourceIndexPath.row)
+    //        cityCellModel.cells.insert(movedCell, at: destinationIndexPath.row)
+    //        viewController?.reloadData()
+    //    }
     
-    private func setWeather() {
-        
-        // TODO: - change logic. current has the wrong behavior
-        if cityCellModel.cells.count == 0 {
-            return
+    private func setCity() {
+        if cityCellModel.cells.isEmpty {
+            coordinator?.startSearchVC()
         } else {
-            getWeather { [weak self] cityCellModel in
-                
-                self?.cityCellModel = cityCellModel
-                self?.viewController?.reloadData()
+            updateWeather { [weak self] cityCellModel in
+                guard let self = self else { return }
+                let sortedCityModel = cityCellModel.cells.sorted { $0.dateAdded < $1.dateAdded }
+                self.cityCellModel.cells = sortedCityModel
+//                self.viewController?.reloadData()
             }
         }
     }
     
-    private func getWeather(completion: @escaping (CityCellModel) -> Void) {
+    private func updateWeather(completion: @escaping (CityCellModel) -> Void) {
+        var updatedCityCellModel = CityCellModel(cells: [])
+        var updatedCity = CityCellModel.CityCell(name: "",
+                                                 description: "",
+                                                 temp: "",
+                                                 lat: "",
+                                                 long: "",
+                                                 dateAdded: Date())
         
-        // TODO: - cycle for in
-        fetcher.getWeather(long: long ?? "00", lat: lat ?? "00") { [weak self] response in
-            guard let self = self,
-                  let response = response else { return }
-            
-            let cellModel = self.getCityCellModel(from: response)
-            let cityCellModel = CityCellModel(cells: [cellModel])
-            
-            completion(cityCellModel)
+        for (index, city) in cityCellModel.cells.enumerated() {
+            fetcher.getWeather(long: city.long, lat: city.lat) { response in
+                
+                print(index)
+                
+                guard let response = response else { return }
+                
+                let descriptions = response.current.weather.map { weather in weather.descriptionStr }
+                let description = descriptions[0]
+                let temp = response.current.tempCelsiusString
+                
+                updatedCity.name = city.name
+                updatedCity.description = description
+                updatedCity.lat = city.lat
+                updatedCity.long = city.long
+                updatedCity.temp = temp + "º"
+                updatedCity.dateAdded = city.dateAdded
+                
+                updatedCityCellModel.cells.append(updatedCity)
+                completion(updatedCityCellModel)
+            }
         }
     }
     
@@ -116,7 +136,8 @@ final class CityListViewModel: CityListPresentationLogic {
                                       description: description,
                                       temp: response.current.tempCelsiusString + "º",
                                       lat: lat ?? "00",
-                                      long: long ?? "00")
+                                      long: long ?? "00",
+                                      dateAdded: Date())
     }
     
     private func getCityList() {
@@ -124,16 +145,16 @@ final class CityListViewModel: CityListPresentationLogic {
         let cities = entity.map { [unowned self] city in self.fetchCityList(from: city) }
         let cityCellModel = CityCellModel(cells: cities)
         self.cityCellModel = cityCellModel
-        viewController?.reloadData()
     }
     
     private func fetchCityList(from entity: CityCell) -> CityCellModelProtocol {
-        let temp = entity.temp ?? ""
+        let temp = (entity.temp ?? "") + "º"
         
         return CityCellModel.CityCell(name: entity.name ?? "",
                                       description: entity.descript ?? "",
-                                      temp: temp + "º",
+                                      temp: temp,
                                       lat: entity.lat ?? "",
-                                      long: entity.long ?? "")
+                                      long: entity.long ?? "",
+                                      dateAdded: entity.dateAdded ?? Date())
     }
 }

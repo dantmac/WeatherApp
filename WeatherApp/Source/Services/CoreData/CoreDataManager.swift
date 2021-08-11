@@ -6,7 +6,7 @@
 //
 
 import CoreData
-
+// TODO: - consider saving only city name and coordinates
 final class CoreDataManager {
     private static var persistentContainer: NSPersistentContainer = {
         let persistentContainer = NSPersistentContainer(name: "WeatherApp")
@@ -21,13 +21,14 @@ final class CoreDataManager {
         return CoreDataManager.persistentContainer.viewContext
     }
     
-    func saveCity(name: String, long: String, lat: String, descript: String, temp: String) {
+    func saveCity(name: String, long: String, lat: String, descript: String, temp: String, dateAdded: Date) {
         let city = CityCell(context: context)
         city.setValue(name, forKey: "name")
         city.setValue(long, forKey: "long")
         city.setValue(lat, forKey: "lat")
         city.setValue(temp, forKey: "temp")
         city.setValue(descript, forKey: "descript")
+        city.setValue(dateAdded, forKey: "dateAdded")
         
         do {
             try context.save()

@@ -32,13 +32,17 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(#function)
         setup()
-        viewModel?.presentCells()
+        viewModel?.presentCityList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     
@@ -69,6 +73,7 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
     
     func reloadData() {
         DispatchQueue.main.async {
+            print(#function)
             self.tableView.reloadData()
         }
     }

@@ -13,6 +13,7 @@ protocol CityCellModelProtocol {
     var temp: String { get }
     var long: String { get }
     var lat: String { get }
+    var dateAdded: Date { get }
 }
 
 struct CityCellModel {
@@ -22,6 +23,7 @@ struct CityCellModel {
         var temp: String
         var lat: String
         var long: String
+        var dateAdded: Date
     }
     
     var cells: [CityCellModelProtocol]
