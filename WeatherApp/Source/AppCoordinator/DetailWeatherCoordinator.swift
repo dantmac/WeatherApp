@@ -32,7 +32,7 @@ final class DetailWeatherCoordinator: Coordinator {
     }
     
     func backToCityListVC() {
-        navigationController.popToRootViewController(animated: true)
+        navigationController.popViewController(animated: true)
     }
     
     func dismiss(_ viewController: UIViewController) {

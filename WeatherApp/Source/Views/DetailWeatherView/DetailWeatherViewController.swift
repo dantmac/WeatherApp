@@ -62,6 +62,10 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         viewModel?.viewDidDisappear()
     }
     
+    deinit {
+        print("deinit from VM")
+    }
+    
     // MARK: - Setups
     
     static func instantiate() -> DetailWeatherViewController {

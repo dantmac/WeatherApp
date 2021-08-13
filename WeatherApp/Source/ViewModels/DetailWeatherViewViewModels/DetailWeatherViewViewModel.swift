@@ -218,4 +218,8 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         
         return preparedModel
     }
+    
+    deinit {
+        print("deinit from VM")
+    }
 }

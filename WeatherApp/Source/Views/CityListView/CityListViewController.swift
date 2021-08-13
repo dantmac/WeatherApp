@@ -73,7 +73,6 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
     
     func reloadData() {
         DispatchQueue.main.async {
-            print(#function)
             self.tableView.reloadData()
         }
     }

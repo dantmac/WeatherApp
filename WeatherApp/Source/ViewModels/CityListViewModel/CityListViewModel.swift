@@ -86,17 +86,22 @@ final class CityListViewModel: CityListPresentationLogic {
         if cityCellModel.cells.isEmpty {
             coordinator?.startSearchVC()
         } else {
-            updateWeather { [weak self] cityCellModel in
+            updateWeather { [weak self] updatedModel in
                 guard let self = self else { return }
-                let sortedCityModel = cityCellModel.cells.sorted { $0.dateAdded < $1.dateAdded }
-                self.cityCellModel.cells = sortedCityModel
-//                self.viewController?.reloadData()
+                
+                for (i, j) in self.cityCellModel.cells.enumerated() {
+                    if j.dateAdded == updatedModel.dateAdded {
+                        self.cityCellModel.cells.remove(at: i)
+                        self.cityCellModel.cells.insert(updatedModel, at: i)
+                    }
+                }
+                
+                self.viewController?.reloadData()
             }
         }
     }
     
-    private func updateWeather(completion: @escaping (CityCellModel) -> Void) {
-        var updatedCityCellModel = CityCellModel(cells: [])
+    private func updateWeather(completion: @escaping (CityCellModelProtocol) -> Void) {
         var updatedCity = CityCellModel.CityCell(name: "",
                                                  description: "",
                                                  temp: "",
@@ -104,11 +109,8 @@ final class CityListViewModel: CityListPresentationLogic {
                                                  long: "",
                                                  dateAdded: Date())
         
-        for (index, city) in cityCellModel.cells.enumerated() {
+        for city in cityCellModel.cells {
             fetcher.getWeather(long: city.long, lat: city.lat) { response in
-                
-                print(index)
-                
                 guard let response = response else { return }
                 
                 let descriptions = response.current.weather.map { weather in weather.descriptionStr }
@@ -122,8 +124,7 @@ final class CityListViewModel: CityListPresentationLogic {
                 updatedCity.temp = temp + "º"
                 updatedCity.dateAdded = city.dateAdded
                 
-                updatedCityCellModel.cells.append(updatedCity)
-                completion(updatedCityCellModel)
+                completion(updatedCity)
             }
         }
     }
