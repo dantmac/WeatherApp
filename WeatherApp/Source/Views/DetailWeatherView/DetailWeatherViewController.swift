@@ -21,7 +21,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     private let hourlyCellID = "HourlyViewCell"
     private let dailyCellID = "DailyViewCell"
     
-    var isModally = false
+    var isModal = false
     
     // MARK: - IBOutlets
     
@@ -55,15 +55,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         
         setup()
         viewModel?.presentWeather()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        viewModel?.viewDidDisappear()
-    }
-    
-    deinit {
-        print("deinit from VM")
     }
     
     // MARK: - Setups
@@ -102,7 +93,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     }
     
     private func setupButtons() {
-        if isModally {
+        if isModal {
             cancelButton.isHidden = false
             addButton.isHidden = false
         } else {
@@ -146,7 +137,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     }
     
     @IBAction func goToCityList(_ sender: UIBarButtonItem) {
-            viewModel?.backToCityListVC()
+        viewModel?.popVC()
     }
 }
 

@@ -10,7 +10,6 @@ import Foundation
 
 // TODO: - consider adding Interface Segregation
 protocol DetailWeatherPresentationLogic {
-    
     func presentWeather()
     func setHourlyViewModel(for indexPath: IndexPath) -> HourlyCellViewModelProtocol
     func setDailyViewModel(for indexPath: IndexPath) -> DailyCellViewModelProtocol
@@ -18,15 +17,14 @@ protocol DetailWeatherPresentationLogic {
     func countDailyCells() -> Int
     
     func addCity()
-    func backToCityListVC()
+    func popVC()
     func dismissVC(_ viewController: UIViewController)
-    func viewDidDisappear()
 }
 
 final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     
     weak var viewController: DetailViewDisplayLogic?
-    var coordinator: DetailWeatherCoordinator?
+    var coordinator: AppCoordinator?
     private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
     private let coreDataManager = CoreDataManager()
     
@@ -44,8 +42,12 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         setWeather()
     }
     
-    func backToCityListVC() {
-        coordinator?.backToCityListVC()
+    func popVC() {
+        coordinator?.popDetailVC()
+    }
+    
+    func dismissVC(_ viewController: UIViewController) {
+        coordinator?.dismissDetailVC(viewController)
     }
     
     func addCity() {
@@ -61,14 +63,6 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         coordinator?.addCity(name: cityName ?? "",
                                 long: long ?? "00",
                                 lat: lat ?? "00")
-    }
-    
-    func dismissVC(_ viewController: UIViewController) {
-        coordinator?.dismiss(viewController)
-    }
-    
-    func viewDidDisappear() {
-        coordinator?.didFinish()
     }
     
     func setGeolocation(name: String, long: String, lat: String) {
@@ -217,9 +211,5 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         }
         
         return preparedModel
-    }
-    
-    deinit {
-        print("deinit from VM")
     }
 }

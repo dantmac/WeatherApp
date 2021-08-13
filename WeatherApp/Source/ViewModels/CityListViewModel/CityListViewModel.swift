@@ -22,7 +22,7 @@ protocol CityListPresentationLogic {
 final class CityListViewModel: CityListPresentationLogic {
     
     weak var viewController: CityListDisplayLogic?
-    var coordinator: CityListCoordinator?
+    var coordinator: AppCoordinator?
     private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
     private let coreDataManager = CoreDataManager()
     
@@ -41,8 +41,7 @@ final class CityListViewModel: CityListPresentationLogic {
     
     func presentCityList() {
         getCityList()
-        setCity()
-        // TODO: - updating logic
+        setCityList()
     }
     
     func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol {
@@ -82,7 +81,7 @@ final class CityListViewModel: CityListPresentationLogic {
     //        viewController?.reloadData()
     //    }
     
-    private func setCity() {
+    private func setCityList() {
         if cityCellModel.cells.isEmpty {
             coordinator?.startSearchVC()
         } else {
