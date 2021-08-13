@@ -22,7 +22,8 @@ protocol CityListPresentationLogic {
 final class CityListViewModel: CityListPresentationLogic {
     
     weak var viewController: CityListDisplayLogic?
-    var coordinator: AppCoordinator?
+    weak var coordinator: AppCoordinator?
+    
     private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
     private let coreDataManager = CoreDataManager()
     

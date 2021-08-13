@@ -54,10 +54,6 @@ final class AppCoordinator: NSObject, Coordinator {
     }
     
     func startDetailVC(_ cityCellModel: CityCellModelProtocol) {
-        pushDetailVC(cityCellModel)
-    }
-    
-    func pushDetailVC(_ cityCellModel: CityCellModelProtocol) {
         let (vc, vm) = setupDetailVC()
         
         pushGeolocation(viewModel: vm,
