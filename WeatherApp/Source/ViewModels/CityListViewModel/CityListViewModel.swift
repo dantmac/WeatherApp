@@ -19,6 +19,8 @@ protocol CityListPresentationLogic {
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath)
 }
 
+// TODO: - consider following Interface Segregation principle
+
 final class CityListViewModel: CityListPresentationLogic {
     
     weak var viewController: CityListDisplayLogic?
@@ -37,8 +39,7 @@ final class CityListViewModel: CityListPresentationLogic {
     }
     
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
-//        coordinator?.startDetailVC(cityCellModel)
-        coordinator?.startPageVC(from: indexPath)
+        coordinator?.startPageVC(cityCellModel, from: indexPath)
     }
     
     func presentCityList() {
@@ -147,6 +148,8 @@ final class CityListViewModel: CityListPresentationLogic {
         let cities = entity.map { [unowned self] city in self.fetchCityList(from: city) }
         let cityCellModel = CityCellModel(cells: cities)
         self.cityCellModel = cityCellModel
+        
+        coordinator?.preinstallVC(cityCellModel)
     }
     
     private func fetchCityList(from entity: CityCell) -> CityCellModelProtocol {

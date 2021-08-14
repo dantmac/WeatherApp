@@ -12,6 +12,8 @@ protocol Coordinator: AnyObject {
     func start()
 }
 
+// TODO: - consider avoiding memory leaks
+
 final class AppCoordinator: NSObject, Coordinator {
     
     private let window: UIWindow
@@ -45,18 +47,24 @@ final class AppCoordinator: NSObject, Coordinator {
         navigationController.pushViewController(cityListViewController, animated: true)
     }
     
-    func startPageVC(from indexPath: IndexPath) {
+    func startPageVC(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
         let vc = detailViewControllers[indexPath.row]
+        let vm = vc.viewModel as! DetailWeatherViewViewModel
         let pageVC = UIPageViewController(transitionStyle: .scroll,
                                           navigationOrientation: .horizontal,
                                           options: nil)
-        
+        pageVC.view.backgroundColor = #colorLiteral(red: 0.2549019608, green: 0.8, blue: 0.968627451, alpha: 1)
         pageVC.delegate = self
         pageVC.dataSource = self
         pageVC.setViewControllers([vc],
                                   direction: .forward,
                                   animated: true,
                                   completion: nil)
+        
+        pushGeolocation(viewModel: vm,
+                        name: cityCellModel.name,
+                        long: cityCellModel.long,
+                        lat: cityCellModel.lat)
         
         navigationController.pushViewController(pageVC, animated: true)
     }
@@ -71,20 +79,8 @@ final class AppCoordinator: NSObject, Coordinator {
         navigationController.present(autocompleteVC, animated: true, completion: nil)
     }
     
-    func startDetailVC(_ cityCellModel: CityCellModelProtocol) {
-        let (vc, vm) = setupDetailVC()
-        
-        pushGeolocation(viewModel: vm,
-                        name: cityCellModel.name,
-                        long: cityCellModel.long,
-                        lat: cityCellModel.lat)
-        
-        navigationController.pushViewController(vc, animated: true)
-    }
-    
     func presentDetailVC(from viewController: UIViewController, with place: GMSPlace) {
         let (vc, vm) = setupDetailVC()
-        vc.isModal = true
         
         pushGeolocation(viewModel: vm,
                         name: place.name ?? "",
@@ -94,7 +90,8 @@ final class AppCoordinator: NSObject, Coordinator {
         viewController.present(vc, animated: true, completion: nil)
     }
     
-    func popDetailVC() {
+    func popDetailVC(_ vm: DetailWeatherViewViewModel) {
+        vm.coordinator = nil
         navigationController.popViewController(animated: true)
     }
     
@@ -113,6 +110,16 @@ final class AppCoordinator: NSObject, Coordinator {
     
     func removeVC(at indexPath: IndexPath) {
         detailViewControllers.remove(at: indexPath.row)
+    }
+    
+    func preinstallVC(_ cityCellModel: CityCellModel) {
+        for city in cityCellModel.cells {
+            let (vc, vm) = setupDetailVC()
+            vm.cityName = city.name
+            vm.lat = city.lat
+            vm.long = city.long
+            detailViewControllers.append(vc)
+        }
     }
     
     private func pushGeolocation(viewModel: DetailWeatherViewViewModel, name: String, long: String, lat: String) {

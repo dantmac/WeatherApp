@@ -20,9 +20,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     private let hourlyCellID = "HourlyViewCell"
     private let dailyCellID = "DailyViewCell"
-    
-    var isModal = false
-    
+        
     // MARK: - IBOutlets
     
     @IBOutlet weak var locationLabel: UILabel!
@@ -54,12 +52,20 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         super.viewDidLoad()
         
         setup()
-        viewModel?.presentWeather()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        viewModel?.presentWeather()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        viewModel?.presentWeather()
+    }
+    
+    deinit {
+        print("deinit vc")
     }
     
     // MARK: - Setups
@@ -78,7 +84,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     private func setupViews() {
         setupCollectionView()
         setupTableView()
-        setupButtons()
     }
     
     private func setupCollectionView() {
@@ -97,14 +102,9 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         dailyTableView.showsVerticalScrollIndicator = false
     }
     
-    private func setupButtons() {
-        if isModal {
-            cancelButton.isHidden = false
-            addButton.isHidden = false
-        } else {
-            cancelButton.isHidden = true
-            addButton.isHidden = true
-        }
+    private func hideButtons() {
+        cancelButton.isHidden = true
+        addButton.isHidden = true
     }
     
     func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol) {
@@ -138,6 +138,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     }
     
     @IBAction func addPressed(_ sender: UIButton) {
+        hideButtons()
         viewModel?.addCity()
     }
     
