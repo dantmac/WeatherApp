@@ -96,7 +96,7 @@ extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cellViewModel = viewModel?.setCityCellModel(for: indexPath) else { return }
-        viewModel?.presentDetailWeather(cellViewModel)
+        viewModel?.presentDetailWeather(cellViewModel, from: indexPath)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

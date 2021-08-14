@@ -60,6 +60,7 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                                  temp: temp ?? "",
                                  dateAdded: date)
         
+        coordinator?.appendVC(viewController as! DetailWeatherViewController)
         coordinator?.addCity(name: cityName ?? "",
                                 long: long ?? "00",
                                 lat: lat ?? "00")

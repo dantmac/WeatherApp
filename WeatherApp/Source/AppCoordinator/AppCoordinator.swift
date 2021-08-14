@@ -23,6 +23,8 @@ final class AppCoordinator: NSObject, Coordinator {
     
     private let autocompleteVC = GMSAutocompleteViewController()
     
+    private var detailViewControllers = [DetailWeatherViewController]()
+    
     init(window: UIWindow) {
         self.window = window
     }
@@ -41,6 +43,22 @@ final class AppCoordinator: NSObject, Coordinator {
         autocompleteVC.delegate = self
         
         navigationController.pushViewController(cityListViewController, animated: true)
+    }
+    
+    func startPageVC(from indexPath: IndexPath) {
+        let vc = detailViewControllers[indexPath.row]
+        let pageVC = UIPageViewController(transitionStyle: .scroll,
+                                          navigationOrientation: .horizontal,
+                                          options: nil)
+        
+        pageVC.delegate = self
+        pageVC.dataSource = self
+        pageVC.setViewControllers([vc],
+                                  direction: .forward,
+                                  animated: true,
+                                  completion: nil)
+        
+        navigationController.pushViewController(pageVC, animated: true)
     }
     
     func startSearchVC() {
@@ -89,6 +107,14 @@ final class AppCoordinator: NSObject, Coordinator {
         cityListViewModel.addCity(name: name, long: long, lat: lat)
     }
     
+    func appendVC(_ viewController: DetailWeatherViewController) {
+        detailViewControllers.append(viewController)
+    }
+    
+    func removeVC(at indexPath: IndexPath) {
+        detailViewControllers.remove(at: indexPath.row)
+    }
+    
     private func pushGeolocation(viewModel: DetailWeatherViewViewModel, name: String, long: String, lat: String) {
         viewModel.setGeolocation(name: name, long: long, lat: lat)
     }
@@ -118,6 +144,28 @@ extension AppCoordinator: GMSAutocompleteViewControllerDelegate {
     
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
         autocompleteVC.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - UIPageViewControllerDataSource, UIPageViewControllerDelegate
+
+extension AppCoordinator: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let index = detailViewControllers.firstIndex(of: viewController as! DetailWeatherViewController),
+              index > 0 else { return nil }
+        
+        let before = index - 1
+        
+        return detailViewControllers[before]
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let index = detailViewControllers.firstIndex(of: viewController as! DetailWeatherViewController),
+              index < (detailViewControllers.count - 1) else { return nil }
+        
+        let after = index + 1
+        
+        return detailViewControllers[after]
     }
 }
 

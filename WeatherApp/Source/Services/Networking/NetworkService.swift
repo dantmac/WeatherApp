@@ -22,7 +22,7 @@ struct NetworkService: NetworkServiceProtocol {
         
         createDataTask(from: request, completion: completion).resume()
     
-//        print(url)
+        print(url)
     }
     
     private func createDataTask(from request: URLRequest, completion: @escaping (Data?, Error?) -> Void)  -> URLSessionDataTask {

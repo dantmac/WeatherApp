@@ -57,6 +57,11 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         viewModel?.presentWeather()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        viewModel?.presentWeather()
+    }
+    
     // MARK: - Setups
     
     static func instantiate() -> DetailWeatherViewController {

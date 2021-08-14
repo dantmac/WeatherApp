@@ -16,7 +16,7 @@ protocol CityListPresentationLogic {
     //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
     
     func presentSearchVC()
-    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol)
+    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath)
 }
 
 final class CityListViewModel: CityListPresentationLogic {
@@ -36,8 +36,9 @@ final class CityListViewModel: CityListPresentationLogic {
         coordinator?.startSearchVC()
     }
     
-    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol) {
-        coordinator?.startDetailVC(cityCellModel)
+    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
+//        coordinator?.startDetailVC(cityCellModel)
+        coordinator?.startPageVC(from: indexPath)
     }
     
     func presentCityList() {
@@ -73,7 +74,7 @@ final class CityListViewModel: CityListPresentationLogic {
     func removeCell(for indexPath: IndexPath) {
         coreDataManager.removeCity(for: indexPath)
         cityCellModel.cells.remove(at: indexPath.row)
-        
+        coordinator?.removeVC(at: indexPath)
     }
     
     //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
