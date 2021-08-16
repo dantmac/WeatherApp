@@ -8,7 +8,8 @@
 import UIKit
 import Foundation
 
-// TODO: - consider adding Interface Segregation
+// TODO: - consider following Interface Segregation principle
+
 protocol DetailWeatherPresentationLogic {
     func presentWeather()
     func setHourlyViewModel(for indexPath: IndexPath) -> HourlyCellViewModelProtocol
@@ -31,19 +32,22 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     private var hourlyCellViewModel = HourlyCellViewModel(cells: [])
     private var dailyCellViewModel = DailyCellViewModel(cells: [])
     
-    private var cityName: String?
-    private var long: String?
-    private var lat: String?
     private var temp: String?
     private var description: String?
     private var timezoneOffset: Int?
+    
+    var cityName: String?
+    var long: String?
+    var lat: String?
+    
+   
     
     func presentWeather() {
         setWeather()
     }
     
     func popVC() {
-        coordinator?.popDetailVC()
+        coordinator?.popDetailVC(self)
     }
     
     func dismissVC(_ viewController: UIViewController) {
@@ -59,6 +63,10 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                                  descript: description ?? "",
                                  temp: temp ?? "",
                                  dateAdded: date)
+        
+        coordinator?.appendVC(name: cityName ?? "",
+                              long: long ?? "00",
+                              lat: lat ?? "00")
         
         coordinator?.addCity(name: cityName ?? "",
                                 long: long ?? "00",
@@ -211,5 +219,9 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         }
         
         return preparedModel
+    }
+    
+    deinit {
+        print("deinit vm")
     }
 }

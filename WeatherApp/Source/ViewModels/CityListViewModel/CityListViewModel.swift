@@ -16,8 +16,10 @@ protocol CityListPresentationLogic {
     //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
     
     func presentSearchVC()
-    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol)
+    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath)
 }
+
+// TODO: - consider following Interface Segregation principle
 
 final class CityListViewModel: CityListPresentationLogic {
     
@@ -36,8 +38,8 @@ final class CityListViewModel: CityListPresentationLogic {
         coordinator?.startSearchVC()
     }
     
-    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol) {
-        coordinator?.startDetailVC(cityCellModel)
+    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
+        coordinator?.startPageVC(cityCellModel, from: indexPath)
     }
     
     func presentCityList() {
@@ -73,7 +75,8 @@ final class CityListViewModel: CityListPresentationLogic {
     func removeCell(for indexPath: IndexPath) {
         coreDataManager.removeCity(for: indexPath)
         cityCellModel.cells.remove(at: indexPath.row)
-        
+        coordinator?.removeVC(at: indexPath)
+        viewController?.reloadData()
     }
     
     //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -146,6 +149,8 @@ final class CityListViewModel: CityListPresentationLogic {
         let cities = entity.map { [unowned self] city in self.fetchCityList(from: city) }
         let cityCellModel = CityCellModel(cells: cities)
         self.cityCellModel = cityCellModel
+        
+        coordinator?.preinstallVC(cityCellModel)
     }
     
     private func fetchCityList(from entity: CityCell) -> CityCellModelProtocol {

@@ -12,6 +12,8 @@ protocol Coordinator: AnyObject {
     func start()
 }
 
+// TODO: - consider avoiding memory leaks
+
 final class AppCoordinator: NSObject, Coordinator {
     
     private let window: UIWindow
@@ -22,6 +24,8 @@ final class AppCoordinator: NSObject, Coordinator {
     private let cityListViewModel = CityListViewModel()
     
     private let autocompleteVC = GMSAutocompleteViewController()
+    
+    private var detailViewControllers = [DetailWeatherViewController]()
     
     init(window: UIWindow) {
         self.window = window
@@ -43,6 +47,28 @@ final class AppCoordinator: NSObject, Coordinator {
         navigationController.pushViewController(cityListViewController, animated: true)
     }
     
+    func startPageVC(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
+        let vc = detailViewControllers[indexPath.row]
+        let vm = vc.viewModel as! DetailWeatherViewViewModel
+        let pageVC = UIPageViewController(transitionStyle: .scroll,
+                                          navigationOrientation: .horizontal,
+                                          options: nil)
+        pageVC.view.backgroundColor = #colorLiteral(red: 0.2549019608, green: 0.8, blue: 0.968627451, alpha: 1)
+        pageVC.delegate = self
+        pageVC.dataSource = self
+        pageVC.setViewControllers([vc],
+                                  direction: .forward,
+                                  animated: true,
+                                  completion: nil)
+        
+        pushGeolocation(viewModel: vm,
+                        name: cityCellModel.name,
+                        long: cityCellModel.long,
+                        lat: cityCellModel.lat)
+        
+        navigationController.pushViewController(pageVC, animated: true)
+    }
+    
     func startSearchVC() {
         let filter = GMSAutocompleteFilter()
         let fields: GMSPlaceField = [.name, .coordinate]
@@ -51,17 +77,6 @@ final class AppCoordinator: NSObject, Coordinator {
         autocompleteVC.placeFields = fields
         
         navigationController.present(autocompleteVC, animated: true, completion: nil)
-    }
-    
-    func startDetailVC(_ cityCellModel: CityCellModelProtocol) {
-        let (vc, vm) = setupDetailVC()
-        
-        pushGeolocation(viewModel: vm,
-                        name: cityCellModel.name,
-                        long: cityCellModel.long,
-                        lat: cityCellModel.lat)
-        
-        navigationController.pushViewController(vc, animated: true)
     }
     
     func presentDetailVC(from viewController: UIViewController, with place: GMSPlace) {
@@ -76,7 +91,8 @@ final class AppCoordinator: NSObject, Coordinator {
         viewController.present(vc, animated: true, completion: nil)
     }
     
-    func popDetailVC() {
+    func popDetailVC(_ vm: DetailWeatherViewViewModel) {
+        vm.coordinator = nil
         navigationController.popViewController(animated: true)
     }
     
@@ -87,6 +103,28 @@ final class AppCoordinator: NSObject, Coordinator {
     func addCity(name: String, long: String, lat: String) {
         navigationController.dismiss(animated: true, completion: nil)
         cityListViewModel.addCity(name: name, long: long, lat: lat)
+    }
+    
+    func appendVC(name: String, long: String, lat: String) {
+        let (vc, vm) = setupDetailVC()
+        vm.cityName = name
+        vm.lat = lat
+        vm.long = long
+        detailViewControllers.append(vc)
+    }
+    
+    func removeVC(at indexPath: IndexPath) {
+        detailViewControllers.remove(at: indexPath.row)
+    }
+    
+    func preinstallVC(_ cityCellModel: CityCellModel) {
+        for city in cityCellModel.cells {
+            let (vc, vm) = setupDetailVC()
+            vm.cityName = city.name
+            vm.lat = city.lat
+            vm.long = city.long
+            detailViewControllers.append(vc)
+        }
     }
     
     private func pushGeolocation(viewModel: DetailWeatherViewViewModel, name: String, long: String, lat: String) {
@@ -118,6 +156,28 @@ extension AppCoordinator: GMSAutocompleteViewControllerDelegate {
     
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
         autocompleteVC.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - UIPageViewControllerDataSource, UIPageViewControllerDelegate
+
+extension AppCoordinator: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let index = detailViewControllers.firstIndex(of: viewController as! DetailWeatherViewController),
+              index > 0 else { return nil }
+        
+        let before = index - 1
+        
+        return detailViewControllers[before]
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let index = detailViewControllers.firstIndex(of: viewController as! DetailWeatherViewController),
+              index < (detailViewControllers.count - 1) else { return nil }
+        
+        let after = index + 1
+        
+        return detailViewControllers[after]
     }
 }
 
