@@ -81,6 +81,7 @@ final class AppCoordinator: NSObject, Coordinator {
     
     func presentDetailVC(from viewController: UIViewController, with place: GMSPlace) {
         let (vc, vm) = setupDetailVC()
+        vc.isModal = true
         
         pushGeolocation(viewModel: vm,
                         name: place.name ?? "",
@@ -104,8 +105,12 @@ final class AppCoordinator: NSObject, Coordinator {
         cityListViewModel.addCity(name: name, long: long, lat: lat)
     }
     
-    func appendVC(_ viewController: DetailWeatherViewController) {
-        detailViewControllers.append(viewController)
+    func appendVC(name: String, long: String, lat: String) {
+        let (vc, vm) = setupDetailVC()
+        vm.cityName = name
+        vm.lat = lat
+        vm.long = long
+        detailViewControllers.append(vc)
     }
     
     func removeVC(at indexPath: IndexPath) {

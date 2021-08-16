@@ -76,6 +76,7 @@ final class CityListViewModel: CityListPresentationLogic {
         coreDataManager.removeCity(for: indexPath)
         cityCellModel.cells.remove(at: indexPath.row)
         coordinator?.removeVC(at: indexPath)
+        viewController?.reloadData()
     }
     
     //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {

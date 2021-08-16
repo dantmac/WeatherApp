@@ -728,11 +728,14 @@
                         <outlet property="humidityLabel" destination="J8u-9F-G6M" id="z8o-Qf-99M"/>
                         <outlet property="locationLabel" destination="DL3-5V-RSw" id="OPW-hh-Y2s"/>
                         <outlet property="pressureLabel" destination="rg0-YT-7Wc" id="Beg-Tz-Mmo"/>
+                        <outlet property="scrollView" destination="79i-6w-bqe" id="JFT-pL-lFn"/>
+                        <outlet property="separatorView" destination="Iei-sZ-hSb" id="A3D-ld-NQH"/>
                         <outlet property="sunriseLabel" destination="VMm-EE-c1m" id="OQp-DU-4Lh"/>
                         <outlet property="sunsetLabel" destination="t9E-us-aJd" id="0fp-gn-FMW"/>
                         <outlet property="tempLabel" destination="xY5-jG-Wbe" id="bqi-8f-RG9"/>
                         <outlet property="tempMaxLabel" destination="edf-gE-nJS" id="AH6-n1-IAZ"/>
                         <outlet property="tempMinLabel" destination="lx3-pT-Ges" id="06v-Il-7SE"/>
+                        <outlet property="toolBarView" destination="MVn-cZ-3P7" id="xjF-RF-CDS"/>
                         <outlet property="uviLabel" destination="NYs-5f-ee1" id="6Dj-du-BjH"/>
                         <outlet property="visibilityLabel" destination="l9P-IM-plf" id="gTG-6I-hmC"/>
                         <outlet property="windDegLabel" destination="ATq-Gk-N9G" id="7Kf-yo-4uQ"/>

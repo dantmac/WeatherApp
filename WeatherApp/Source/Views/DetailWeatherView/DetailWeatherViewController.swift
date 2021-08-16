@@ -12,6 +12,8 @@ protocol DetailViewDisplayLogic: AnyObject {
     func reloadData()
 }
 
+// TODO: - consider hiding buttons
+
 class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     // MARK: - Properties
@@ -20,6 +22,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     private let hourlyCellID = "HourlyViewCell"
     private let dailyCellID = "DailyViewCell"
+    
+    var isModal = false
         
     // MARK: - IBOutlets
     
@@ -43,6 +47,10 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var dailyTableView: UITableView!
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var separatorView: UIView!
+    @IBOutlet weak var toolBarView: UIToolbar!
+    
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var addButton: UIButton!
     
@@ -56,6 +64,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        setupButtons()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -102,9 +112,19 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         dailyTableView.showsVerticalScrollIndicator = false
     }
     
-    private func hideButtons() {
-        cancelButton.isHidden = true
-        addButton.isHidden = true
+    private func setupButtons() {
+        if isModal {
+            cancelButton.isHidden = false
+            addButton.isHidden = false
+            
+            separatorView.isHidden = true
+            toolBarView.isHidden = true
+            toolBarView.removeFromSuperview()
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        } else {
+            cancelButton.isHidden = true
+            addButton.isHidden = true
+        }
     }
     
     func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol) {
@@ -138,8 +158,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     }
     
     @IBAction func addPressed(_ sender: UIButton) {
-        hideButtons()
         viewModel?.addCity()
+        isModal = false
     }
     
     @IBAction func goToCityList(_ sender: UIBarButtonItem) {

@@ -56,7 +56,6 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     
     func addCity() {
         let date = NSDate() as Date
-        let vc = viewController as! DetailWeatherViewController
         
         coreDataManager.saveCity(name: cityName ?? "",
                                  long: long ?? "00",
@@ -65,7 +64,10 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                                  temp: temp ?? "",
                                  dateAdded: date)
         
-        coordinator?.appendVC(vc)
+        coordinator?.appendVC(name: cityName ?? "",
+                              long: long ?? "00",
+                              lat: lat ?? "00")
+        
         coordinator?.addCity(name: cityName ?? "",
                                 long: long ?? "00",
                                 lat: lat ?? "00")
