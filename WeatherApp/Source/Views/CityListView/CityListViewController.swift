@@ -27,6 +27,7 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
     // MARK: - IBOutlets
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableFooterView: UIView!
     
     // MARK: - View lifecycle
     
@@ -59,8 +60,9 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .yellow
+        tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
+        tableView.tableFooterView = tableFooterView
     }
     
     func reloadData() {
@@ -69,7 +71,7 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
         }
     }
     
-    @IBAction func goToSearchVC(_ sender: UIBarButtonItem) {
+    @IBAction func goToSearchVC(_ sender: UIButton) {
         viewModel?.presentSearchVC()
     }
 }

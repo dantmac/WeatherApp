@@ -3,7 +3,6 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,38 +17,41 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qtu-Fa-fZe">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="bed-UW-cCY" userLabel="Footer View">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwP-cP-Lgv" userLabel="Search Button">
+                                            <rect key="frame" x="384" y="10" width="20" height="40"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" image="magnifyingglass" catalog="system"/>
+                                            <connections>
+                                                <action selector="goToSearchVC:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="fKk-29-LDi"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="nwP-cP-Lgv" secondAttribute="trailing" constant="10" id="38B-MX-8mZ"/>
+                                        <constraint firstAttribute="bottom" secondItem="nwP-cP-Lgv" secondAttribute="bottom" constant="10" id="LbI-1W-w28"/>
+                                        <constraint firstItem="nwP-cP-Lgv" firstAttribute="top" secondItem="bed-UW-cCY" secondAttribute="top" constant="10" id="tZv-8p-37T"/>
+                                    </constraints>
+                                </view>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n5C-kj-EaU">
-                                <rect key="frame" x="0.0" y="813" width="414" height="49"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="S4L-HW-IsP"/>
-                                    <barButtonItem id="vVR-eh-ucJ">
-                                        <imageReference key="image" image="magnifyingglass" catalog="system" symbolScale="small"/>
-                                        <color key="tintColor" systemColor="systemBackgroundColor"/>
-                                        <connections>
-                                            <action selector="goToSearchVC:" destination="Y6W-OH-hqX" id="3iX-3w-uoQ"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Qtu-Fa-fZe" secondAttribute="trailing" id="3q3-hH-IqP"/>
                             <constraint firstItem="Qtu-Fa-fZe" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="R0i-RF-yRu"/>
-                            <constraint firstItem="n5C-kj-EaU" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="RhB-Pb-lnV"/>
-                            <constraint firstItem="Qtu-Fa-fZe" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="VF7-uC-Ulg"/>
-                            <constraint firstItem="n5C-kj-EaU" firstAttribute="top" secondItem="Qtu-Fa-fZe" secondAttribute="bottom" id="XbZ-Lc-kKQ"/>
-                            <constraint firstItem="n5C-kj-EaU" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="kf2-wR-Brn"/>
-                            <constraint firstItem="n5C-kj-EaU" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="snj-fv-KYO"/>
+                            <constraint firstItem="Qtu-Fa-fZe" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="VF7-uC-Ulg"/>
+                            <constraint firstAttribute="bottom" secondItem="Qtu-Fa-fZe" secondAttribute="bottom" id="xKm-Di-M8K"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="tableFooterView" destination="bed-UW-cCY" id="59b-tX-n2J"/>
                         <outlet property="tableView" destination="Qtu-Fa-fZe" id="N0s-Cw-V3n"/>
                     </connections>
                 </viewController>
