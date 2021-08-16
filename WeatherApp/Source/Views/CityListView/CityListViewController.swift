@@ -35,6 +35,8 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
         
         setup()
         viewModel?.presentCityList()
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     // MARK: - Setups
@@ -47,8 +49,8 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
     
     private func setup() {
         view.backgroundColor = .black
-        setupTableView()
         
+        setupTableView()
         placesClient = GMSPlacesClient.shared()
     }
     
@@ -56,8 +58,8 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
         tableView.register(CityListCell.nib(), forCellReuseIdentifier: reuseID)
         tableView.delegate = self
         tableView.dataSource = self
-                tableView.separatorStyle = .none
-        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .yellow
         tableView.showsVerticalScrollIndicator = false
     }
     
@@ -106,11 +108,11 @@ extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-//    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//        viewModel?.moveRowAt(from: sourceIndexPath, to: destinationIndexPath)
-//    }
-//
-//    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-//        return true
-//    }
+    //    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    //        viewModel?.moveRowAt(from: sourceIndexPath, to: destinationIndexPath)
+    //    }
+    //
+    //    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+    //        return true
+    //    }
 }

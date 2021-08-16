@@ -40,8 +40,6 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     var long: String?
     var lat: String?
     
-   
-    
     func presentWeather() {
         setWeather()
     }

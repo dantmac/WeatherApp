@@ -75,6 +75,18 @@ final class AppCoordinator: NSObject, Coordinator {
         filter.type = .city
         autocompleteVC.autocompleteFilter = filter
         autocompleteVC.placeFields = fields
+    
+        autocompleteVC.view.alpha = 0.9
+        autocompleteVC.tableCellBackgroundColor = .black
+        autocompleteVC.tableCellSeparatorColor = .lightGray
+        autocompleteVC.primaryTextColor = .gray
+        autocompleteVC.primaryTextHighlightColor = .white
+        autocompleteVC.secondaryTextColor = .gray
+
+        UINavigationBar.appearance().barTintColor = .black
+        UINavigationBar.appearance().tintColor = .white
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        UIActivityIndicatorView.appearance().color = .white
         
         navigationController.present(autocompleteVC, animated: true, completion: nil)
     }
@@ -92,8 +104,7 @@ final class AppCoordinator: NSObject, Coordinator {
     }
     
     func popDetailVC(_ vm: DetailWeatherViewViewModel) {
-        vm.coordinator = nil
-        navigationController.popViewController(animated: true)
+        navigationController.popToRootViewController(animated: true)
     }
     
     func dismissDetailVC(_ viewController: UIViewController) {

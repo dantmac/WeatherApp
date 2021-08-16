@@ -12,8 +12,6 @@ protocol DetailViewDisplayLogic: AnyObject {
     func reloadData()
 }
 
-// TODO: - consider hiding buttons
-
 class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     // MARK: - Properties
@@ -118,8 +116,11 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
             addButton.isHidden = false
             
             separatorView.isHidden = true
+            separatorView.removeFromSuperview()
+            
             toolBarView.isHidden = true
             toolBarView.removeFromSuperview()
+            
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         } else {
             cancelButton.isHidden = true

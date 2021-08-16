@@ -685,7 +685,7 @@
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="HTz-4q-Zli"/>
                                     <barButtonItem style="plain" id="cfn-6L-P9S">
-                                        <imageReference key="image" image="list.dash" catalog="system" symbolScale="small"/>
+                                        <imageReference key="image" image="list.dash" catalog="system" symbolScale="medium"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="goToCityList:" destination="BYZ-38-t0r" id="EXI-rP-8rm"/>
