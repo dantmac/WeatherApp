@@ -46,6 +46,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     @IBOutlet weak var uviLabel: UILabel!
     
     @IBOutlet weak var currentTempView: UIView!
+    
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var dailyTableView: UITableView!
     
