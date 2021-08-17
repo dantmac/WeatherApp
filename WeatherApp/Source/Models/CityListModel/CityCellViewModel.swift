@@ -8,6 +8,7 @@
 import Foundation
 
 protocol CityCellModelProtocol {
+    var id: String { get }
     var name: String { get }
     var description: String { get }
     var temp: String { get }
@@ -18,6 +19,7 @@ protocol CityCellModelProtocol {
 
 struct CityCellModel {
     struct CityCell: CityCellModelProtocol {
+        var id: String
         var name: String
         var description: String
         var temp: String

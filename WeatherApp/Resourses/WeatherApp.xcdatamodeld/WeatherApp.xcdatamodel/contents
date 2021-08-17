@@ -3,12 +3,13 @@
     <entity name="CityCell" representedClassName="CityCell" syncable="YES" codeGenerationType="class">
         <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="descript" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
         <attribute name="lat" attributeType="String"/>
         <attribute name="long" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="temp" attributeType="String"/>
     </entity>
     <elements>
-        <element name="CityCell" positionX="-63" positionY="-18" width="128" height="119"/>
+        <element name="CityCell" positionX="-63" positionY="-18" width="128" height="134"/>
     </elements>
 </model>

@@ -12,6 +12,8 @@ protocol DetailViewDisplayLogic: AnyObject {
     func reloadData()
 }
 
+//TODO: consider checking for an existing city in the CityList
+
 class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     // MARK: - Properties
@@ -22,6 +24,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     private let dailyCellID = "DailyViewCell"
     
     var isModal = false
+    var inExistence = false
         
     // MARK: - IBOutlets
     
@@ -42,6 +45,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     @IBOutlet weak var visibilityLabel: UILabel!
     @IBOutlet weak var uviLabel: UILabel!
     
+    @IBOutlet weak var currentTempView: UIView!
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var dailyTableView: UITableView!
     
@@ -60,20 +64,10 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         setup()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        setupButtons()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         viewModel?.presentWeather()
-    }
-    
-    deinit {
-        print("deinit vc")
     }
     
     // MARK: - Setups
@@ -92,6 +86,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     private func setupViews() {
         setupCollectionView()
         setupTableView()
+        setupButtons()
     }
     
     private func setupCollectionView() {
@@ -112,8 +107,14 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     private func setupButtons() {
         if isModal {
+            
+            if inExistence {
+                addButton.isHidden = true
+            } else {
+                addButton.isHidden = false
+            }
+            
             cancelButton.isHidden = false
-            addButton.isHidden = false
             
             separatorView.isHidden = true
             separatorView.removeFromSuperview()
@@ -161,6 +162,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     @IBAction func addPressed(_ sender: UIButton) {
         viewModel?.addCity()
         isModal = false
+        inExistence = false
     }
     
     @IBAction func goToCityList(_ sender: UIBarButtonItem) {

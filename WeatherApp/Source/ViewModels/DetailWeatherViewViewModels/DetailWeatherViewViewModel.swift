@@ -36,6 +36,7 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     private var description: String?
     private var timezoneOffset: Int?
     
+    var id: String?
     var cityName: String?
     var long: String?
     var lat: String?
@@ -55,23 +56,27 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     func addCity() {
         let date = NSDate() as Date
         
-        coreDataManager.saveCity(name: cityName ?? "",
+        coreDataManager.saveCity(id: id ?? "",
+                                 name: cityName ?? "",
                                  long: long ?? "00",
                                  lat: lat ?? "00",
                                  descript: description ?? "",
                                  temp: temp ?? "",
                                  dateAdded: date)
         
-        coordinator?.appendVC(name: cityName ?? "",
+        coordinator?.appendVC(id: id ?? "",
+                              name: cityName ?? "",
                               long: long ?? "00",
                               lat: lat ?? "00")
         
-        coordinator?.addCity(name: cityName ?? "",
-                                long: long ?? "00",
-                                lat: lat ?? "00")
+        coordinator?.addCity(id: id ?? "",
+                             name: cityName ?? "",
+                             long: long ?? "00",
+                             lat: lat ?? "00")
     }
     
-    func setGeolocation(name: String, long: String, lat: String) {
+    func setGeolocation(id: String, name: String, long: String, lat: String) {
+        self.id = id
         self.cityName = name
         self.long = long
         self.lat = lat
@@ -217,9 +222,5 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         }
         
         return preparedModel
-    }
-    
-    deinit {
-        print("deinit vm")
     }
 }

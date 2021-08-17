@@ -21,8 +21,9 @@ final class CoreDataManager {
         return CoreDataManager.persistentContainer.viewContext
     }
     
-    func saveCity(name: String, long: String, lat: String, descript: String, temp: String, dateAdded: Date) {
+    func saveCity(id: String, name: String, long: String, lat: String, descript: String, temp: String, dateAdded: Date) {
         let city = CityCell(context: context)
+        city.setValue(id, forKey: "id")
         city.setValue(name, forKey: "name")
         city.setValue(long, forKey: "long")
         city.setValue(lat, forKey: "lat")

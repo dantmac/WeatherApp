@@ -62,6 +62,7 @@ final class AppCoordinator: NSObject, Coordinator {
                                   completion: nil)
         
         pushGeolocation(viewModel: vm,
+                        id: cityCellModel.id,
                         name: cityCellModel.name,
                         long: cityCellModel.long,
                         lat: cityCellModel.lat)
@@ -71,7 +72,7 @@ final class AppCoordinator: NSObject, Coordinator {
     
     func startSearchVC() {
         let filter = GMSAutocompleteFilter()
-        let fields: GMSPlaceField = [.name, .coordinate]
+        let fields: GMSPlaceField = [.name, .coordinate, .placeID]
         filter.type = .city
         autocompleteVC.autocompleteFilter = filter
         autocompleteVC.placeFields = fields
@@ -93,9 +94,12 @@ final class AppCoordinator: NSObject, Coordinator {
     
     func presentDetailVC(from viewController: UIViewController, with place: GMSPlace) {
         let (vc, vm) = setupDetailVC()
+        
         vc.isModal = true
+        vc.inExistence = cityListViewModel.checkForExistenceCity(placeID: place.placeID ?? "")
         
         pushGeolocation(viewModel: vm,
+                        id: place.placeID ?? "",
                         name: place.name ?? "",
                         long: String(place.coordinate.longitude),
                         lat: String(place.coordinate.latitude))
@@ -111,16 +115,19 @@ final class AppCoordinator: NSObject, Coordinator {
         viewController.dismiss(animated: true, completion: nil)
     }
     
-    func addCity(name: String, long: String, lat: String) {
+    func addCity(id: String, name: String, long: String, lat: String) {
         navigationController.dismiss(animated: true, completion: nil)
-        cityListViewModel.addCity(name: name, long: long, lat: lat)
+        cityListViewModel.addCity(id: id, name: name, long: long, lat: lat)
     }
     
-    func appendVC(name: String, long: String, lat: String) {
+    func appendVC(id: String, name: String, long: String, lat: String) {
         let (vc, vm) = setupDetailVC()
+        
+        vm.id = id
         vm.cityName = name
         vm.lat = lat
         vm.long = long
+        
         detailViewControllers.append(vc)
     }
     
@@ -131,15 +138,18 @@ final class AppCoordinator: NSObject, Coordinator {
     func preinstallVC(_ cityCellModel: CityCellModel) {
         for city in cityCellModel.cells {
             let (vc, vm) = setupDetailVC()
+            
+            vm.id = city.id
             vm.cityName = city.name
             vm.lat = city.lat
             vm.long = city.long
+            
             detailViewControllers.append(vc)
         }
     }
     
-    private func pushGeolocation(viewModel: DetailWeatherViewViewModel, name: String, long: String, lat: String) {
-        viewModel.setGeolocation(name: name, long: long, lat: lat)
+    private func pushGeolocation(viewModel: DetailWeatherViewViewModel, id: String, name: String, long: String, lat: String) {
+        viewModel.setGeolocation(id: id, name: name, long: long, lat: lat)
     }
     
     private func setupDetailVC() -> (DetailWeatherViewController, DetailWeatherViewViewModel) {
@@ -148,7 +158,7 @@ final class AppCoordinator: NSObject, Coordinator {
         viewModel.coordinator = self
         viewModel.viewController = viewController
         viewController.viewModel = viewModel
-        
+
         return (viewController, viewModel)
     }
 }

@@ -683,7 +683,7 @@
                                 <rect key="frame" x="0.0" y="1443" width="414" height="49"/>
                                 <color key="backgroundColor" red="0.25490196078431371" green="0.80000000000000004" blue="0.96862745098039216" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="HTz-4q-Zli"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="dHp-dX-ErJ"/>
                                     <barButtonItem style="plain" id="cfn-6L-P9S">
                                         <imageReference key="image" image="list.dash" catalog="system" symbolScale="medium"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -720,6 +720,7 @@
                         <outlet property="addButton" destination="q5B-1K-B2M" id="Qbf-jA-Eo0"/>
                         <outlet property="cancelButton" destination="D5K-3H-n6h" id="xQx-Be-6m6"/>
                         <outlet property="cloudinessLabel" destination="voN-oe-I6X" id="uPc-Ob-Dn2"/>
+                        <outlet property="currentTempView" destination="KoL-Ww-WlE" id="rpT-Nn-IYN"/>
                         <outlet property="dailyTableView" destination="y4m-wM-FVf" id="F0t-fn-VYe"/>
                         <outlet property="degreeLabel" destination="OnL-kI-8RB" id="6wV-OQ-AFp"/>
                         <outlet property="descriptionLabel" destination="Rc3-Uj-OF2" id="GuS-8X-Pin"/>

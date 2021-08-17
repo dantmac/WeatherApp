@@ -12,7 +12,7 @@ protocol CityListPresentationLogic {
     func presentCityList()
     func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol
     func countCells() -> Int
-    func removeCell(for indexPath: IndexPath)
+    func removeCity(for indexPath: IndexPath)
     //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
     
     func presentSearchVC()
@@ -30,6 +30,7 @@ final class CityListViewModel: CityListPresentationLogic {
     private let coreDataManager = CoreDataManager()
     
     private var cityCellModel = CityCellModel(cells: [])
+    private var id: String?
     private var cityName: String?
     private var long: String?
     private var lat: String?
@@ -56,7 +57,8 @@ final class CityListViewModel: CityListPresentationLogic {
         return cityCellModel.cells.count
     }
     
-    func addCity(name: String, long: String, lat: String) {
+    func addCity(id: String, name: String, long: String, lat: String) {
+        self.id = id
         self.cityName = name
         self.long = long
         self.lat = lat
@@ -72,7 +74,7 @@ final class CityListViewModel: CityListPresentationLogic {
         }
     }
     
-    func removeCell(for indexPath: IndexPath) {
+    func removeCity(for indexPath: IndexPath) {
         coreDataManager.removeCity(for: indexPath)
         cityCellModel.cells.remove(at: indexPath.row)
         coordinator?.removeVC(at: indexPath)
@@ -84,6 +86,19 @@ final class CityListViewModel: CityListPresentationLogic {
     //        cityCellModel.cells.insert(movedCell, at: destinationIndexPath.row)
     //        viewController?.reloadData()
     //    }
+    
+    func checkForExistenceCity(placeID: String) -> Bool {
+        var checker = false
+        
+        for city in cityCellModel.cells {
+            
+            if city.id == placeID {
+                checker = true
+            }
+        }
+        
+        return checker
+    }
     
     private func setCityList() {
         if cityCellModel.cells.isEmpty {
@@ -105,7 +120,8 @@ final class CityListViewModel: CityListPresentationLogic {
     }
     
     private func updateWeather(completion: @escaping (CityCellModelProtocol) -> Void) {
-        var updatedCity = CityCellModel.CityCell(name: "",
+        var updatedCity = CityCellModel.CityCell(id: "",
+                                                 name: "",
                                                  description: "",
                                                  temp: "",
                                                  lat: "",
@@ -120,6 +136,7 @@ final class CityListViewModel: CityListPresentationLogic {
                 let description = descriptions[0]
                 let temp = response.current.tempCelsiusString
                 
+                updatedCity.id = city.id
                 updatedCity.name = city.name
                 updatedCity.description = description
                 updatedCity.lat = city.lat
@@ -136,7 +153,8 @@ final class CityListViewModel: CityListPresentationLogic {
         let descriptions = response.current.weather.map { weather in weather.descriptionStr }
         let description = descriptions[0]
         
-        return CityCellModel.CityCell(name: cityName ?? "",
+        return CityCellModel.CityCell(id: id ?? "",
+                                      name: cityName ?? "",
                                       description: description,
                                       temp: response.current.tempCelsiusString + "º",
                                       lat: lat ?? "00",
@@ -156,7 +174,8 @@ final class CityListViewModel: CityListPresentationLogic {
     private func fetchCityList(from entity: CityCell) -> CityCellModelProtocol {
         let temp = (entity.temp ?? "") + "º"
         
-        return CityCellModel.CityCell(name: entity.name ?? "",
+        return CityCellModel.CityCell(id: entity.id ?? "",
+                                      name: entity.name ?? "",
                                       description: entity.descript ?? "",
                                       temp: temp,
                                       lat: entity.lat ?? "",
