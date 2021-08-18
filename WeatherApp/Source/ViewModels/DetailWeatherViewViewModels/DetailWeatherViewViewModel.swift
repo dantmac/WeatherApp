@@ -115,6 +115,9 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
             case .failure(let error):
                 guard let viewController = self.viewController as? DetailWeatherViewController else { return }
                 
+                viewController.locationLabel.text = self.cityName
+                viewController.descriptionLabel.text = "--"
+                
                 Toast.show(message: error.localizedDescription, controller: viewController)
             }
         }

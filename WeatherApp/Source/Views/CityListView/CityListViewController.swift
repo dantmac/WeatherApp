@@ -73,6 +73,11 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
     @IBAction func goToSearchVC(_ sender: UIButton) {
         viewModel?.presentSearchVC()
     }
+    
+    @IBAction func refreshButton(_ sender: UIButton) {
+        viewModel?.refreshCityList()
+    }
+    
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource

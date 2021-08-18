@@ -49,6 +49,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     @IBOutlet weak var dailyTableView: UITableView!
     
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var hourlySeparatorView: UIView!
+    @IBOutlet weak var dailySeparatorView: UIView!
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var toolBarView: UIToolbar!
     
@@ -79,6 +81,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     func setup() {
         view.backgroundColor = #colorLiteral(red: 0.2549019608, green: 0.8, blue: 0.968627451, alpha: 1)
+        
         setupViews()
     }
     
@@ -102,6 +105,11 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         dailyTableView.separatorStyle = .none
         dailyTableView.backgroundColor = .clear
         dailyTableView.showsVerticalScrollIndicator = false
+    }
+    
+    func setSeparators() {
+        hourlySeparatorView.isHidden = false
+        dailySeparatorView.isHidden = false
     }
     
     private func setupButtons() {

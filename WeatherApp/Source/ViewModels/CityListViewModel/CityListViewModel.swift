@@ -15,6 +15,7 @@ protocol CityListPresentationLogic {
     func removeCity(for indexPath: IndexPath)
     
     func presentSearchVC()
+    func refreshCityList()
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath)
 }
 
@@ -34,17 +35,23 @@ final class CityListViewModel: CityListPresentationLogic {
     private var long: String?
     private var lat: String?
     
-    func presentSearchVC() {
-        coordinator?.startSearchVC()
-    }
-    
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
         coordinator?.startPageVC(cityCellModel, from: indexPath)
     }
     
     func presentCityList() {
         getCityList()
-        setCityList()
+        updateCityList()
+        
+        coordinator?.preinstallVC(cityCellModel)
+    }
+    
+    func presentSearchVC() {
+        coordinator?.startSearchVC()
+    }
+    
+    func refreshCityList() {
+        updateCityList()
     }
     
     func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol {
@@ -100,7 +107,7 @@ final class CityListViewModel: CityListPresentationLogic {
         return checker
     }
     
-    private func setCityList() {
+    private func updateCityList() {
         if cityCellModel.cells.isEmpty {
             coordinator?.startSearchVC()
         } else {
@@ -182,8 +189,6 @@ final class CityListViewModel: CityListPresentationLogic {
         let cities = entity.map { [unowned self] city in self.fetchCityList(from: city) }
         let cityCellModel = CityCellModel(cells: cities)
         self.cityCellModel = cityCellModel
-        
-        coordinator?.preinstallVC(cityCellModel)
     }
     
     private func fetchCityList(from entity: CityCell) -> CityCellModelProtocol {

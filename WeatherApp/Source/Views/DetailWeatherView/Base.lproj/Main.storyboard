@@ -728,11 +728,13 @@
                         <outlet property="cancelButton" destination="D5K-3H-n6h" id="xQx-Be-6m6"/>
                         <outlet property="cloudinessLabel" destination="voN-oe-I6X" id="uPc-Ob-Dn2"/>
                         <outlet property="currentTempView" destination="KoL-Ww-WlE" id="rpT-Nn-IYN"/>
+                        <outlet property="dailySeparatorView" destination="5q0-78-jCN" id="Daj-Gb-e8t"/>
                         <outlet property="dailyTableView" destination="y4m-wM-FVf" id="F0t-fn-VYe"/>
                         <outlet property="degreeLabel" destination="OnL-kI-8RB" id="6wV-OQ-AFp"/>
                         <outlet property="descriptionLabel" destination="Rc3-Uj-OF2" id="GuS-8X-Pin"/>
                         <outlet property="feelsLikeLabel" destination="ZTF-5Q-b3R" id="yW2-P0-thH"/>
                         <outlet property="hourlyCollectionView" destination="Qql-7t-B1e" id="MbJ-Nb-Kmj"/>
+                        <outlet property="hourlySeparatorView" destination="gSh-W8-1TW" id="gbv-eZ-hYG"/>
                         <outlet property="humidityLabel" destination="J8u-9F-G6M" id="z8o-Qf-99M"/>
                         <outlet property="locationLabel" destination="DL3-5V-RSw" id="OPW-hh-Y2s"/>
                         <outlet property="pressureLabel" destination="rg0-YT-7Wc" id="Beg-Tz-Mmo"/>

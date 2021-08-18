@@ -118,8 +118,8 @@
 		840DEACF26AD80AF00A9E730 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				84ACB93F26CD4C040065EF9D /* ToastView.swift */,
 				840DEAD026AD80C500A9E730 /* Extensions.swift */,
+				84ACB93F26CD4C040065EF9D /* ToastView.swift */,
 				84ACB94126CD6FC00065EF9D /* AppError.swift */,
 				84ACB94326CD80540065EF9D /* TypeAlias.swift */,
 			);
