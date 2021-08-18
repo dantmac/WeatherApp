@@ -13,7 +13,6 @@ protocol CityListPresentationLogic {
     func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol
     func countCells() -> Int
     func removeCity(for indexPath: IndexPath)
-    //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
     
     func presentSearchVC()
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath)
@@ -63,14 +62,21 @@ final class CityListViewModel: CityListPresentationLogic {
         self.long = long
         self.lat = lat
         
-        fetcher.getWeather(long: long, lat: lat) { [weak self] response in
-            guard let self = self,
-                  let response = response else { return }
+        fetcher.fetchWeather(long: long, lat: lat) { [weak self] result in
             
-            let cellModel = self.getCityCellModel(from: response)
+            guard let self = self else { return }
             
-            self.cityCellModel.cells.append(cellModel)
-            self.viewController?.reloadData()
+            switch result {
+            case .success(let response):
+                let cellModel = self.getCityCellModel(from: response)
+                self.cityCellModel.cells.append(cellModel)
+                self.viewController?.reloadData()
+                
+            case .failure(let error):
+                guard let viewController = self.viewController as? CityListViewController else { return }
+                
+                Toast.show(message: error.localizedDescription, controller: viewController)
+            }
         }
     }
     
@@ -80,12 +86,6 @@ final class CityListViewModel: CityListPresentationLogic {
         coordinator?.removeVC(at: indexPath)
         viewController?.reloadData()
     }
-    
-    //    func moveRowAt(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    //        let movedCell = cityCellModel.cells.remove(at: sourceIndexPath.row)
-    //        cityCellModel.cells.insert(movedCell, at: destinationIndexPath.row)
-    //        viewController?.reloadData()
-    //    }
     
     func checkForExistenceCity(placeID: String) -> Bool {
         var checker = false
@@ -104,22 +104,31 @@ final class CityListViewModel: CityListPresentationLogic {
         if cityCellModel.cells.isEmpty {
             coordinator?.startSearchVC()
         } else {
-            updateWeather { [weak self] updatedModel in
+            updateWeather { [weak self] result in
+                
                 guard let self = self else { return }
                 
-                for (i, j) in self.cityCellModel.cells.enumerated() {
-                    if j.dateAdded == updatedModel.dateAdded {
-                        self.cityCellModel.cells.remove(at: i)
-                        self.cityCellModel.cells.insert(updatedModel, at: i)
+                switch result {
+                case .success(let updatedModel):
+                    for (i, j) in self.cityCellModel.cells.enumerated() {
+                        if j.dateAdded == updatedModel.dateAdded {
+                            self.cityCellModel.cells.remove(at: i)
+                            self.cityCellModel.cells.insert(updatedModel, at: i)
+                        }
                     }
+                    
+                    self.viewController?.reloadData()
+                    
+                case .failure(let error):
+                    guard let viewController = self.viewController as? CityListViewController else { return }
+                    
+                    Toast.show(message: error.localizedDescription, controller: viewController)
                 }
-                
-                self.viewController?.reloadData()
             }
         }
     }
     
-    private func updateWeather(completion: @escaping (CityCellModelProtocol) -> Void) {
+    private func updateWeather(completion: @escaping RequestResult<CityCellModelProtocol>) {
         var updatedCity = CityCellModel.CityCell(id: "",
                                                  name: "",
                                                  description: "",
@@ -129,22 +138,28 @@ final class CityListViewModel: CityListPresentationLogic {
                                                  dateAdded: Date())
         
         for city in cityCellModel.cells {
-            fetcher.getWeather(long: city.long, lat: city.lat) { response in
-                guard let response = response else { return }
+            fetcher.fetchWeather(long: city.long, lat: city.lat) { result in
                 
-                let descriptions = response.current.weather.map { weather in weather.descriptionStr }
-                let description = descriptions[0]
-                let temp = response.current.tempCelsiusString
-                
-                updatedCity.id = city.id
-                updatedCity.name = city.name
-                updatedCity.description = description
-                updatedCity.lat = city.lat
-                updatedCity.long = city.long
-                updatedCity.temp = temp + "º"
-                updatedCity.dateAdded = city.dateAdded
-                
-                completion(updatedCity)
+                switch result {
+                case .success(let response):
+                    
+                    let descriptions = response.current.weather.map { weather in weather.descriptionStr }
+                    let description = descriptions[0]
+                    let temp = response.current.tempCelsiusString
+                    
+                    updatedCity.id = city.id
+                    updatedCity.name = city.name
+                    updatedCity.description = description
+                    updatedCity.lat = city.lat
+                    updatedCity.long = city.long
+                    updatedCity.temp = temp + "º"
+                    updatedCity.dateAdded = city.dateAdded
+                    
+                    completion(.success(updatedCity))
+                    
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
         }
     }

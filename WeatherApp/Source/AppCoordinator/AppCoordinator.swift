@@ -53,6 +53,7 @@ final class AppCoordinator: NSObject, Coordinator {
         let pageVC = UIPageViewController(transitionStyle: .scroll,
                                           navigationOrientation: .horizontal,
                                           options: nil)
+        
         pageVC.view.backgroundColor = #colorLiteral(red: 0.2549019608, green: 0.8, blue: 0.968627451, alpha: 1)
         pageVC.delegate = self
         pageVC.dataSource = self
@@ -201,4 +202,3 @@ extension AppCoordinator: UIPageViewControllerDataSource, UIPageViewControllerDe
         return detailViewControllers[after]
     }
 }
-

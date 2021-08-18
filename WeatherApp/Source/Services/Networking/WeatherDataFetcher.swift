@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
 protocol DataFetcher {
-    func getWeather(long: String, lat: String, response: @escaping (WeatherResponse?) -> Void)
+    func fetchWeather(long: String, lat: String, completion: @escaping RequestResult<WeatherResponse>)
 }
 
 struct WeatherDataFetcher: DataFetcher {
@@ -19,23 +20,26 @@ struct WeatherDataFetcher: DataFetcher {
         self.networkService = networkService
     }
     
-    func getWeather(long: String, lat: String, response: @escaping (WeatherResponse?) -> Void) {
+    func fetchWeather(long: String, lat: String, completion: @escaping RequestResult<WeatherResponse>) {
         let params = ["lat": lat, "lon": long]
-        networkService.sendRequest(params: params) { data, error in
-            if let error = error {
-                print("Error receiver requesting data: \(error.localizedDescription)")
-                response(nil)
+        
+        networkService.sendRequest(params: params) { result in
+            switch result {
+            case .success(let data):
+                guard let decoded = self.decodeJSON(type: WeatherResponse.self, from: data) else { return }
+                
+                completion(.success(decoded))
+                
+            case .failure(let error):
+                completion(.failure(error))
             }
-            
-            let decoded = self.decodeJSON(type: WeatherResponse.self, from: data)
-            response(decoded)
         }
     }
     
-    private func decodeJSON<T: Decodable>(type: T.Type, from: Data?) -> T? {
+    private func decodeJSON<T: Decodable>(type: T.Type, from data: Data?) -> T? {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        guard let data = from, let response = try? decoder.decode(type.self, from: data) else { return nil }
+        guard let data = data, let response = try? decoder.decode(type.self, from: data) else { return nil }
         return response
     }
 }

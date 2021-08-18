@@ -12,8 +12,6 @@ protocol DetailViewDisplayLogic: AnyObject {
     func reloadData()
 }
 
-//TODO: consider checking for an existing city in the CityList
-
 class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     // MARK: - Properties
@@ -67,7 +65,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         viewModel?.presentWeather()
     }
     

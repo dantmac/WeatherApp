@@ -11,7 +11,6 @@ import GooglePlaces
 protocol CityListDisplayLogic: AnyObject {
     func reloadData()
 }
-// TODO: - refactoring architecture
 
 class CityListViewController: UIViewController, CityListDisplayLogic {
     
@@ -82,6 +81,7 @@ extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let numberOfRows = viewModel?.countCells() else { return 0 }
+        
         return numberOfRows
     }
     
@@ -100,6 +100,7 @@ extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cellViewModel = viewModel?.setCityCellModel(for: indexPath) else { return }
+        
         viewModel?.presentDetailWeather(cellViewModel, from: indexPath)
     }
     
@@ -109,12 +110,4 @@ extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-    
-    //    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    //        viewModel?.moveRowAt(from: sourceIndexPath, to: destinationIndexPath)
-    //    }
-    //
-    //    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-    //        return true
-    //    }
 }

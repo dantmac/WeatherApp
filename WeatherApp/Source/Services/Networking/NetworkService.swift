@@ -8,12 +8,12 @@
 import Foundation
 
 protocol NetworkServiceProtocol {
-    func sendRequest(params: [String: String], completion: @escaping (Data?, Error?) -> Void)
+    func sendRequest(params: [String: String], completion: @escaping RequestResult<Data>)
 }
 
 struct NetworkService: NetworkServiceProtocol {
     
-    func sendRequest(params: [String: String], completion: @escaping (Data?, Error?) -> Void) {
+    func sendRequest(params: [String: String], completion: @escaping RequestResult<Data>) {
         
         var allParams = params
         allParams[OpenWeatherAPI.appID] = OpenWeatherAPI.key
@@ -25,10 +25,15 @@ struct NetworkService: NetworkServiceProtocol {
         print(url)
     }
     
-    private func createDataTask(from request: URLRequest, completion: @escaping (Data?, Error?) -> Void)  -> URLSessionDataTask {
+    private func createDataTask(from request: URLRequest, completion: @escaping RequestResult<Data>) -> URLSessionDataTask {
         return URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
-                completion(data, error)
+                guard let data = data, error == nil else {
+                    completion(.failure(error ?? AppError.error as! Error))
+                    return
+                }
+                
+                completion(.success(data))
             }
         }
     }

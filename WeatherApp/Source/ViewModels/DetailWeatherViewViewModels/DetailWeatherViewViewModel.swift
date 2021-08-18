@@ -101,33 +101,52 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     }
     
     private func setWeather() {
-        getWeather { [weak self] detailViewModel, hourlyCellViewModel, dailyCellViewModel in
-            self?.hourlyCellViewModel = hourlyCellViewModel
-            self?.dailyCellViewModel = dailyCellViewModel
-            self?.viewController?.displayDetailWeather(detailViewModel)
-            self?.viewController?.reloadData()
+        getWeather { [weak self] result in
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success((let detailViewModel, let hourlyCellViewModel, let dailyCellViewModel)):
+                self.hourlyCellViewModel = hourlyCellViewModel
+                self.dailyCellViewModel = dailyCellViewModel
+                self.viewController?.displayDetailWeather(detailViewModel)
+                self.viewController?.reloadData()
+                
+            case .failure(let error):
+                guard let viewController = self.viewController as? DetailWeatherViewController else { return }
+                
+                Toast.show(message: error.localizedDescription, controller: viewController)
+            }
         }
     }
     
-    private func getWeather(completion: @escaping (DetailViewModelProtocol, HourlyCellViewModel, DailyCellViewModel) -> Void) {
-        fetcher.getWeather(long: long ?? "00", lat: lat ?? "00") { [weak self] response in
-            guard let self = self,
-                  let responseDetail = response else { return }
+    private func getWeather(completion: @escaping RequestResult<ResponseModels>) {
+        fetcher.fetchWeather(long: long ?? "00", lat: lat ?? "00") { [weak self] result in
             
-            let detailViewModel = self.getDetailViewModel(from: responseDetail)
+            guard let self = self else { return }
             
-            let responseHourly = responseDetail.hourly
-            let hourlyCells = responseHourly.map { responseHourly in self.getHourlyViewModel(from: responseHourly) }
-            let preparedHourlyCells = self.configurateHourlyView(hourlyCellViewModel: hourlyCells,
-                                                                 response: responseDetail)
-            let fixedHourlyCells = Array(preparedHourlyCells.prefix(26))
-            let hourlyCellViewModel = HourlyCellViewModel(cells: fixedHourlyCells)
+            switch result {
+            case .success(let response):
+                let responseDetail = response
+                let detailViewModel = self.getDetailViewModel(from: responseDetail)
+                
+                let responseHourly = responseDetail.hourly
+                let hourlyCells = responseHourly.map { responseHourly in self.getHourlyViewModel(from: responseHourly) }
+                let preparedHourlyCells = self.configurateHourlyView(hourlyCellViewModel: hourlyCells,
+                                                                     response: responseDetail)
+                let fixedHourlyCells = Array(preparedHourlyCells.prefix(26))
+                let hourlyCellViewModel = HourlyCellViewModel(cells: fixedHourlyCells)
+                
+                let responseDaily = responseDetail.daily
+                let dailyCells = responseDaily.map { responseDaily in self.getDailyViewModel(from: responseDaily) }
+                let dailyCellViewModel = DailyCellViewModel(cells: dailyCells)
+                
+                completion(.success((detailViewModel, hourlyCellViewModel, dailyCellViewModel)))
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
             
-            let responseDaily = responseDetail.daily
-            let dailyCells = responseDaily.map { responseDaily in self.getDailyViewModel(from: responseDaily) }
-            let dailyCellViewModel = DailyCellViewModel(cells: dailyCells)
-            
-            completion(detailViewModel, hourlyCellViewModel, dailyCellViewModel)
         }
     }
     
