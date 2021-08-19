@@ -9,19 +9,23 @@ import UIKit
 
 protocol DetailViewDisplayLogic: AnyObject {
     func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol)
-    func hideLoader()
-    func showLoader()
     func reloadData()
 }
 
 class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
+    // MARK: - Keys
+    
+    private enum Keys {
+        static let storyboardName = "DetailView"
+        static let storyboardID = "DetailWeatherViewController"
+        static let hourlyCellID = "HourlyViewCell"
+        static let dailyCellID = "DailyViewCell"
+    }
+    
     // MARK: - Properties
     
     var viewModel: DetailWeatherPresentationLogic?
-    
-    private let hourlyCellID = "HourlyViewCell"
-    private let dailyCellID = "DailyViewCell"
     
     var isModal = false
     var inExistence = false
@@ -59,8 +63,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     @IBOutlet weak var addButton:
         UIButton!
     
-    @IBOutlet weak var loaderView: UIActivityIndicatorView!
-    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
@@ -78,8 +80,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     // MARK: - Setups
     
     static func instantiate() -> DetailWeatherViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        let controller = storyboard.instantiateViewController(identifier: "DetailWeatherViewController") as! DetailWeatherViewController
+        let storyboard = UIStoryboard(name: Keys.storyboardName, bundle: nil)
+        let controller = storyboard.instantiateViewController(identifier: Keys.storyboardID) as! DetailWeatherViewController
         return controller
     }
     
@@ -93,20 +95,17 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         setupCollectionView()
         setupTableView()
         setupButtons()
-        
-        loaderView.hidesWhenStopped = true
-        loaderView.color = .white
     }
     
     private func setupCollectionView() {
-        hourlyCollectionView.register(HourlyCollectionViewCell.nib(), forCellWithReuseIdentifier: hourlyCellID)
+        hourlyCollectionView.register(HourlyCollectionViewCell.nib(), forCellWithReuseIdentifier: Keys.hourlyCellID)
         hourlyCollectionView.delegate = self
         hourlyCollectionView.dataSource = self
         hourlyCollectionView.showsHorizontalScrollIndicator = false
     }
     
     private func setupTableView() {
-        dailyTableView.register(DailyTableViewCell.nib(), forCellReuseIdentifier: dailyCellID)
+        dailyTableView.register(DailyTableViewCell.nib(), forCellReuseIdentifier: Keys.dailyCellID)
         dailyTableView.delegate = self
         dailyTableView.dataSource = self
         dailyTableView.separatorStyle = .none
@@ -162,14 +161,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         degreeLabel.text = "º"
     }
     
-    func showLoader() {
-        loaderView.startAnimating()
-    }
-    
-    func hideLoader() {
-        loaderView.stopAnimating()
-    }
-    
     func reloadData() {
         DispatchQueue.main.async {
             self.dailyTableView.reloadData()
@@ -202,7 +193,7 @@ extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: hourlyCellID, for: indexPath) as! HourlyCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Keys.hourlyCellID, for: indexPath) as! HourlyCollectionViewCell
         
         guard let cellViewModel = viewModel?.setHourlyViewModel(for: indexPath) else { return cell }
         
@@ -221,7 +212,7 @@ extension DetailWeatherViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: dailyCellID, for: indexPath) as! DailyTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Keys.dailyCellID, for: indexPath) as! DailyTableViewCell
         
         guard let cellViewModel = viewModel?.setDailyViewModel(for: indexPath) else { return cell }
         

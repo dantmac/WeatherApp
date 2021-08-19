@@ -5,7 +5,7 @@
         <attribute name="descript" attributeType="String"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="lat" attributeType="String"/>
-        <attribute name="long" attributeType="String"/>
+        <attribute name="lon" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="temp" attributeType="String"/>
     </entity>

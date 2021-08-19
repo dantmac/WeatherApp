@@ -71,7 +71,7 @@ final class AppCoordinator: NSObject, Coordinator {
         pushGeolocation(viewModel: vm,
                         id: cityCellModel.id,
                         name: cityCellModel.name,
-                        long: cityCellModel.long,
+                        lon: cityCellModel.lon,
                         lat: cityCellModel.lat)
         
         navigationController.pushViewController(pageVC, animated: true)
@@ -108,7 +108,7 @@ final class AppCoordinator: NSObject, Coordinator {
         pushGeolocation(viewModel: vm,
                         id: place.placeID ?? "",
                         name: place.name ?? "",
-                        long: String(place.coordinate.longitude),
+                        lon: String(place.coordinate.longitude),
                         lat: String(place.coordinate.latitude))
         
         viewController.present(vc, animated: true, completion: nil)
@@ -122,18 +122,18 @@ final class AppCoordinator: NSObject, Coordinator {
         viewController.dismiss(animated: true, completion: nil)
     }
     
-    func addCity(id: String, name: String, long: String, lat: String) {
+    func addCity(id: String, name: String, lon: String, lat: String) {
         navigationController.dismiss(animated: true, completion: nil)
-        cityListViewModel.addCity(id: id, name: name, long: long, lat: lat)
+        cityListViewModel.addCity(id: id, name: name, lon: lon, lat: lat)
     }
     
-    func appendDetailVC(id: String, name: String, long: String, lat: String) {
+    func appendDetailVC(id: String, name: String, lon: String, lat: String) {
         let (vc, vm) = setupDetailVC()
         
         vm.id = id
         vm.cityName = name
         vm.lat = lat
-        vm.long = long
+        vm.lon = lon
         
         detailViewControllers.append(vc)
     }
@@ -149,7 +149,7 @@ final class AppCoordinator: NSObject, Coordinator {
             vm.id = city.id
             vm.cityName = city.name
             vm.lat = city.lat
-            vm.long = city.long
+            vm.lon = city.lon
             
             detailViewControllers.append(vc)
         }
@@ -157,8 +157,8 @@ final class AppCoordinator: NSObject, Coordinator {
     
     // MARK: - Private methods
     
-    private func pushGeolocation(viewModel: DetailWeatherViewViewModel, id: String, name: String, long: String, lat: String) {
-        viewModel.setGeolocation(id: id, name: name, long: long, lat: lat)
+    private func pushGeolocation(viewModel: DetailWeatherViewViewModel, id: String, name: String, lon: String, lat: String) {
+        viewModel.setGeolocation(id: id, name: name, lon: lon, lat: lat)
     }
     
     private func setupDetailVC() -> (DetailWeatherViewController, DetailWeatherViewViewModel) {

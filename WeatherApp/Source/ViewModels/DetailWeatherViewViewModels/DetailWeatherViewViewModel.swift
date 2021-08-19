@@ -40,13 +40,12 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     
     var id: String?
     var cityName: String?
-    var long: String?
+    var lon: String?
     var lat: String?
     
     // MARK: - Business logic
     
     func presentWeather() {
-        viewController?.showLoader()
         setWeather()
     }
     
@@ -63,7 +62,7 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         
         coreDataManager.saveCity(id: id ?? "",
                                  name: cityName ?? "",
-                                 long: long ?? "00",
+                                 lon: lon ?? "00",
                                  lat: lat ?? "00",
                                  descript: description ?? "",
                                  temp: temp ?? "",
@@ -71,19 +70,19 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         
         coordinator?.appendDetailVC(id: id ?? "",
                               name: cityName ?? "",
-                              long: long ?? "00",
+                              lon: lon ?? "00",
                               lat: lat ?? "00")
         
         coordinator?.addCity(id: id ?? "",
                              name: cityName ?? "",
-                             long: long ?? "00",
+                             lon: lon ?? "00",
                              lat: lat ?? "00")
     }
     
-    func setGeolocation(id: String, name: String, long: String, lat: String) {
+    func setGeolocation(id: String, name: String, lon: String, lat: String) {
         self.id = id
         self.cityName = name
-        self.long = long
+        self.lon = lon
         self.lat = lat
     }
     
@@ -118,21 +117,18 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                 self.dailyCellViewModel = dailyCellViewModel
                 self.viewController?.displayDetailWeather(detailViewModel)
                 self.viewController?.reloadData()
-                self.viewController?.hideLoader()
                 
             case .failure(let error):
                 guard let viewController = self.viewController as? DetailWeatherViewController else { return }
                 
                 viewController.locationLabel.text = self.cityName
-                
-                self.viewController?.hideLoader()
                 Toast.show(message: error.localizedDescription, controller: viewController)
             }
         }
     }
     
     private func getWeather(completion: @escaping RequestResult<ResponseModels>) {
-        fetcher.fetchWeather(long: long ?? "00", lat: lat ?? "00") { [weak self] result in
+        fetcher.fetchWeather(lon: lon ?? "00", lat: lat ?? "00") { [weak self] result in
             
             guard let self = self else { return }
             

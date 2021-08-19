@@ -9,10 +9,15 @@ import Foundation
 import UIKit
 
 protocol DataFetcher {
-    func fetchWeather(long: String, lat: String, completion: @escaping RequestResult<WeatherResponse>)
+    func fetchWeather(lon: String, lat: String, completion: @escaping RequestResult<WeatherResponse>)
 }
 
 struct WeatherDataFetcher: DataFetcher {
+    
+    private enum Keys {
+        static let lon = "lon"
+        static let lat = "lat"
+    }
     
     let networkService: NetworkServiceProtocol
     
@@ -20,8 +25,8 @@ struct WeatherDataFetcher: DataFetcher {
         self.networkService = networkService
     }
     
-    func fetchWeather(long: String, lat: String, completion: @escaping RequestResult<WeatherResponse>) {
-        let params = ["lat": lat, "lon": long]
+    func fetchWeather(lon: String, lat: String, completion: @escaping RequestResult<WeatherResponse>) {
+        let params = [Keys.lat: lat, Keys.lon: lon]
         
         networkService.sendRequest(params: params) { result in
             switch result {

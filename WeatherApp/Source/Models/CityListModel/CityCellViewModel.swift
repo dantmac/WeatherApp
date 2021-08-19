@@ -12,7 +12,7 @@ protocol CityCellModelProtocol {
     var name: String { get }
     var description: String { get }
     var temp: String { get }
-    var long: String { get }
+    var lon: String { get }
     var lat: String { get }
     var dateAdded: Date { get }
 }
@@ -24,7 +24,7 @@ struct CityCellModel {
         var description: String
         var temp: String
         var lat: String
-        var long: String
+        var lon: String
         var dateAdded: Date
     }
     

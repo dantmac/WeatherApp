@@ -18,7 +18,7 @@
 		847A967E26A5A915009F55BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A967D26A5A915009F55BF /* AppDelegate.swift */; };
 		847A968026A5A915009F55BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A967F26A5A915009F55BF /* SceneDelegate.swift */; };
 		847A968226A5A915009F55BF /* DetailWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A968126A5A915009F55BF /* DetailWeatherViewController.swift */; };
-		847A968526A5A915009F55BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 847A968326A5A915009F55BF /* Main.storyboard */; };
+		847A968526A5A915009F55BF /* DetailView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 847A968326A5A915009F55BF /* DetailView.storyboard */; };
 		847A968726A5A916009F55BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 847A968626A5A916009F55BF /* Assets.xcassets */; };
 		847A968A26A5A916009F55BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 847A968826A5A916009F55BF /* LaunchScreen.storyboard */; };
 		847A969226A5AC34009F55BF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 847A969126A5AC34009F55BF /* .gitignore */; };
@@ -62,7 +62,7 @@
 		847A967D26A5A915009F55BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		847A967F26A5A915009F55BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		847A968126A5A915009F55BF /* DetailWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherViewController.swift; sourceTree = "<group>"; };
-		847A968426A5A915009F55BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		847A968426A5A915009F55BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/DetailView.storyboard; sourceTree = "<group>"; };
 		847A968626A5A916009F55BF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		847A968926A5A916009F55BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		847A968B26A5A916009F55BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -340,7 +340,7 @@
 			isa = PBXGroup;
 			children = (
 				847A968126A5A915009F55BF /* DetailWeatherViewController.swift */,
-				847A968326A5A915009F55BF /* Main.storyboard */,
+				847A968326A5A915009F55BF /* DetailView.storyboard */,
 				84AF984C26AB37F100CB03C9 /* HourlyCollectionViewCell */,
 				84AF985626AB63AF00CB03C9 /* DailyTableViewCell */,
 			);
@@ -419,7 +419,7 @@
 				847A968A26A5A916009F55BF /* LaunchScreen.storyboard in Resources */,
 				84E8961B26B8126F0055363D /* CityList.storyboard in Resources */,
 				847A968726A5A916009F55BF /* Assets.xcassets in Resources */,
-				847A968526A5A915009F55BF /* Main.storyboard in Resources */,
+				847A968526A5A915009F55BF /* DetailView.storyboard in Resources */,
 				84AF985026AB383900CB03C9 /* HourlyCollectionViewCell.xib in Resources */,
 				84AF985A26AB63DE00CB03C9 /* DailyTableViewCell.xib in Resources */,
 			);
@@ -510,12 +510,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		847A968326A5A915009F55BF /* Main.storyboard */ = {
+		847A968326A5A915009F55BF /* DetailView.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				847A968426A5A915009F55BF /* Base */,
 			);
-			name = Main.storyboard;
+			name = DetailView.storyboard;
 			sourceTree = "<group>";
 		};
 		847A968826A5A916009F55BF /* LaunchScreen.storyboard */ = {

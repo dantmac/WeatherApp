@@ -14,11 +14,17 @@ protocol CityListDisplayLogic: AnyObject {
 
 class CityListViewController: UIViewController, CityListDisplayLogic {
     
+    // MARK: - Keys
+    
+    private enum Keys {
+        static let storyboardName = "CityList"
+        static let storyboardID = "CityList"
+        static let cellID = "CityListCell"
+    }
+    
     // MARK: - Properties
     
     var viewModel: CityListPresentationLogic?
-    
-    private let reuseID = "CityListCell"
     
     private var placesClient: GMSPlacesClient!
     
@@ -41,8 +47,8 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
     // MARK: - Setups
     
     static func instantiate() -> CityListViewController {
-        let storyboard = UIStoryboard(name: "CityList", bundle: nil)
-        let controller = storyboard.instantiateViewController(identifier: "CityList") as! CityListViewController
+        let storyboard = UIStoryboard(name: Keys.storyboardName, bundle: nil)
+        let controller = storyboard.instantiateViewController(identifier: Keys.storyboardID) as! CityListViewController
         return controller
     }
     
@@ -54,7 +60,7 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
     }
     
     private func setupTableView() {
-        tableView.register(CityListCell.nib(), forCellReuseIdentifier: reuseID)
+        tableView.register(CityListCell.nib(), forCellReuseIdentifier: Keys.cellID)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
@@ -90,7 +96,7 @@ extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! CityListCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Keys.cellID, for: indexPath) as! CityListCell
         
         guard let cellViewModel = viewModel?.setCityCellModel(for: indexPath) else { return cell }
         

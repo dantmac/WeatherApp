@@ -9,6 +9,10 @@ import UIKit
 
 class HourlyCollectionViewCell: UICollectionViewCell {
     
+    private enum Keys {
+        static let nibName = "HourlyCollectionViewCell"
+    }
+    
     @IBOutlet weak var dtHourLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var weatherIcon: UIImageView!
@@ -19,7 +23,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     }
     
     static func nib() -> UINib {
-        return UINib(nibName: "HourlyCollectionViewCell",
+        return UINib(nibName: Keys.nibName,
                      bundle: nil)
     }
     

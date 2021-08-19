@@ -8,6 +8,10 @@
 import UIKit
 
 class CityListCell: UITableViewCell {
+    
+    private enum Keys {
+        static let nibName = "CityListCell"
+    }
 
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
@@ -23,7 +27,7 @@ class CityListCell: UITableViewCell {
     }
     
     static func nib() -> UINib {
-        return UINib(nibName: "CityListCell", bundle: nil)
+        return UINib(nibName: Keys.nibName, bundle: nil)
     }
     
     func setCell(_ cityCellModel: CityCellModelProtocol) {

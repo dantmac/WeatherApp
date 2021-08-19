@@ -32,7 +32,7 @@ final class CityListViewModel: CityListPresentationLogic {
     private var cityCellModel = CityCellModel(cells: [])
     private var id: String?
     private var cityName: String?
-    private var long: String?
+    private var lon: String?
     private var lat: String?
     
     // MARK: - Business logic
@@ -65,13 +65,13 @@ final class CityListViewModel: CityListPresentationLogic {
         return cityCellModel.cells.count
     }
     
-    func addCity(id: String, name: String, long: String, lat: String) {
+    func addCity(id: String, name: String, lon: String, lat: String) {
         self.id = id
         self.cityName = name
-        self.long = long
+        self.lon = lon
         self.lat = lat
         
-        fetcher.fetchWeather(long: long, lat: lat) { [weak self] result in
+        fetcher.fetchWeather(lon: lon, lat: lat) { [weak self] result in
             
             guard let self = self else { return }
             
@@ -145,11 +145,11 @@ final class CityListViewModel: CityListPresentationLogic {
                                                  description: "",
                                                  temp: "",
                                                  lat: "",
-                                                 long: "",
+                                                 lon: "",
                                                  dateAdded: Date())
         
         for city in cityCellModel.cells {
-            fetcher.fetchWeather(long: city.long, lat: city.lat) { result in
+            fetcher.fetchWeather(lon: city.lon, lat: city.lat) { result in
                 
                 switch result {
                 case .success(let response):
@@ -162,7 +162,7 @@ final class CityListViewModel: CityListPresentationLogic {
                     updatedCity.name = city.name
                     updatedCity.description = description
                     updatedCity.lat = city.lat
-                    updatedCity.long = city.long
+                    updatedCity.lon = city.lon
                     updatedCity.temp = temp + "º"
                     updatedCity.dateAdded = city.dateAdded
                     
@@ -184,7 +184,7 @@ final class CityListViewModel: CityListPresentationLogic {
                                       description: description,
                                       temp: response.current.tempCelsiusString + "º",
                                       lat: lat ?? "00",
-                                      long: long ?? "00",
+                                      lon: lon ?? "00",
                                       dateAdded: Date())
     }
     
@@ -203,7 +203,7 @@ final class CityListViewModel: CityListPresentationLogic {
                                       description: entity.descript ?? "",
                                       temp: temp,
                                       lat: entity.lat ?? "",
-                                      long: entity.long ?? "",
+                                      lon: entity.lon ?? "",
                                       dateAdded: entity.dateAdded ?? Date())
     }
 }
