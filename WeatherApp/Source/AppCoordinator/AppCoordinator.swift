@@ -16,6 +16,8 @@ protocol Coordinator: AnyObject {
 
 final class AppCoordinator: NSObject, Coordinator {
     
+    // MARK: -  Properties
+    
     private let window: UIWindow
     
     private let navigationController = UINavigationController()
@@ -27,9 +29,13 @@ final class AppCoordinator: NSObject, Coordinator {
     
     private var detailViewControllers = [DetailWeatherViewController]()
     
+    // MARK: -  Init
+    
     init(window: UIWindow) {
         self.window = window
     }
+    
+    // MARK: -  Routing
     
     func start() {
         startCityListVC()
@@ -121,7 +127,7 @@ final class AppCoordinator: NSObject, Coordinator {
         cityListViewModel.addCity(id: id, name: name, long: long, lat: lat)
     }
     
-    func appendVC(id: String, name: String, long: String, lat: String) {
+    func appendDetailVC(id: String, name: String, long: String, lat: String) {
         let (vc, vm) = setupDetailVC()
         
         vm.id = id
@@ -132,11 +138,11 @@ final class AppCoordinator: NSObject, Coordinator {
         detailViewControllers.append(vc)
     }
     
-    func removeVC(at indexPath: IndexPath) {
+    func removeDetailVC(at indexPath: IndexPath) {
         detailViewControllers.remove(at: indexPath.row)
     }
     
-    func preinstallVC(_ cityCellModel: CityCellModel) {
+    func preinstallDetailVC(_ cityCellModel: CityCellModel) {
         for city in cityCellModel.cells {
             let (vc, vm) = setupDetailVC()
             
@@ -148,6 +154,8 @@ final class AppCoordinator: NSObject, Coordinator {
             detailViewControllers.append(vc)
         }
     }
+    
+    // MARK: - Private methods
     
     private func pushGeolocation(viewModel: DetailWeatherViewViewModel, id: String, name: String, long: String, lat: String) {
         viewModel.setGeolocation(id: id, name: name, long: long, lat: lat)

@@ -9,6 +9,8 @@ import UIKit
 
 protocol DetailViewDisplayLogic: AnyObject {
     func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol)
+    func hideLoader()
+    func showLoader()
     func reloadData()
 }
 
@@ -44,7 +46,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     @IBOutlet weak var uviLabel: UILabel!
     
     @IBOutlet weak var currentTempView: UIView!
-    
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var dailyTableView: UITableView!
     
@@ -55,7 +56,10 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     @IBOutlet weak var toolBarView: UIToolbar!
     
     @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var addButton:
+        UIButton!
+    
+    @IBOutlet weak var loaderView: UIActivityIndicatorView!
     
     // MARK: - View lifecycle
     
@@ -89,6 +93,9 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         setupCollectionView()
         setupTableView()
         setupButtons()
+        
+        loaderView.hidesWhenStopped = true
+        loaderView.color = .white
     }
     
     private func setupCollectionView() {
@@ -153,6 +160,14 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         visibilityLabel.text = detailViewModel.visibility
         uviLabel.text = detailViewModel.uvi
         degreeLabel.text = "º"
+    }
+    
+    func showLoader() {
+        loaderView.startAnimating()
+    }
+    
+    func hideLoader() {
+        loaderView.stopAnimating()
     }
     
     func reloadData() {

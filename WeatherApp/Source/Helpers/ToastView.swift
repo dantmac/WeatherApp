@@ -8,7 +8,9 @@
 import UIKit
 
 struct Toast {
+    
     static func show(message: String, controller: UIViewController) {
+        
         let toastContainer = UIView(frame: CGRect())
         toastContainer.backgroundColor = .black.withAlphaComponent(0.6)
         toastContainer.alpha = 0.0

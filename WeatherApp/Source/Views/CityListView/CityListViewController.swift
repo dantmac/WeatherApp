@@ -20,7 +20,6 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
     
     private let reuseID = "CityListCell"
     
-    // Google SDK
     private var placesClient: GMSPlacesClient!
     
     // MARK: - IBOutlets

@@ -706,6 +706,9 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="barTintColor" red="0.25490196078431371" green="0.80000000000000004" blue="0.96862745098039216" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </toolbar>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="07V-0s-9nD">
+                                <rect key="frame" x="197" y="354" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -715,10 +718,12 @@
                             <constraint firstItem="79i-6w-bqe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="J6F-DE-R8u"/>
                             <constraint firstItem="Iei-sZ-hSb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Lhp-fV-bF4"/>
                             <constraint firstAttribute="trailing" secondItem="79i-6w-bqe" secondAttribute="trailing" id="Ros-vd-YPc"/>
+                            <constraint firstItem="07V-0s-9nD" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="310" id="Urh-Xy-k4K"/>
                             <constraint firstAttribute="trailing" secondItem="MVn-cZ-3P7" secondAttribute="trailing" id="XDf-2j-edo"/>
                             <constraint firstItem="MVn-cZ-3P7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="cOm-g4-XoQ"/>
                             <constraint firstItem="MVn-cZ-3P7" firstAttribute="top" secondItem="Iei-sZ-hSb" secondAttribute="bottom" id="dtg-G4-weC"/>
                             <constraint firstItem="Iei-sZ-hSb" firstAttribute="top" secondItem="79i-6w-bqe" secondAttribute="bottom" id="ofX-KD-8MM"/>
+                            <constraint firstItem="07V-0s-9nD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qpG-63-udK"/>
                             <constraint firstItem="79i-6w-bqe" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="s75-hE-rOt"/>
                         </constraints>
                     </view>
@@ -736,6 +741,7 @@
                         <outlet property="hourlyCollectionView" destination="Qql-7t-B1e" id="MbJ-Nb-Kmj"/>
                         <outlet property="hourlySeparatorView" destination="gSh-W8-1TW" id="gbv-eZ-hYG"/>
                         <outlet property="humidityLabel" destination="J8u-9F-G6M" id="z8o-Qf-99M"/>
+                        <outlet property="loaderView" destination="07V-0s-9nD" id="vcA-Zb-43c"/>
                         <outlet property="locationLabel" destination="DL3-5V-RSw" id="OPW-hh-Y2s"/>
                         <outlet property="pressureLabel" destination="rg0-YT-7Wc" id="Beg-Tz-Mmo"/>
                         <outlet property="scrollView" destination="79i-6w-bqe" id="JFT-pL-lFn"/>

@@ -41,24 +41,3 @@ extension Date {
         return formatter.string(from: self)
     }
 }
-
-extension UIViewController {
-    func showToast(message : String, font: UIFont) {
-        
-        let toastLabel = UILabel(frame: CGRect(x: 0, y: self.view.frame.size.height - 100, width: self.view.frame.size.width, height: 35))
-        toastLabel.backgroundColor = .red.withAlphaComponent(0.6)
-        toastLabel.textColor = .white
-        toastLabel.font = font
-        toastLabel.textAlignment = .center;
-        toastLabel.text = message
-        toastLabel.alpha = 1.0
-        toastLabel.layer.cornerRadius = 10;
-        toastLabel.clipsToBounds  =  true
-        self.view.addSubview(toastLabel)
-        UIView.animate(withDuration: 4.0, delay: 4, options: .curveEaseInOut, animations: {
-            toastLabel.alpha = 0.0
-        }, completion: {(isCompleted) in
-            toastLabel.removeFromSuperview()
-        })
-    }
-}

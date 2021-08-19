@@ -14,14 +14,14 @@ protocol CityListPresentationLogic {
     func countCells() -> Int
     func removeCity(for indexPath: IndexPath)
     
-    func presentSearchVC()
     func refreshCityList()
+    func presentSearchVC()
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath)
 }
 
-// TODO: - consider following Interface Segregation principle
-
 final class CityListViewModel: CityListPresentationLogic {
+    
+    // MARK: - Properties
     
     weak var viewController: CityListDisplayLogic?
     weak var coordinator: AppCoordinator?
@@ -35,15 +35,17 @@ final class CityListViewModel: CityListPresentationLogic {
     private var long: String?
     private var lat: String?
     
-    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
-        coordinator?.startPageVC(cityCellModel, from: indexPath)
-    }
+    // MARK: - Business logic
     
     func presentCityList() {
         getCityList()
         updateCityList()
         
-        coordinator?.preinstallVC(cityCellModel)
+        coordinator?.preinstallDetailVC(cityCellModel)
+    }
+    
+    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
+        coordinator?.startPageVC(cityCellModel, from: indexPath)
     }
     
     func presentSearchVC() {
@@ -90,7 +92,7 @@ final class CityListViewModel: CityListPresentationLogic {
     func removeCity(for indexPath: IndexPath) {
         coreDataManager.removeCity(for: indexPath)
         cityCellModel.cells.remove(at: indexPath.row)
-        coordinator?.removeVC(at: indexPath)
+        coordinator?.removeDetailVC(at: indexPath)
         viewController?.reloadData()
     }
     
@@ -106,6 +108,8 @@ final class CityListViewModel: CityListPresentationLogic {
         
         return checker
     }
+    
+    // MARK: - Private methods
     
     private func updateCityList() {
         if cityCellModel.cells.isEmpty {

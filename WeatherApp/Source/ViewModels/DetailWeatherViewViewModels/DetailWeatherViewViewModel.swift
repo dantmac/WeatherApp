@@ -24,6 +24,8 @@ protocol DetailWeatherPresentationLogic {
 
 final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     
+    // MARK: - Properties
+    
     weak var viewController: DetailViewDisplayLogic?
     var coordinator: AppCoordinator?
     private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
@@ -41,7 +43,10 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     var long: String?
     var lat: String?
     
+    // MARK: - Business logic
+    
     func presentWeather() {
+        viewController?.showLoader()
         setWeather()
     }
     
@@ -64,7 +69,7 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                                  temp: temp ?? "",
                                  dateAdded: date)
         
-        coordinator?.appendVC(id: id ?? "",
+        coordinator?.appendDetailVC(id: id ?? "",
                               name: cityName ?? "",
                               long: long ?? "00",
                               lat: lat ?? "00")
@@ -100,6 +105,8 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         return dailyCellViewModel.cells.count
     }
     
+    // MARK: - Private methods
+    
     private func setWeather() {
         getWeather { [weak self] result in
             
@@ -111,13 +118,14 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                 self.dailyCellViewModel = dailyCellViewModel
                 self.viewController?.displayDetailWeather(detailViewModel)
                 self.viewController?.reloadData()
+                self.viewController?.hideLoader()
                 
             case .failure(let error):
                 guard let viewController = self.viewController as? DetailWeatherViewController else { return }
                 
                 viewController.locationLabel.text = self.cityName
-                viewController.descriptionLabel.text = "--"
                 
+                self.viewController?.hideLoader()
                 Toast.show(message: error.localizedDescription, controller: viewController)
             }
         }
