@@ -115,7 +115,7 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		840DEACF26AD80AF00A9E730 /* Helpers */ = {
+		840DEACF26AD80AF00A9E730 /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				840DEAD026AD80C500A9E730 /* Extensions.swift */,
@@ -123,7 +123,7 @@
 				84ACB94126CD6FC00065EF9D /* AppError.swift */,
 				84ACB94326CD80540065EF9D /* TypeAlias.swift */,
 			);
-			path = Helpers;
+			path = Common;
 			sourceTree = "<group>";
 		};
 		8416AB5326BD44C0002AB1DB /* CityListModel */ = {
@@ -256,7 +256,7 @@
 				84286AB226A6D48500B5DF86 /* Models */,
 				84286AB426A6D49F00B5DF86 /* ViewModels */,
 				84286AB326A6D49100B5DF86 /* Views */,
-				840DEACF26AD80AF00A9E730 /* Helpers */,
+				840DEACF26AD80AF00A9E730 /* Common */,
 			);
 			path = Source;
 			sourceTree = "<group>";
