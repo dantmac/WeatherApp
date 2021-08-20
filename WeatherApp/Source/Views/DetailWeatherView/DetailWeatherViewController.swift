@@ -9,6 +9,7 @@ import UIKit
 
 protocol DetailViewDisplayLogic: AnyObject {
     func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol)
+    func showToastMessage(message: String)
     func reloadData()
 }
 
@@ -29,7 +30,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     var isModal = false
     var inExistence = false
-        
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var locationLabel: UILabel!
@@ -54,8 +55,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     @IBOutlet weak var dailyTableView: UITableView!
     
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var hourlySeparatorView: UIView!
-    @IBOutlet weak var dailySeparatorView: UIView!
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var toolBarView: UIToolbar!
     
@@ -73,8 +72,12 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         viewModel?.presentWeather()
+    }
+    
+    deinit {
+        print("deinit from vc")
     }
     
     // MARK: - Setups
@@ -85,7 +88,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         return controller
     }
     
-    func setup() {
+    private func setup() {
         view.backgroundColor = #colorLiteral(red: 0.2549019608, green: 0.8, blue: 0.968627451, alpha: 1)
         
         setupViews()
@@ -113,11 +116,6 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         dailyTableView.showsVerticalScrollIndicator = false
     }
     
-    func setSeparators() {
-        hourlySeparatorView.isHidden = false
-        dailySeparatorView.isHidden = false
-    }
-    
     private func setupButtons() {
         if isModal {
             
@@ -142,6 +140,8 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         }
     }
     
+    // MARK: - Display Logic
+    
     func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol) {
         locationLabel.text = detailViewModel.location
         descriptionLabel.text = detailViewModel.description
@@ -161,6 +161,10 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         degreeLabel.text = "º"
     }
     
+    func showToastMessage(message: String) {
+        Toast.show(message: message, controller: self)
+    }
+    
     func reloadData() {
         DispatchQueue.main.async {
             self.dailyTableView.reloadData()
@@ -168,12 +172,14 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
         }
     }
     
+    // MARK: - IBActions
+    
     @IBAction func cancelPressed(_ sender: UIButton) {
         viewModel?.dismissVC(self)
     }
     
     @IBAction func addPressed(_ sender: UIButton) {
-        viewModel?.addCity()
+        viewModel?.addCityToCityList()
         isModal = false
         inExistence = false
     }

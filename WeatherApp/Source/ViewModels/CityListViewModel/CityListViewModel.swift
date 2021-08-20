@@ -8,15 +8,22 @@
 import Foundation
 import UIKit
 
-protocol CityListPresentationLogic {
+protocol CityListRouting {
     func presentCityList()
-    func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol
-    func countCells() -> Int
-    func removeCity(for indexPath: IndexPath)
-    
-    func refreshCityList()
     func presentSearchVC()
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath)
+}
+
+protocol CityListPresentationLogic: CityListRouting {
+    func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol
+    func updateCityList()
+    func countCities() -> Int
+    func removeCity(for indexPath: IndexPath)
+}
+
+protocol CityListDataFlow: AnyObject {
+    func startSearchVC()
+    func startPageVC(_ cityCellModel: CityCellModelProtocol, cityListModel: CityListModel, from indexPath: IndexPath)
 }
 
 final class CityListViewModel: CityListPresentationLogic {
@@ -24,45 +31,75 @@ final class CityListViewModel: CityListPresentationLogic {
     // MARK: - Properties
     
     weak var viewController: CityListDisplayLogic?
-    weak var coordinator: AppCoordinator?
+    weak var dataFlow: CityListDataFlow?
     
-    private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
+    private var fetcher: WeatherDataFetcherProtocol = WeatherDataFetcher(networkService: NetworkService())
     private let coreDataManager = CoreDataManager()
     
-    private var cityCellModel = CityCellModel(cells: [])
+    private var cityListModel = CityListModel(cells: [])
     private var id: String?
     private var cityName: String?
     private var lon: String?
     private var lat: String?
     
-    // MARK: - Business logic
+    // MARK: - Routing Logic
     
     func presentCityList() {
-        getCityList()
+        getCityListFromDatabase()
         updateCityList()
         
-        coordinator?.preinstallDetailVC(cityCellModel)
+//        dataFlow?.preinstallDetailVC(cityListModel)
     }
     
     func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
-        coordinator?.startPageVC(cityCellModel, from: indexPath)
+        dataFlow?.startPageVC(cityCellModel, cityListModel: cityListModel, from: indexPath)
     }
     
     func presentSearchVC() {
-        coordinator?.startSearchVC()
+        dataFlow?.startSearchVC()
     }
-    
-    func refreshCityList() {
-        updateCityList()
-    }
+   
+    // MARK: - Presentation Logic
     
     func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol {
-        let cellViewModel = cityCellModel.cells[indexPath.row]
+        let cellViewModel = cityListModel.cells[indexPath.row]
         return cellViewModel
     }
     
-    func countCells() -> Int {
-        return cityCellModel.cells.count
+    func countCities() -> Int {
+        return cityListModel.cells.count
+    }
+    
+    func removeCity(for indexPath: IndexPath) {
+        coreDataManager.removeCity(for: indexPath)
+        cityListModel.cells.remove(at: indexPath.row)
+        viewController?.reloadData()
+    }
+    
+    func updateCityList() {
+        if cityListModel.cells.isEmpty {
+            dataFlow?.startSearchVC()
+        } else {
+            updateWeather { [weak self] result in
+                
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let updatedModel):
+                    for (i, j) in self.cityListModel.cells.enumerated() {
+                        if j.dateAdded == updatedModel.dateAdded {
+                            self.cityListModel.cells.remove(at: i)
+                            self.cityListModel.cells.insert(updatedModel, at: i)
+                        }
+                    }
+                    
+                    self.viewController?.reloadData()
+                    
+                case .failure(let error):
+                    self.viewController?.showToastMessage(message: error.localizedDescription)
+                }
+            }
+        }
     }
     
     func addCity(id: String, name: String, lon: String, lat: String) {
@@ -77,70 +114,26 @@ final class CityListViewModel: CityListPresentationLogic {
             
             switch result {
             case .success(let response):
-                let cellModel = self.getCityCellModel(from: response)
-                self.cityCellModel.cells.append(cellModel)
+                let cellModel = self.createCityCellModel(from: response)
+                self.cityListModel.cells.append(cellModel)
                 self.viewController?.reloadData()
                 
             case .failure(let error):
-                guard let viewController = self.viewController as? CityListViewController else { return }
-                
-                Toast.show(message: error.localizedDescription, controller: viewController)
+                self.viewController?.showToastMessage(message: error.localizedDescription)
             }
         }
-    }
-    
-    func removeCity(for indexPath: IndexPath) {
-        coreDataManager.removeCity(for: indexPath)
-        cityCellModel.cells.remove(at: indexPath.row)
-        coordinator?.removeDetailVC(at: indexPath)
-        viewController?.reloadData()
     }
     
     func checkForExistenceCity(placeID: String) -> Bool {
-        var checker = false
+        let isCityExists = cityListModel.cells.filter { $0.id == placeID }.count != 0
         
-        for city in cityCellModel.cells {
-            
-            if city.id == placeID {
-                checker = true
-            }
-        }
-        
-        return checker
+        return isCityExists
     }
     
     // MARK: - Private methods
     
-    private func updateCityList() {
-        if cityCellModel.cells.isEmpty {
-            coordinator?.startSearchVC()
-        } else {
-            updateWeather { [weak self] result in
-                
-                guard let self = self else { return }
-                
-                switch result {
-                case .success(let updatedModel):
-                    for (i, j) in self.cityCellModel.cells.enumerated() {
-                        if j.dateAdded == updatedModel.dateAdded {
-                            self.cityCellModel.cells.remove(at: i)
-                            self.cityCellModel.cells.insert(updatedModel, at: i)
-                        }
-                    }
-                    
-                    self.viewController?.reloadData()
-                    
-                case .failure(let error):
-                    guard let viewController = self.viewController as? CityListViewController else { return }
-                    
-                    Toast.show(message: error.localizedDescription, controller: viewController)
-                }
-            }
-        }
-    }
-    
     private func updateWeather(completion: @escaping RequestResult<CityCellModelProtocol>) {
-        var updatedCity = CityCellModel.CityCell(id: "",
+        var updatedCity = CityListModel.CityCellModel(id: "",
                                                  name: "",
                                                  description: "",
                                                  temp: "",
@@ -148,8 +141,10 @@ final class CityListViewModel: CityListPresentationLogic {
                                                  lon: "",
                                                  dateAdded: Date())
         
-        for city in cityCellModel.cells {
-            fetcher.fetchWeather(lon: city.lon, lat: city.lat) { result in
+        for city in cityListModel.cells {
+            fetcher.fetchWeather(lon: city.lon, lat: city.lat) { [weak self] result in
+                
+                guard self != nil else { return }
                 
                 switch result {
                 case .success(let response):
@@ -175,11 +170,18 @@ final class CityListViewModel: CityListPresentationLogic {
         }
     }
     
-    private func getCityCellModel(from response: WeatherResponse) -> CityCellModelProtocol {
+    private func getCityListFromDatabase() {
+        let entity = coreDataManager.fetchCityList()
+        let cities = entity.map { city in createCityCellModel(from: city) }
+        let cityCellModel = CityListModel(cells: cities)
+        self.cityListModel = cityCellModel
+    }
+    
+    private func createCityCellModel(from response: WeatherResponse) -> CityCellModelProtocol {
         let descriptions = response.current.weather.map { weather in weather.descriptionStr }
         let description = descriptions[0]
         
-        return CityCellModel.CityCell(id: id ?? "",
+        return CityListModel.CityCellModel(id: id ?? "",
                                       name: cityName ?? "",
                                       description: description,
                                       temp: response.current.tempCelsiusString + "º",
@@ -188,17 +190,10 @@ final class CityListViewModel: CityListPresentationLogic {
                                       dateAdded: Date())
     }
     
-    private func getCityList() {
-        let entity = coreDataManager.fetchCityList()
-        let cities = entity.map { [unowned self] city in self.fetchCityList(from: city) }
-        let cityCellModel = CityCellModel(cells: cities)
-        self.cityCellModel = cityCellModel
-    }
-    
-    private func fetchCityList(from entity: CityCell) -> CityCellModelProtocol {
+    private func createCityCellModel(from entity: CityCellPersistentModel) -> CityCellModelProtocol {
         let temp = (entity.temp ?? "") + "º"
         
-        return CityCellModel.CityCell(id: entity.id ?? "",
+        return CityListModel.CityCellModel(id: entity.id ?? "",
                                       name: entity.name ?? "",
                                       description: entity.descript ?? "",
                                       temp: temp,

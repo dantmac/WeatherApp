@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CityCell" representedClassName="CityCell" syncable="YES" codeGenerationType="class">
+    <entity name="CityCellPersistentModel" representedClassName="CityCellPersistentModel" syncable="YES" codeGenerationType="class">
         <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="descript" attributeType="String"/>
         <attribute name="id" attributeType="String"/>
@@ -10,6 +10,6 @@
         <attribute name="temp" attributeType="String"/>
     </entity>
     <elements>
-        <element name="CityCell" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="CityCellPersistentModel" positionX="-63" positionY="-18" width="128" height="134"/>
     </elements>
 </model>

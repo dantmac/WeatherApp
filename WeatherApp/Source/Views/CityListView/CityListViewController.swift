@@ -10,6 +10,7 @@ import GooglePlaces
 
 protocol CityListDisplayLogic: AnyObject {
     func reloadData()
+    func showToastMessage(message: String)
 }
 
 class CityListViewController: UIViewController, CityListDisplayLogic {
@@ -69,18 +70,26 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
         tableView.tableFooterView = tableFooterView
     }
     
+    // MARK: - Display Logic
+    
     func reloadData() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
     
+    func showToastMessage(message: String) {
+        Toast.show(message: message, controller: self)
+    }
+    
+    // MARK: - IBActions
+    
     @IBAction func goToSearchVC(_ sender: UIButton) {
         viewModel?.presentSearchVC()
     }
     
     @IBAction func refreshButton(_ sender: UIButton) {
-        viewModel?.refreshCityList()
+        viewModel?.updateCityList()
     }
     
 }
@@ -90,7 +99,7 @@ class CityListViewController: UIViewController, CityListDisplayLogic {
 extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let numberOfRows = viewModel?.countCells() else { return 0 }
+        guard let numberOfRows = viewModel?.countCities() else { return 0 }
         
         return numberOfRows
     }
@@ -98,9 +107,9 @@ extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Keys.cellID, for: indexPath) as! CityListCell
         
-        guard let cellViewModel = viewModel?.setCityCellModel(for: indexPath) else { return cell }
+        guard let cellModel = viewModel?.setCityCellModel(for: indexPath) else { return cell }
         
-        cell.setCell(cellViewModel)
+        cell.setCell(cellModel)
         return cell
     }
     
@@ -109,9 +118,9 @@ extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cellViewModel = viewModel?.setCityCellModel(for: indexPath) else { return }
+        guard let cellModel = viewModel?.setCityCellModel(for: indexPath) else { return }
         
-        viewModel?.presentDetailWeather(cellViewModel, from: indexPath)
+        viewModel?.presentDetailWeather(cellModel, from: indexPath)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

@@ -7,13 +7,15 @@
 
 import Foundation
 
+typealias RequestParams = [String: String]
+
 protocol NetworkServiceProtocol {
-    func sendRequest(params: [String: String], completion: @escaping RequestResult<Data>)
+    func sendRequest(params: RequestParams, completion: @escaping RequestResult<Data>)
 }
 
 struct NetworkService: NetworkServiceProtocol {
-    
-    func sendRequest(params: [String: String], completion: @escaping RequestResult<Data>) {
+
+    func sendRequest(params: RequestParams, completion: @escaping RequestResult<Data>) {
         
         var allParams = params
         allParams[OpenWeatherAPI.appID] = OpenWeatherAPI.key

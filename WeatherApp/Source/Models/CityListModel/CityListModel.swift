@@ -1,5 +1,5 @@
 //
-//  CityCellViewModel.swift
+//  CityListModel.swift
 //  WeatherApp
 //
 //  Created by admin on 06.08.2021.
@@ -17,8 +17,8 @@ protocol CityCellModelProtocol {
     var dateAdded: Date { get }
 }
 
-struct CityCellModel {
-    struct CityCell: CityCellModelProtocol {
+struct CityListModel {
+    struct CityCellModel: CityCellModelProtocol {
         var id: String
         var name: String
         var description: String

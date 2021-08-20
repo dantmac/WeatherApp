@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-protocol DataFetcher {
+protocol WeatherDataFetcherProtocol {
     func fetchWeather(lon: String, lat: String, completion: @escaping RequestResult<WeatherResponse>)
 }
 
-struct WeatherDataFetcher: DataFetcher {
+struct WeatherDataFetcher: WeatherDataFetcherProtocol {
     
     private enum Keys {
         static let lon = "lon"

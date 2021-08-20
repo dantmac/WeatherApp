@@ -8,18 +8,24 @@
 import UIKit
 import Foundation
 
-// TODO: - consider following Interface Segregation principle
+protocol DetailWeatherRouting {
+    func popVC()
+    func dismissVC(_ viewController: UIViewController)
+}
 
-protocol DetailWeatherPresentationLogic {
+protocol DetailWeatherPresentationLogic: DetailWeatherRouting {
     func presentWeather()
     func setHourlyViewModel(for indexPath: IndexPath) -> HourlyCellViewModelProtocol
     func setDailyViewModel(for indexPath: IndexPath) -> DailyCellViewModelProtocol
     func countHourlyCells() -> Int
     func countDailyCells() -> Int
-    
-    func addCity()
-    func popVC()
-    func dismissVC(_ viewController: UIViewController)
+    func addCityToCityList()
+}
+
+protocol DetailWeatherDataFlow: AnyObject {
+    func popDetailVC(_ vm: DetailWeatherViewViewModel)
+    func dismissDetailVC(_ viewController: UIViewController)
+    func addCity(id: String, name: String, lon: String, lat: String)
 }
 
 final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
@@ -27,8 +33,9 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     // MARK: - Properties
     
     weak var viewController: DetailViewDisplayLogic?
-    var coordinator: AppCoordinator?
-    private var fetcher: DataFetcher = WeatherDataFetcher(networkService: NetworkService())
+    weak var dataFlow: DetailWeatherDataFlow?
+    
+    private var fetcher: WeatherDataFetcherProtocol = WeatherDataFetcher(networkService: NetworkService())
     private let coreDataManager = CoreDataManager()
     
     private var hourlyCellViewModel = HourlyCellViewModel(cells: [])
@@ -43,40 +50,20 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     var lon: String?
     var lat: String?
     
-    // MARK: - Business logic
-    
-    func presentWeather() {
-        setWeather()
-    }
+    // MARK: - Routing logic
     
     func popVC() {
-        coordinator?.popDetailVC(self)
+        dataFlow?.popDetailVC(self)
     }
     
     func dismissVC(_ viewController: UIViewController) {
-        coordinator?.dismissDetailVC(viewController)
+        dataFlow?.dismissDetailVC(viewController)
     }
     
-    func addCity() {
-        let date = NSDate() as Date
-        
-        coreDataManager.saveCity(id: id ?? "",
-                                 name: cityName ?? "",
-                                 lon: lon ?? "00",
-                                 lat: lat ?? "00",
-                                 descript: description ?? "",
-                                 temp: temp ?? "",
-                                 dateAdded: date)
-        
-        coordinator?.appendDetailVC(id: id ?? "",
-                              name: cityName ?? "",
-                              lon: lon ?? "00",
-                              lat: lat ?? "00")
-        
-        coordinator?.addCity(id: id ?? "",
-                             name: cityName ?? "",
-                             lon: lon ?? "00",
-                             lat: lat ?? "00")
+    // MARK: - Presentation logic
+    
+    func presentWeather() {
+        displayWeather()
     }
     
     func setGeolocation(id: String, name: String, lon: String, lat: String) {
@@ -104,10 +91,27 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         return dailyCellViewModel.cells.count
     }
     
+    func addCityToCityList() {
+        let date = NSDate() as Date
+        
+        coreDataManager.saveCity(id: id ?? "",
+                                 name: cityName ?? "",
+                                 lon: lon ?? "00",
+                                 lat: lat ?? "00",
+                                 descript: description ?? "",
+                                 temp: temp ?? "",
+                                 dateAdded: date)
+        
+        dataFlow?.addCity(id: id ?? "",
+                             name: cityName ?? "",
+                             lon: lon ?? "00",
+                             lat: lat ?? "00")
+    }
+    
     // MARK: - Private methods
     
-    private func setWeather() {
-        getWeather { [weak self] result in
+    private func displayWeather() {
+        fetchWeather { [weak self] result in
             
             guard let self = self else { return }
             
@@ -122,12 +126,12 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                 guard let viewController = self.viewController as? DetailWeatherViewController else { return }
                 
                 viewController.locationLabel.text = self.cityName
-                Toast.show(message: error.localizedDescription, controller: viewController)
+                viewController.showToastMessage(message: error.localizedDescription)
             }
         }
     }
     
-    private func getWeather(completion: @escaping RequestResult<ResponseModels>) {
+    private func fetchWeather(completion: @escaping RequestResult<ResponseModels>) {
         fetcher.fetchWeather(lon: lon ?? "00", lat: lat ?? "00") { [weak self] result in
             
             guard let self = self else { return }
@@ -135,17 +139,17 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
             switch result {
             case .success(let response):
                 let responseDetail = response
-                let detailViewModel = self.getDetailViewModel(from: responseDetail)
+                let detailViewModel = self.createDetailViewModel(from: responseDetail)
                 
                 let responseHourly = responseDetail.hourly
-                let hourlyCells = responseHourly.map { responseHourly in self.getHourlyViewModel(from: responseHourly) }
-                let preparedHourlyCells = self.configurateHourlyView(hourlyCellViewModel: hourlyCells,
+                let hourlyCells = responseHourly.map { responseHourly in self.createHourlyViewModel(from: responseHourly) }
+                let preparedHourlyCells = self.configurateHourlyViewModel(hourlyCellViewModel: hourlyCells,
                                                                      response: responseDetail)
                 let fixedHourlyCells = Array(preparedHourlyCells.prefix(26))
                 let hourlyCellViewModel = HourlyCellViewModel(cells: fixedHourlyCells)
                 
                 let responseDaily = responseDetail.daily
-                let dailyCells = responseDaily.map { responseDaily in self.getDailyViewModel(from: responseDaily) }
+                let dailyCells = responseDaily.map { responseDaily in self.createDailyViewModel(from: responseDaily) }
                 let dailyCellViewModel = DailyCellViewModel(cells: dailyCells)
                 
                 completion(.success((detailViewModel, hourlyCellViewModel, dailyCellViewModel)))
@@ -153,11 +157,10 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
             case .failure(let error):
                 completion(.failure(error))
             }
-            
         }
     }
     
-    private func getDetailViewModel(from response: WeatherResponse) -> DetailViewModelProtocol {
+    private func createDetailViewModel(from response: WeatherResponse) -> DetailViewModelProtocol {
         let current = response.current
         let daily = response.daily.first
         let descriptions = response.current.weather.map { weather in weather.descriptionStr }
@@ -184,7 +187,7 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                                uvi: current.uviString)
     }
     
-    private func getHourlyViewModel(from response: WeatherHourly) -> HourlyCellViewModelProtocol {
+    private func createHourlyViewModel(from response: WeatherHourly) -> HourlyCellViewModelProtocol {
         let weather = response.weather
         let icon = weather.map { weather in weather.icon }
         
@@ -193,7 +196,7 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                                               weatherIcon: icon[0])
     }
     
-    private func getDailyViewModel(from response: WeatherDaily) -> DailyCellViewModelProtocol {
+    private func createDailyViewModel(from response: WeatherDaily) -> DailyCellViewModelProtocol {
         let weather = response.weather
         let icon = weather.map { weather in weather.icon }
         
@@ -203,7 +206,7 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                                             tempMin: response.temp.minCelsiusString)
     }
     
-    private func configurateHourlyView(hourlyCellViewModel: [HourlyCellViewModelProtocol], response: WeatherResponse) -> [HourlyCellViewModelProtocol] {
+    private func configurateHourlyViewModel(hourlyCellViewModel: [HourlyCellViewModelProtocol], response: WeatherResponse) -> [HourlyCellViewModelProtocol] {
         
         let sunrise = Int(response.current.sunriseDate.formateToHours(timezoneOffset: response.timezoneOffset))
         let sunset = Int(response.current.sunsetDate.formateToHours(timezoneOffset: response.timezoneOffset))
@@ -248,5 +251,9 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         }
         
         return preparedModel
+    }
+    
+    deinit {
+        print("deinit from vm")
     }
 }

@@ -44,8 +44,10 @@ final class AppCoordinator: NSObject, Coordinator {
         window.makeKeyAndVisible()
     }
     
-    func startCityListVC() {
-        cityListViewModel.coordinator = self
+    // MARK: - Private methods
+    
+    private func startCityListVC() {
+        cityListViewModel.dataFlow = self
         cityListViewModel.viewController = cityListViewController
         cityListViewController.viewModel = cityListViewModel
         autocompleteVC.delegate = self
@@ -53,7 +55,57 @@ final class AppCoordinator: NSObject, Coordinator {
         navigationController.pushViewController(cityListViewController, animated: true)
     }
     
-    func startPageVC(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
+    private func presentDetailVC(from viewController: UIViewController, with place: GMSPlace) {
+        let (vc, vm) = setupDetailVC()
+        
+        vc.isModal = true
+        vc.inExistence = cityListViewModel.checkForExistenceCity(placeID: place.placeID ?? "")
+        
+        pushGeolocation(viewModel: vm,
+                        id: place.placeID ?? "",
+                        name: place.name ?? "",
+                        lon: String(place.coordinate.longitude),
+                        lat: String(place.coordinate.latitude))
+        
+        viewController.present(vc, animated: true, completion: nil)
+    }
+    
+    private func pushGeolocation(viewModel: DetailWeatherViewViewModel, id: String, name: String, lon: String, lat: String) {
+        viewModel.setGeolocation(id: id, name: name, lon: lon, lat: lat)
+    }
+    
+    private func preinstallDetailVC(from cityListModel: CityListModel) {
+        for city in cityListModel.cells {
+            let (vc, vm) = setupDetailVC()
+            
+            vm.id = city.id
+            vm.cityName = city.name
+            vm.lat = city.lat
+            vm.lon = city.lon
+            
+            detailViewControllers.append(vc)
+        }
+    }
+    
+    private func setupDetailVC() -> (DetailWeatherViewController, DetailWeatherViewViewModel) {
+        let viewController = DetailWeatherViewController.instantiate()
+        let viewModel = DetailWeatherViewViewModel()
+        viewModel.dataFlow = self
+        viewModel.viewController = viewController
+        viewController.viewModel = viewModel
+        
+        return (viewController, viewModel)
+    }
+}
+
+// MARK: - CityListDataFlow
+
+extension AppCoordinator: CityListDataFlow {
+    
+    func startPageVC(_ cityCellModel: CityCellModelProtocol, cityListModel: CityListModel, from indexPath: IndexPath) {
+        
+        preinstallDetailVC(from: cityListModel)
+        
         let vc = detailViewControllers[indexPath.row]
         let vm = vc.viewModel as! DetailWeatherViewViewModel
         let pageVC = UIPageViewController(transitionStyle: .scroll,
@@ -83,14 +135,14 @@ final class AppCoordinator: NSObject, Coordinator {
         filter.type = .city
         autocompleteVC.autocompleteFilter = filter
         autocompleteVC.placeFields = fields
-    
+        
         autocompleteVC.view.alpha = 0.9
         autocompleteVC.tableCellBackgroundColor = .black
         autocompleteVC.tableCellSeparatorColor = .lightGray
         autocompleteVC.primaryTextColor = .gray
         autocompleteVC.primaryTextHighlightColor = .white
         autocompleteVC.secondaryTextColor = .gray
-
+        
         UINavigationBar.appearance().barTintColor = .black
         UINavigationBar.appearance().tintColor = .white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -98,24 +150,15 @@ final class AppCoordinator: NSObject, Coordinator {
         
         navigationController.present(autocompleteVC, animated: true, completion: nil)
     }
-    
-    func presentDetailVC(from viewController: UIViewController, with place: GMSPlace) {
-        let (vc, vm) = setupDetailVC()
-        
-        vc.isModal = true
-        vc.inExistence = cityListViewModel.checkForExistenceCity(placeID: place.placeID ?? "")
-        
-        pushGeolocation(viewModel: vm,
-                        id: place.placeID ?? "",
-                        name: place.name ?? "",
-                        lon: String(place.coordinate.longitude),
-                        lat: String(place.coordinate.latitude))
-        
-        viewController.present(vc, animated: true, completion: nil)
-    }
+}
+
+// MARK: - DetailWeatherDataFlow
+
+extension AppCoordinator: DetailWeatherDataFlow {
     
     func popDetailVC(_ vm: DetailWeatherViewViewModel) {
         navigationController.popToRootViewController(animated: true)
+        detailViewControllers.removeAll()
     }
     
     func dismissDetailVC(_ viewController: UIViewController) {
@@ -125,50 +168,6 @@ final class AppCoordinator: NSObject, Coordinator {
     func addCity(id: String, name: String, lon: String, lat: String) {
         navigationController.dismiss(animated: true, completion: nil)
         cityListViewModel.addCity(id: id, name: name, lon: lon, lat: lat)
-    }
-    
-    func appendDetailVC(id: String, name: String, lon: String, lat: String) {
-        let (vc, vm) = setupDetailVC()
-        
-        vm.id = id
-        vm.cityName = name
-        vm.lat = lat
-        vm.lon = lon
-        
-        detailViewControllers.append(vc)
-    }
-    
-    func removeDetailVC(at indexPath: IndexPath) {
-        detailViewControllers.remove(at: indexPath.row)
-    }
-    
-    func preinstallDetailVC(_ cityCellModel: CityCellModel) {
-        for city in cityCellModel.cells {
-            let (vc, vm) = setupDetailVC()
-            
-            vm.id = city.id
-            vm.cityName = city.name
-            vm.lat = city.lat
-            vm.lon = city.lon
-            
-            detailViewControllers.append(vc)
-        }
-    }
-    
-    // MARK: - Private methods
-    
-    private func pushGeolocation(viewModel: DetailWeatherViewViewModel, id: String, name: String, lon: String, lat: String) {
-        viewModel.setGeolocation(id: id, name: name, lon: lon, lat: lat)
-    }
-    
-    private func setupDetailVC() -> (DetailWeatherViewController, DetailWeatherViewViewModel) {
-        let viewController = DetailWeatherViewController.instantiate()
-        let viewModel = DetailWeatherViewViewModel()
-        viewModel.coordinator = self
-        viewModel.viewController = viewController
-        viewController.viewModel = viewModel
-
-        return (viewController, viewModel)
     }
 }
 
