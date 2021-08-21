@@ -64,7 +64,7 @@ final class CityListViewModel: CityListPresentationLogic {
     func presentSearchVC() {
         dataFlow?.startSearchVC()
     }
-   
+    
     // MARK: - Presentation Logic
     
     func setCityCellModel(for indexPath: IndexPath) -> CityCellModelProtocol {
@@ -140,12 +140,12 @@ final class CityListViewModel: CityListPresentationLogic {
     
     private func updateWeather(completion: @escaping RequestResult<CityCellModelProtocol>) {
         var updatedCity = CityListModel.CityCellModel(id: "",
-                                                 name: "",
-                                                 description: "",
-                                                 temp: "",
-                                                 lat: "",
-                                                 lon: "",
-                                                 dateAdded: Date())
+                                                      name: "",
+                                                      description: "",
+                                                      temp: "",
+                                                      lat: "",
+                                                      lon: "",
+                                                      dateAdded: Date())
         
         for city in cityListModel.cells {
             fetcher.fetchWeather(lon: city.lon, lat: city.lat) { [weak self] result in
@@ -188,23 +188,23 @@ final class CityListViewModel: CityListPresentationLogic {
         let description = descriptions[0]
         
         return CityListModel.CityCellModel(id: id ?? "",
-                                      name: cityName ?? "",
-                                      description: description,
-                                      temp: response.current.tempCelsiusString + "º",
-                                      lat: lat ?? "00",
-                                      lon: lon ?? "00",
-                                      dateAdded: Date())
+                                           name: cityName ?? "",
+                                           description: description,
+                                           temp: response.current.tempCelsiusString + "º",
+                                           lat: lat ?? "00",
+                                           lon: lon ?? "00",
+                                           dateAdded: Date())
     }
     
     private func createCityCellModel(from entity: CityCellPersistentModel) -> CityCellModelProtocol {
         let temp = (entity.temp ?? "") + "º"
         
         return CityListModel.CityCellModel(id: entity.id ?? "",
-                                      name: entity.name ?? "",
-                                      description: entity.descript ?? "",
-                                      temp: temp,
-                                      lat: entity.lat ?? "",
-                                      lon: entity.lon ?? "",
-                                      dateAdded: entity.dateAdded ?? Date())
+                                           name: entity.name ?? "",
+                                           description: entity.descript ?? "",
+                                           temp: temp,
+                                           lat: entity.lat ?? "",
+                                           lon: entity.lon ?? "",
+                                           dateAdded: entity.dateAdded ?? Date())
     }
 }

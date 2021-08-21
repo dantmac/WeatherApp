@@ -9,13 +9,6 @@ import UIKit
 import Foundation
 import GooglePlaces
 
-extension String {
-    func deletingPrefix() -> String {
-        let newString = self.components(separatedBy: "/")
-        return newString[1]
-    }
-}
-
 extension StringProtocol {
     var firstCapitalized: String { prefix(1).capitalized + dropFirst() }
 }

@@ -101,13 +101,13 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     
     func addCityToCityList() {
         let cityCellModel = createCityCellModel()
-
+        
         databaseService.add(cityCellModel: cityCellModel)
         
         dataFlow?.addCity(id: id ?? "",
-                             name: cityName ?? "",
-                             lon: lon ?? "00",
-                             lat: lat ?? "00")
+                          name: cityName ?? "",
+                          lon: lon ?? "00",
+                          lat: lat ?? "00")
     }
     
     // MARK: - Private methods
@@ -146,7 +146,7 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
                 let responseHourly = responseDetail.hourly
                 let hourlyCells = responseHourly.map { responseHourly in self.createHourlyViewModel(from: responseHourly) }
                 let preparedHourlyCells = self.configurateHourlyViewModel(hourlyCellViewModel: hourlyCells,
-                                                                     response: responseDetail)
+                                                                          response: responseDetail)
                 let fixedHourlyCells = Array(preparedHourlyCells.prefix(26))
                 let hourlyCellViewModel = HourlyCellViewModel(cells: fixedHourlyCells)
                 
@@ -259,15 +259,11 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         let date = NSDate() as Date
         
         return CityListModel.CityCellModel(id: id ?? "",
-                                      name: cityName ?? "",
-                                      description: description ?? "",
-                                      temp: temp ?? "",
-                                      lat: lat ?? "00",
-                                      lon: lon ?? "00",
-                                      dateAdded: date)
-    }
-    
-    deinit {
-        print("deinit from vm")
+                                           name: cityName ?? "",
+                                           description: description ?? "",
+                                           temp: temp ?? "",
+                                           lat: lat ?? "00",
+                                           lon: lon ?? "00",
+                                           dateAdded: date)
     }
 }
