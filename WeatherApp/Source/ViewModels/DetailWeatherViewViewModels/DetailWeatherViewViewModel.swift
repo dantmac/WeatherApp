@@ -9,8 +9,8 @@ import UIKit
 import Foundation
 
 protocol DetailWeatherRouting {
-    func popVC()
-    func dismissVC(_ viewController: UIViewController)
+    func goToCityList()
+    func dismissVC(viewController: UIViewController)
 }
 
 protocol DetailWeatherPresentationLogic: DetailWeatherRouting {
@@ -23,8 +23,8 @@ protocol DetailWeatherPresentationLogic: DetailWeatherRouting {
 }
 
 protocol DetailWeatherDataFlow: AnyObject {
-    func popDetailVC(_ vm: DetailWeatherViewViewModel)
-    func dismissDetailVC(_ viewController: UIViewController)
+    func goToCityList()
+    func dismissDetailVC(viewController: UIViewController)
     func addCity(id: String, name: String, lon: String, lat: String)
 }
 
@@ -35,8 +35,8 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     weak var viewController: DetailViewDisplayLogic?
     weak var dataFlow: DetailWeatherDataFlow?
     
-    private var fetcher: WeatherDataFetcherProtocol = WeatherDataFetcher(networkService: NetworkService())
-    private let coreDataManager = CoreDataManager()
+    private let fetcher: WeatherDataFetcherProtocol
+    private let databaseService: CityListDatabaseServiceProtocol
     
     private var hourlyCellViewModel = HourlyCellViewModel(cells: [])
     private var dailyCellViewModel = DailyCellViewModel(cells: [])
@@ -50,14 +50,22 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     var lon: String?
     var lat: String?
     
-    // MARK: - Routing logic
+    // MARK: - Init
     
-    func popVC() {
-        dataFlow?.popDetailVC(self)
+    init(fetcher: WeatherDataFetcherProtocol = WeatherDataFetcher(networkService: NetworkService()),
+         databaseService: CityListDatabaseServiceProtocol = CityListDatabaseService()) {
+        self.fetcher = fetcher
+        self.databaseService = databaseService
     }
     
-    func dismissVC(_ viewController: UIViewController) {
-        dataFlow?.dismissDetailVC(viewController)
+    // MARK: - Routing
+    
+    func goToCityList() {
+        dataFlow?.goToCityList()
+    }
+    
+    func dismissVC(viewController: UIViewController) {
+        dataFlow?.dismissDetailVC(viewController: viewController)
     }
     
     // MARK: - Presentation logic
@@ -92,15 +100,9 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
     }
     
     func addCityToCityList() {
-        let date = NSDate() as Date
-        
-        coreDataManager.saveCity(id: id ?? "",
-                                 name: cityName ?? "",
-                                 lon: lon ?? "00",
-                                 lat: lat ?? "00",
-                                 descript: description ?? "",
-                                 temp: temp ?? "",
-                                 dateAdded: date)
+        let cityCellModel = createCityCellModel()
+
+        databaseService.add(cityCellModel: cityCellModel)
         
         dataFlow?.addCity(id: id ?? "",
                              name: cityName ?? "",
@@ -119,7 +121,7 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
             case .success((let detailViewModel, let hourlyCellViewModel, let dailyCellViewModel)):
                 self.hourlyCellViewModel = hourlyCellViewModel
                 self.dailyCellViewModel = dailyCellViewModel
-                self.viewController?.displayDetailWeather(detailViewModel)
+                self.viewController?.display(detailViewModel: detailViewModel)
                 self.viewController?.reloadData()
                 
             case .failure(let error):
@@ -251,6 +253,18 @@ final class DetailWeatherViewViewModel: DetailWeatherPresentationLogic {
         }
         
         return preparedModel
+    }
+    
+    private func createCityCellModel() -> CityCellModelProtocol {
+        let date = NSDate() as Date
+        
+        return CityListModel.CityCellModel(id: id ?? "",
+                                      name: cityName ?? "",
+                                      description: description ?? "",
+                                      temp: temp ?? "",
+                                      lat: lat ?? "00",
+                                      lon: lon ?? "00",
+                                      dateAdded: date)
     }
     
     deinit {

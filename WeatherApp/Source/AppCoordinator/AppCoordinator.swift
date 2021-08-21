@@ -12,8 +12,6 @@ protocol Coordinator: AnyObject {
     func start()
 }
 
-// TODO: - consider avoiding memory leaks
-
 final class AppCoordinator: NSObject, Coordinator {
     
     // MARK: -  Properties
@@ -102,7 +100,7 @@ final class AppCoordinator: NSObject, Coordinator {
 
 extension AppCoordinator: CityListDataFlow {
     
-    func startPageVC(_ cityCellModel: CityCellModelProtocol, cityListModel: CityListModel, from indexPath: IndexPath) {
+    func startPageVC(cityCellModel: CityCellModelProtocol, cityListModel: CityListModel, from indexPath: IndexPath) {
         
         preinstallDetailVC(from: cityListModel)
         
@@ -156,12 +154,12 @@ extension AppCoordinator: CityListDataFlow {
 
 extension AppCoordinator: DetailWeatherDataFlow {
     
-    func popDetailVC(_ vm: DetailWeatherViewViewModel) {
+    func goToCityList() {
         navigationController.popToRootViewController(animated: true)
         detailViewControllers.removeAll()
     }
     
-    func dismissDetailVC(_ viewController: UIViewController) {
+    func dismissDetailVC(viewController: UIViewController) {
         viewController.dismiss(animated: true, completion: nil)
     }
     

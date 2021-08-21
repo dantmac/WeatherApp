@@ -30,10 +30,10 @@ class CityListCell: UITableViewCell {
         return UINib(nibName: Keys.nibName, bundle: nil)
     }
     
-    func setCell(_ cityCellModel: CityCellModelProtocol) {
-        tempLabel.text = cityCellModel.temp
-        nameLabel.text = cityCellModel.name
-        descriptionLabel.text = cityCellModel.description
+    func set(viewModel: CityCellModelProtocol) {
+        tempLabel.text = viewModel.temp
+        nameLabel.text = viewModel.name
+        descriptionLabel.text = viewModel.description
     }
     
 }

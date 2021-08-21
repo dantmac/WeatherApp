@@ -27,10 +27,10 @@ class HourlyCollectionViewCell: UICollectionViewCell {
                      bundle: nil)
     }
     
-    func setCell(_ hourlyCellViewModel: HourlyCellViewModelProtocol) {
-        dtHourLabel.text = hourlyCellViewModel.dtHourly
-        tempLabel.text = hourlyCellViewModel.temp
-        weatherIcon.image = UIImage(named: hourlyCellViewModel.weatherIcon)
+    func set(viewModel: HourlyCellViewModelProtocol) {
+        dtHourLabel.text = viewModel.dtHourly
+        tempLabel.text = viewModel.temp
+        weatherIcon.image = UIImage(named: viewModel.weatherIcon)
         
         if dtHourLabel.text == "Now" {
             dtHourLabel.font = UIFont.boldSystemFont(ofSize: 17)

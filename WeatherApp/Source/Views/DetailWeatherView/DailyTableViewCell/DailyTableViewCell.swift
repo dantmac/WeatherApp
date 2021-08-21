@@ -34,10 +34,10 @@ class DailyTableViewCell: UITableViewCell {
         return UINib(nibName: Keys.nibName, bundle: nil)
     }
     
-    func setCell(_ dailyCellViewModel: DailyCellViewModelProtocol) {
-        dtLabel.text = dailyCellViewModel.dtDaily
-        weatherIcon.image = UIImage(named: dailyCellViewModel.weatherIcon)
-        tempMaxLabel.text = dailyCellViewModel.tempMax
-        tempMinLabel.text = dailyCellViewModel.tempMin
+    func set(viewModel: DailyCellViewModelProtocol) {
+        dtLabel.text = viewModel.dtDaily
+        weatherIcon.image = UIImage(named: viewModel.weatherIcon)
+        tempMaxLabel.text = viewModel.tempMax
+        tempMinLabel.text = viewModel.tempMin
     }
 }

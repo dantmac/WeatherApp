@@ -8,7 +8,7 @@
 import UIKit
 
 protocol DetailViewDisplayLogic: AnyObject {
-    func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol)
+    func display(detailViewModel: DetailViewModelProtocol)
     func showToastMessage(message: String)
     func reloadData()
 }
@@ -119,12 +119,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     private func setupButtons() {
         if isModal {
             
-            if inExistence {
-                addButton.isHidden = true
-            } else {
-                addButton.isHidden = false
-            }
-            
+            addButton.isHidden = inExistence
             cancelButton.isHidden = false
             
             separatorView.isHidden = true
@@ -142,7 +137,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     
     // MARK: - Display Logic
     
-    func displayDetailWeather(_ detailViewModel: DetailViewModelProtocol) {
+    func display(detailViewModel: DetailViewModelProtocol) {
         locationLabel.text = detailViewModel.location
         descriptionLabel.text = detailViewModel.description
         tempLabel.text = detailViewModel.temp
@@ -175,7 +170,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     // MARK: - IBActions
     
     @IBAction func cancelPressed(_ sender: UIButton) {
-        viewModel?.dismissVC(self)
+        viewModel?.dismissVC(viewController: self)
     }
     
     @IBAction func addPressed(_ sender: UIButton) {
@@ -185,7 +180,7 @@ class DetailWeatherViewController: UIViewController, DetailViewDisplayLogic {
     }
     
     @IBAction func goToCityList(_ sender: UIBarButtonItem) {
-        viewModel?.popVC()
+        viewModel?.goToCityList()
     }
 }
 
@@ -203,7 +198,7 @@ extension DetailWeatherViewController: UICollectionViewDelegate, UICollectionVie
         
         guard let cellViewModel = viewModel?.setHourlyViewModel(for: indexPath) else { return cell }
         
-        cell.setCell(cellViewModel)
+        cell.set(viewModel: cellViewModel)
         return cell
     }
 }
@@ -222,7 +217,7 @@ extension DetailWeatherViewController: UITableViewDelegate, UITableViewDataSourc
         
         guard let cellViewModel = viewModel?.setDailyViewModel(for: indexPath) else { return cell }
         
-        cell.setCell(cellViewModel)
+        cell.set(viewModel: cellViewModel)
         return cell
     }
     

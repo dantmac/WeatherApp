@@ -14,16 +14,24 @@ protocol WeatherDataFetcherProtocol {
 
 struct WeatherDataFetcher: WeatherDataFetcherProtocol {
     
+    // MARK: - Keys
+    
     private enum Keys {
         static let lon = "lon"
         static let lat = "lat"
     }
     
+    // MARK: - Properties
+    
     let networkService: NetworkServiceProtocol
+    
+    // MARK: - Init
     
     init(networkService: NetworkServiceProtocol) {
         self.networkService = networkService
     }
+    
+    // MARK: - Weather Data Fetching
     
     func fetchWeather(lon: String, lat: String, completion: @escaping RequestResult<WeatherResponse>) {
         let params = [Keys.lat: lat, Keys.lon: lon]

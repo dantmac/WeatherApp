@@ -11,7 +11,7 @@ import UIKit
 protocol CityListRouting {
     func presentCityList()
     func presentSearchVC()
-    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath)
+    func presentDetailWeather(cityCellModel: CityCellModelProtocol, from indexPath: IndexPath)
 }
 
 protocol CityListPresentationLogic: CityListRouting {
@@ -23,7 +23,7 @@ protocol CityListPresentationLogic: CityListRouting {
 
 protocol CityListDataFlow: AnyObject {
     func startSearchVC()
-    func startPageVC(_ cityCellModel: CityCellModelProtocol, cityListModel: CityListModel, from indexPath: IndexPath)
+    func startPageVC(cityCellModel: CityCellModelProtocol, cityListModel: CityListModel, from indexPath: IndexPath)
 }
 
 final class CityListViewModel: CityListPresentationLogic {
@@ -33,8 +33,8 @@ final class CityListViewModel: CityListPresentationLogic {
     weak var viewController: CityListDisplayLogic?
     weak var dataFlow: CityListDataFlow?
     
-    private var fetcher: WeatherDataFetcherProtocol = WeatherDataFetcher(networkService: NetworkService())
-    private let coreDataManager = CoreDataManager()
+    private let fetcher: WeatherDataFetcherProtocol
+    private let databaseService: CityListDatabaseServiceProtocol
     
     private var cityListModel = CityListModel(cells: [])
     private var id: String?
@@ -42,17 +42,23 @@ final class CityListViewModel: CityListPresentationLogic {
     private var lon: String?
     private var lat: String?
     
-    // MARK: - Routing Logic
+    // MARK: - Init
+    
+    init(fetcher: WeatherDataFetcherProtocol = WeatherDataFetcher(networkService: NetworkService()),
+         databaseService: CityListDatabaseServiceProtocol = CityListDatabaseService()) {
+        self.fetcher = fetcher
+        self.databaseService = databaseService
+    }
+    
+    // MARK: - Routing
     
     func presentCityList() {
         getCityListFromDatabase()
         updateCityList()
-        
-//        dataFlow?.preinstallDetailVC(cityListModel)
     }
     
-    func presentDetailWeather(_ cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
-        dataFlow?.startPageVC(cityCellModel, cityListModel: cityListModel, from: indexPath)
+    func presentDetailWeather(cityCellModel: CityCellModelProtocol, from indexPath: IndexPath) {
+        dataFlow?.startPageVC(cityCellModel: cityCellModel, cityListModel: cityListModel, from: indexPath)
     }
     
     func presentSearchVC() {
@@ -71,7 +77,7 @@ final class CityListViewModel: CityListPresentationLogic {
     }
     
     func removeCity(for indexPath: IndexPath) {
-        coreDataManager.removeCity(for: indexPath)
+        databaseService.delete(for: indexPath)
         cityListModel.cells.remove(at: indexPath.row)
         viewController?.reloadData()
     }
@@ -171,10 +177,10 @@ final class CityListViewModel: CityListPresentationLogic {
     }
     
     private func getCityListFromDatabase() {
-        let entity = coreDataManager.fetchCityList()
-        let cities = entity.map { city in createCityCellModel(from: city) }
-        let cityCellModel = CityListModel(cells: cities)
-        self.cityListModel = cityCellModel
+        let cities = databaseService.get()
+        let cityCellModels = cities.map { city in createCityCellModel(from: city) }
+        let cityListModel = CityListModel(cells: cityCellModels)
+        self.cityListModel = cityListModel
     }
     
     private func createCityCellModel(from response: WeatherResponse) -> CityCellModelProtocol {
