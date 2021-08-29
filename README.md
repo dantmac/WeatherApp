@@ -17,4 +17,4 @@ This project is a basic weather detail app that displays all your essential weat
 
 ## TODO
 1. Reproduce the smooth scrolling like the Apple Native Weather App.
-2. Implemente custom View Controllers Transitions
+2. Implement custom View Controllers Transitions
