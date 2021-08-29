@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--City List View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="CityList" id="Y6W-OH-hqX" customClass="CityListViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qtu-Fa-fZe">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="bed-UW-cCY" userLabel="Footer View">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwP-cP-Lgv" userLabel="Search Button">
+                                            <rect key="frame" x="384" y="10" width="20" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="i0V-gu-TsL"/>
+                                            </constraints>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" image="magnifyingglass" catalog="system"/>
+                                            <connections>
+                                                <action selector="goToSearchVC:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="fKk-29-LDi"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3c6-r7-hIX" userLabel="Refresh Button">
+                                            <rect key="frame" x="10" y="10" width="18" height="40"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="77h-NQ-MEP"/>
+                                            </constraints>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" image="arrow.clockwise" catalog="system"/>
+                                            <connections>
+                                                <action selector="refreshButton:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="QOa-dT-zUL"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="nwP-cP-Lgv" secondAttribute="trailing" constant="10" id="38B-MX-8mZ"/>
+                                        <constraint firstAttribute="bottom" secondItem="nwP-cP-Lgv" secondAttribute="bottom" constant="10" id="LbI-1W-w28"/>
+                                        <constraint firstItem="3c6-r7-hIX" firstAttribute="leading" secondItem="bed-UW-cCY" secondAttribute="leading" constant="10" id="NsP-ot-xkb"/>
+                                        <constraint firstAttribute="bottom" secondItem="3c6-r7-hIX" secondAttribute="bottom" constant="10" id="lej-Fr-P6N"/>
+                                        <constraint firstItem="3c6-r7-hIX" firstAttribute="top" secondItem="bed-UW-cCY" secondAttribute="top" constant="10" id="pfg-nM-Ao7"/>
+                                        <constraint firstItem="nwP-cP-Lgv" firstAttribute="top" secondItem="bed-UW-cCY" secondAttribute="top" constant="10" id="tZv-8p-37T"/>
+                                    </constraints>
+                                </view>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Qtu-Fa-fZe" secondAttribute="trailing" id="3q3-hH-IqP"/>
+                            <constraint firstItem="Qtu-Fa-fZe" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="R0i-RF-yRu"/>
+                            <constraint firstItem="Qtu-Fa-fZe" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="VF7-uC-Ulg"/>
+                            <constraint firstAttribute="bottom" secondItem="Qtu-Fa-fZe" secondAttribute="bottom" id="xKm-Di-M8K"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableFooterView" destination="bed-UW-cCY" id="59b-tX-n2J"/>
+                        <outlet property="tableView" destination="Qtu-Fa-fZe" id="N0s-Cw-V3n"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="31.884057971014496" y="57.589285714285708"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="arrow.clockwise" catalog="system" width="115" height="128"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
