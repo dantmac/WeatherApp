@@ -7,7 +7,6 @@
 
 import UIKit
 import Foundation
-import GooglePlaces
 
 extension StringProtocol {
     var firstCapitalized: String { prefix(1).capitalized + dropFirst() }
